@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>契約交渉プラットフォーム</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            background: #f8f9fa;
+            color: #1a1a1a;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ヘッダー */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .contract-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .partner-badge {
+            padding: 5px 12px;
+            background: #f3f4f6;
+            border-radius: 14px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header-btn {
+            padding: 8px 16px;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .header-btn:hover {
+            background: #e5e7eb;
+        }
+
+        .header-btn.primary {
+            background: #0891b2;
+            color: white;
+            border: none;
+        }
+
+        .header-btn.primary:hover {
+            background: #0e7490;
+        }
+
+        /* メインコンテナ - 2カラム */
+        .main-wrapper {
+            display: flex;
+            height: calc(100vh - 60px);
+        }
+
+        /* 左カラム */
+        .left-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #f8f9fa;
+        }
+
+        /* メインタブ */
+        .main-tabs {
+            background: white;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 0 24px;
+            display: flex;
+            gap: 4px;
+        }
+
+        .main-tab {
+            padding: 14px 20px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .main-tab:hover {
+            color: #1a1a1a;
+        }
+
+        .main-tab.active {
+            color: #0891b2;
+            border-bottom-color: #0891b2;
+        }
+
+        /* タブコンテンツ */
+        .tab-content {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 右カラム - チャット */
+        .right-column {
+            width: 420px;
+            background: white;
+            border-left: 1px solid #e5e5e5;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            padding: 16px 20px;
+            background: white;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .chat-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .chat-subtitle {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #fafafa;
+        }
+
+        .message {
+            margin-bottom: 20px;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .avatar-them {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .avatar-me {
+            background: linear-gradient(135deg, #0891b2, #0e7490);
+            color: white;
+        }
+
+        .message-sender {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .message-bubble {
+            background: white;
+            padding: 14px 18px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #374151;
+            margin-left: 46px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .input-area {
+            padding: 16px 20px;
+            background: white;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .input-field {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: none;
+            transition: all 0.2s;
+            max-height: 100px;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #0891b2;
+        }
+
+        .send-btn {
+            width: 44px;
+            height: 44px;
+            background: #0891b2;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover {
+            background: #0e7490;
+        }
+
+        /* 概要タブのスタイル */
+        .overview-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #0891b2, #0e7490);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .summary-text {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #374151;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #0891b2;
+        }
+
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            padding: 32px;
+            margin-top: 20px;
+        }
+
+        .flow-node {
+            text-align: center;
+        }
+
+        .flow-box {
+            padding: 24px 32px;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border: 2px solid #3b82f6;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e40af;
+            min-width: 200px;
+        }
+
+        .flow-box.partner {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+
+        .flow-label {
+            margin-top: 12px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .flow-arrow {
+            font-size: 32px;
+            color: #9ca3af;
+        }
+
+        .flow-detail {
+            margin-top: 8px;
+            padding: 8px 16px;
+            background: white;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+            margin-top: 24px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 18px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e5e7eb;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 32px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -28px;
+            top: 4px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #0891b2;
+        }
+
+        .timeline-item.warning::before {
+            border-color: #f59e0b;
+        }
+
+        .timeline-item.success::before {
+            border-color: #10b981;
+        }
+
+        .timeline-date {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0891b2;
+            margin-bottom: 6px;
+        }
+
+        .timeline-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .timeline-description {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .timeline-alert {
+            margin-top: 8px;
+            padding: 10px 14px;
+            background: #fef3c7;
+            border-left: 3px solid #f59e0b;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #92400e;
+        }
+
+        /* 契約書タブのスタイル */
+        .contract-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .ai-explain-card {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .explain-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .explain-icon {
+            font-size: 18px;
+        }
+
+        .explain-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e40af;
+        }
+
+        .explain-text {
+            font-size: 13px;
+            color: #1e3a8a;
+            line-height: 1.6;
+        }
+
+        .explain-alert {
+            margin-top: 8px;
+            padding: 10px;
+            background: #fef3c7;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #92400e;
+        }
+
+        .document {
+            background: white;
+            border-radius: 16px;
+            padding: 48px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .doc-main-title {
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 32px;
+            color: #1a1a1a;
+        }
+
+        .doc-article {
+            margin-bottom: 32px;
+        }
+
+        .article-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+
+        .article-content {
+            font-size: 14px;
+            line-height: 1.9;
+            color: #374151;
+        }
+
+        .highlight-change {
+            background: #fef3c7;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        /* 管理タブのスタイル */
+        .management-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .management-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .action-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .action-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .action-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .action-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .action-item {
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-item:hover {
+            background: #f1f3f5;
+        }
+
+        .action-item.urgent {
+            border-left-color: #f59e0b;
+            background: #fef3c7;
+        }
+
+        .action-item.urgent:hover {
+            background: #fde68a;
+        }
+
+        .action-item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .action-item-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .action-item-date {
+            font-size: 12px;
+            color: #f59e0b;
+            font-weight: 600;
+        }
+
+        .action-item-desc {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .notification-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .toggle-label {
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .toggle-switch {
+            width: 48px;
+            height: 26px;
+            background: #cbd5e1;
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-switch.active {
+            background: #0891b2;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: all 0.2s;
+        }
+
+        .toggle-switch.active::after {
+            left: 25px;
+        }
+
+        .document-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .document-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .document-item:hover {
+            background: #e5e7eb;
+        }
+
+        .document-icon {
+            width: 40px;
+            height: 40px;
+            background: #eff6ff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .document-info {
+            flex: 1;
+        }
+
+        .document-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 2px;
+        }
+
+        .document-date {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        /* スクロールバー */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <div class="header">
+        <div class="header-left">
+            <div class="contract-title">業務委託基本契約書</div>
+            <span class="partner-badge">株式会社XYZ 田中様</span>
+        </div>
+        <div class="header-actions">
+            <button class="header-btn">📥 Wordダウンロード</button>
+            <button class="header-btn">📤 Wordアップロード</button>
+            <button class="header-btn primary">📌 この版をFIX</button>
+        </div>
+    </div>
+
+    <!-- メインコンテナ(2カラム) -->
+    <div class="main-wrapper">
+        <!-- 左カラム -->
+        <div class="left-column">
+            <!-- メインタブ -->
+            <div class="main-tabs">
+                <button class="main-tab active" onclick="switchMainTab('overview')">
+                    <span>📊</span>
+                    <span>概要</span>
+                </button>
+                <button class="main-tab" onclick="switchMainTab('contract')">
+                    <span>📄</span>
+                    <span>契約書</span>
+                </button>
+                <button class="main-tab" onclick="switchMainTab('management')">
+                    <span>📅</span>
+                    <span>管理</span>
+                </button>
+            </div>
+
+            <!-- 概要タブ -->
+            <div class="tab-content active" id="overview">
+                <div class="overview-container">
+                    <div class="summary-card">
+                        <div class="card-header">
+                            <div class="card-icon">🎯</div>
+                            <div class="card-title">この契約の要点</div>
+                        </div>
+                        <div class="summary-text">
+                            <strong>ABC社がXYZ社にマーケティング支援を提供する契約です。</strong><br>
+                            期間は6ヶ月間で、月額48万円の報酬をいただきます。初めてのお取引なので短期でスタートし、問題なければ自動更新される形です。
+                        </div>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="card-header">
+                            <div class="card-icon">📈</div>
+                            <div class="card-title">人・モノ・金の流れ</div>
+                        </div>
+                        <div class="flow-diagram">
+                            <div class="flow-node">
+                                <div class="flow-box">ABC社<br>(あなたの会社)</div>
+                                <div class="flow-detail">サービス提供側</div>
+                            </div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-node">
+                                <div class="flow-label">📦 提供するもの</div>
+                                <div style="margin-top: 8px; font-size: 13px; color: #374151;">
+                                    • マーケティング戦略<br>
+                                    • 広告運用サポート<br>
+                                    • 月次レポート
+                                </div>
+                            </div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-node">
+                                <div class="flow-box partner">XYZ社<br>(田中様)</div>
+                                <div class="flow-detail">サービス受領側</div>
+                            </div>
+                        </div>
+                        <div class="flow-diagram" style="margin-top: 0;">
+                            <div class="flow-node">
+                                <div class="flow-box partner">XYZ社<br>(田中様)</div>
+                            </div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-node">
+                                <div class="flow-label">💰 支払い</div>
+                                <div style="margin-top: 8px; font-size: 13px; color: #374151;">
+                                    <strong>月額48万円</strong>(税別)<br>
+                                    月末締め翌月末払い
+                                </div>
+                            </div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-node">
+                                <div class="flow-box">ABC社<br>(あなたの会社)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="card-header">
+                            <div class="card-icon">📅</div>
+                            <div class="card-title">これからのタイムライン</div>
+                        </div>
+                        <div class="timeline">
+                            <div class="timeline-item success">
+                                <div class="timeline-date">2026年2月1日</div>
+                                <div class="timeline-title">契約開始</div>
+                                <div class="timeline-description">マーケティング支援業務がスタートします</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">2026年2月末</div>
+                                <div class="timeline-title">初回請求書発行</div>
+                                <div class="timeline-description">月額48万円(税別)の請求書を送付</div>
+                            </div>
+                            <div class="timeline-item warning">
+                                <div class="timeline-date">2026年5月31日</div>
+                                <div class="timeline-title">⚠️ 契約更新の判断期限</div>
+                                <div class="timeline-description">この日までに更新しない旨を連絡しないと自動更新されます</div>
+                                <div class="timeline-alert">
+                                    <strong>📌 重要:</strong> この日の1ヶ月前(4/30)に自動で通知します
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">2026年7月31日</div>
+                                <div class="timeline-title">契約満了日</div>
+                                <div class="timeline-description">初回6ヶ月間の契約期間が終了</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">2026年8月1日〜</div>
+                                <div class="timeline-title">自動更新 または 契約終了</div>
+                                <div class="timeline-description">
+                                    5/31までに連絡がない場合 → さらに6ヶ月間自動更新<br>
+                                    5/31までに連絡があった場合 → 7/31で契約終了
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 契約書タブ -->
+            <div class="tab-content" id="contract">
+                <div class="contract-container">
+                    <div class="ai-explain-card">
+                        <div class="explain-header">
+                            <span class="explain-icon">💡</span>
+                            <span class="explain-title">第3条をわかりやすく</span>
+                        </div>
+                        <div class="explain-text">
+                            <strong>つまり:</strong> 半年間の契約です。やめたい時は2ヶ月前(5/31まで)に言えばOK。<br>
+                            <strong>何もしなければ:</strong> 自動的にもう半年延長されます。
+                        </div>
+                        <div class="explain-alert">
+                            ⚠️ <strong>注意:</strong> 5/31までに連絡しないと自動で更新されます
+                        </div>
+                    </div>
+
+                    <div class="document">
+                        <div class="doc-main-title">業務委託基本契約書</div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第1条(契約の目的)</div>
+                            <div class="article-content">
+                                本契約は、甲が乙に対して、デジタルマーケティング支援業務を提供することを目的とする。
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第2条(業務内容)</div>
+                            <div class="article-content">
+                                甲は乙に対し、以下の業務を提供する。<br>
+                                (1) デジタルマーケティング戦略の立案<br>
+                                (2) 広告運用の最適化及び改善提案<br>
+                                (3) 月次レポートの作成及び提出
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第3条(契約期間)</div>
+                            <div class="article-content">
+                                本契約の有効期間は、2026年2月1日から<span class="highlight-change">6ヶ月間</span>とする。<br>
+                                本契約は、期間満了の<span class="highlight-change">2ヶ月前</span>までに当事者いずれからも書面による別段の意思表示がない場合には、同一条件にて6ヶ月間自動的に更新されるものとする。
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第4条(報酬及び支払条件)</div>
+                            <div class="article-content">
+                                1. 乙は甲に対し、月額<span class="highlight-change">48万円</span>(税別)を報酬として支払う。<br>
+                                2. 報酬の支払いは、月末締め翌月末払いとする。<br>
+                                3. 振込手数料は乙の負担とする。
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第5条(知的財産権)</div>
+                            <div class="article-content">
+                                本契約に基づき甲が作成した成果物に関する知的財産権は、対価の完済をもって乙に帰属する。
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第6条(秘密保持)</div>
+                            <div class="article-content">
+                                甲及び乙は、本契約の履行に関連して知り得た相手方の秘密情報を、相手方の事前の書面による承諾なく第三者に開示又は漏洩してはならない。
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第7条(損害賠償)</div>
+                            <div class="article-content">
+                                甲及び乙は、本契約に違反して相手方に損害を与えた場合、その損害を賠償する責任を負う。ただし、賠償額の上限は直近3ヶ月分の報酬額とする。
+                            </div>
+                        </div>
+
+                        <div class="doc-article">
+                            <div class="article-title">第8条(契約解除)</div>
+                            <div class="article-content">
+                                甲及び乙は、相手方が本契約に重大な違反をし、相当期間を定めた書面による催告後も是正されない場合、本契約を解除することができる。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 管理タブ -->
+            <div class="tab-content" id="management">
+                <div class="management-container">
+                    <div class="management-grid">
+                        <div class="action-card">
+                            <div class="action-header">
+                                <div class="action-title">📌 次のアクション</div>
+                            </div>
+                            <div class="action-list">
+                                <div class="action-item urgent">
+                                    <div class="action-item-header">
+                                        <div class="action-item-title">契約更新の判断</div>
+                                        <div class="action-item-date">あと93日</div>
+                                    </div>
+                                    <div class="action-item-desc">5/31までに更新可否を決定</div>
+                                </div>
+                                <div class="action-item">
+                                    <div class="action-item-header">
+                                        <div class="action-item-title">月次レポート提出</div>
+                                        <div class="action-item-date">2/28</div>
+                                    </div>
+                                    <div class="action-item-desc">1月分の実績レポートを提出</div>
+                                </div>
+                                <div class="action-item">
+                                    <div class="action-item-header">
+                                        <div class="action-item-title">請求書発行</div>
+                                        <div class="action-item-date">2/28</div>
+                                    </div>
+                                    <div class="action-item-desc">2月分 48万円の請求書を発行</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-card">
+                            <div class="action-header">
+                                <div class="action-title">🔔 通知設定</div>
+                            </div>
+                            <div class="notification-toggle">
+                                <span class="toggle-label">契約更新期限の1ヶ月前に通知</span>
+                                <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                            </div>
+                            <div class="notification-toggle">
+                                <span class="toggle-label">支払期限の3日前に通知</span>
+                                <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                            </div>
+                            <div class="notification-toggle">
+                                <span class="toggle-label">レポート提出期限の1週間前に通知</span>
+                                <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                            </div>
+                            <div class="notification-toggle">
+                                <span class="toggle-label">相手からメッセージが来たら通知</span>
+                                <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                            </div>
+                        </div>
+
+                        <div class="action-card">
+                            <div class="action-header">
+                                <div class="action-title">📎 関連ドキュメント</div>
+                            </div>
+                            <div class="document-list">
+                                <div class="document-item">
+                                    <div class="document-icon">📄</div>
+                                    <div class="document-info">
+                                        <div class="document-name">見積書</div>
+                                        <div class="document-date">2026/01/15</div>
+                                    </div>
+                                </div>
+                                <div class="document-item">
+                                    <div class="document-icon">📋</div>
+                                    <div class="document-info">
+                                        <div class="document-name">発注書</div>
+                                        <div class="document-date">2026/01/20</div>
+                                    </div>
+                                </div>
+                                <div class="document-item">
+                                    <div class="document-icon">💰</div>
+                                    <div class="document-info">
+                                        <div class="document-name">請求書(1月分)</div>
+                                        <div class="document-date">2026/01/31</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-card">
+                            <div class="action-header">
+                                <div class="action-title">📊 契約ステータス</div>
+                            </div>
+                            <div style="padding: 20px; text-align: center;">
+                                <div style="font-size: 48px; margin-bottom: 12px;">✅</div>
+                                <div style="font-size: 18px; font-weight: 600; color: #10b981; margin-bottom: 8px;">契約進行中</div>
+                                <div style="font-size: 14px; color: #6b7280;">
+                                    開始: 2026/02/01<br>
+                                    満了: 2026/07/31
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右カラム: 交渉チャット -->
+        <div class="right-column">
+            <div class="chat-header">
+                <div class="chat-title">💬 田中様との交渉</div>
+                <div class="chat-subtitle">契約内容について話し合う</div>
+            </div>
+
+            <div class="messages-area" id="messages">
+                <div class="message">
+                    <div class="message-header">
+                        <div class="message-avatar avatar-them">田</div>
+                        <span class="message-sender">田中太郎</span>
+                        <span class="message-time">1月28日 10:20</span>
+                    </div>
+                    <div class="message-bubble">
+                        基本契約書のドラフトをお送りしました。ご確認お願いします。
+                    </div>
+                </div>
+
+                <div class="message">
+                    <div class="message-header">
+                        <div class="message-avatar avatar-me">佐</div>
+                        <span class="message-sender">あなた</span>
+                        <span class="message-time">1月28日 11:35</span>
+                    </div>
+                    <div class="message-bubble">
+                        確認しました!第3条の契約期間を6ヶ月でお願いできますか?
+                    </div>
+                </div>
+
+                <div class="message">
+                    <div class="message-header">
+                        <div class="message-avatar avatar-them">田</div>
+                        <span class="message-sender">田中太郎</span>
+                        <span class="message-time">1月28日 14:15</span>
+                    </div>
+                    <div class="message-bubble">
+                        承知しました!6ヶ月で問題ありません。
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <div class="input-container">
+                    <textarea class="input-field" id="messageInput" placeholder="メッセージを入力..." rows="2"></textarea>
+                    <button class="send-btn" onclick="sendMessage()">
+                        <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                            <path d="M18 2L9 11M18 2L12 18L9 11M18 2L2 8L9 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // タブ切り替え
+        function switchMainTab(tabId) {
+            document.querySelectorAll('.main-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.closest('.main-tab').classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // テキストエリア自動リサイズ
+        const textarea = document.getElementById('messageInput');
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+        });
+
+        // メッセージ送信
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const messages = document.getElementById('messages');
+            const newMessage = document.createElement('div');
+            newMessage.className = 'message';
+            newMessage.innerHTML = `
+                <div class="message-header">
+                    <div class="message-avatar avatar-me">佐</div>
+                    <span class="message-sender">あなた</span>
+                    <span class="message-time">今</span>
+                </div>
+                <div class="message-bubble">${text.replace(/\n/g, '<br>')}</div>
+            `;
+            messages.appendChild(newMessage);
+            messages.scrollTop = messages.scrollHeight;
+            
+            input.value = '';
+            input.style.height = 'auto';
+        }
+
+        // Enterで送信
+        textarea.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

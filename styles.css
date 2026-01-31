@@ -86,7 +86,7 @@ body {
 
 .header-members-count {
     font-weight: 600;
-    color: #0891b2;
+    color: #3C78C8;
 }
 
 .header-members-icon {
@@ -167,7 +167,7 @@ body {
 .header-member-you {
     font-size: 11px;
     font-weight: 400;
-    color: #0891b2;
+    color: #3C78C8;
     margin-left: 4px;
 }
 
@@ -195,8 +195,8 @@ body {
 }
 
 .header-members-add-btn:hover {
-    border-color: #0891b2;
-    color: #0891b2;
+    border-color: #3C78C8;
+    color: #3C78C8;
     background: #f0f9ff;
 }
 
@@ -279,8 +279,8 @@ body {
 }
 
 .main-tab.active {
-    color: #0891b2;
-    border-bottom-color: #0891b2;
+    color: #3C78C8;
+    border-bottom-color: #3C78C8;
 }
 
 /* タブコンテンツ */
@@ -351,7 +351,7 @@ body {
 }
 
 .avatar-me {
-    background: linear-gradient(135deg, #0891b2, #0e7490);
+    background: linear-gradient(135deg, #3C78C8, #2D5A9A);
     color: white;
 }
 
@@ -403,13 +403,13 @@ body {
 
 .input-field:focus {
     outline: none;
-    border-color: #0891b2;
+    border-color: #3C78C8;
 }
 
 .send-btn {
     width: 44px;
     height: 44px;
-    background: #0891b2;
+    background: #3C78C8;
     border: none;
     border-radius: 50%;
     color: white;
@@ -422,7 +422,7 @@ body {
 }
 
 .send-btn:hover {
-    background: #0e7490;
+    background: #2D5A9A;
 }
 
 /* 概要タブのスタイル */
@@ -442,7 +442,7 @@ body {
 
 /* 要点カード - 青いボーダー */
 .key-points-card {
-    border-left: 4px solid #0891b2;
+    border-left: 4px solid #3C78C8;
 }
 
 .key-points-content {
@@ -473,7 +473,7 @@ body {
 .card-icon {
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, #0891b2, #0e7490);
+    background: linear-gradient(135deg, #3C78C8, #2D5A9A);
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -604,7 +604,7 @@ body {
     height: 14px;
     border-radius: 50%;
     background: white;
-    border: 3px solid #0891b2;
+    border: 3px solid #3C78C8;
 }
 
 .timeline-item.warning .timeline-dot {
@@ -624,7 +624,7 @@ body {
 .timeline-date {
     font-size: 13px;
     font-weight: 600;
-    color: #0891b2;
+    color: #3C78C8;
     margin-bottom: 4px;
 }
 
@@ -899,8 +899,8 @@ body {
 }
 
 .contract-subtab.active {
-    color: #0891b2;
-    border-bottom-color: #0891b2;
+    color: #3C78C8;
+    border-bottom-color: #3C78C8;
 }
 
 .add-contract-subtab {
@@ -916,8 +916,8 @@ body {
 }
 
 .add-contract-subtab:hover {
-    border-color: #0891b2;
-    color: #0891b2;
+    border-color: #3C78C8;
+    color: #3C78C8;
     background: #f0f9ff;
 }
 
@@ -1452,7 +1452,7 @@ body {
 }
 
 .toggle-switch.active {
-    background: #0891b2;
+    background: #3C78C8;
 }
 
 .toggle-switch::after {
@@ -1890,13 +1890,13 @@ body {
 }
 
 .modal-btn.primary {
-    background: #0891b2;
+    background: #3C78C8;
     border: none;
     color: white;
 }
 
 .modal-btn.primary:hover {
-    background: #0e7490;
+    background: #2D5A9A;
 }
 
 /* アップロードエリア */
@@ -1909,7 +1909,7 @@ body {
 }
 
 .upload-area.dragover {
-    border-color: #0891b2;
+    border-color: #3C78C8;
     background: #f0f9ff;
 }
 
@@ -1934,7 +1934,7 @@ body {
 .upload-btn {
     display: inline-block;
     padding: 10px 20px;
-    background: #0891b2;
+    background: #3C78C8;
     color: white;
     border-radius: 8px;
     font-size: 14px;
@@ -1944,7 +1944,7 @@ body {
 }
 
 .upload-btn:hover {
-    background: #0e7490;
+    background: #2D5A9A;
 }
 
 /* 差分表示 */
@@ -1963,7 +1963,7 @@ body {
 .diff-location {
     font-size: 13px;
     font-weight: 600;
-    color: #0891b2;
+    color: #3C78C8;
     margin-bottom: 12px;
 }
 
@@ -2420,42 +2420,35 @@ body {
 .wizard-page-header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 20px 0;
     border-bottom: 1px solid #e5e7eb;
     margin-bottom: 20px;
 }
 
-.wizard-back-to-list {
+.wizard-close-btn {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 8px 14px;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
     background: #f3f4f6;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #374151;
+    border: none;
+    border-radius: 10px;
+    font-size: 24px;
+    color: #6b7280;
     cursor: pointer;
     transition: all 0.2s;
-    text-decoration: none;
 }
 
-.wizard-back-to-list:hover {
+.wizard-close-btn:hover {
     background: #e5e7eb;
     color: #1a1a1a;
 }
 
 .wizard-page-logo {
-    flex: 1;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 700;
-    color: #0891b2;
-}
-
-.wizard-page-header-spacer {
-    width: 100px;
+    height: 28px;
+    width: auto;
 }
 
 /* ステッパー */
@@ -2489,7 +2482,7 @@ body {
 }
 
 .stepper-item.active .stepper-circle {
-    background: linear-gradient(135deg, #0891b2, #0e7490);
+    background: linear-gradient(135deg, #3C78C8, #2D5A9A);
     color: white;
     box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
 }
@@ -2511,7 +2504,7 @@ body {
 }
 
 .stepper-item.active .stepper-label {
-    color: #0891b2;
+    color: #3C78C8;
     font-weight: 600;
 }
 
@@ -2572,12 +2565,12 @@ body {
 }
 
 .wizard-upload-area:hover {
-    border-color: #0891b2;
+    border-color: #3C78C8;
     background: #f0f9ff;
 }
 
 .wizard-upload-area.dragover {
-    border-color: #0891b2;
+    border-color: #3C78C8;
     background: #e0f7fa;
     transform: scale(1.01);
 }
@@ -2609,7 +2602,7 @@ body {
 .wizard-upload-btn {
     display: inline-block;
     padding: 12px 24px;
-    background: #0891b2;
+    background: #3C78C8;
     color: white;
     border-radius: 10px;
     font-size: 14px;
@@ -2619,7 +2612,7 @@ body {
 }
 
 .wizard-upload-btn:hover {
-    background: #0e7490;
+    background: #2D5A9A;
     transform: translateY(-1px);
 }
 
@@ -2732,7 +2725,7 @@ body {
     gap: 10px;
     padding: 10px 14px;
     background: #f0f9ff;
-    border: 1px solid #0891b2;
+    border: 1px solid #3C78C8;
     border-radius: 8px;
     margin-bottom: 8px;
 }
@@ -2740,14 +2733,14 @@ body {
 .wizard-invite-email-text {
     flex: 1;
     font-size: 14px;
-    color: #0e7490;
+    color: #2D5A9A;
 }
 
 .wizard-invite-email-remove {
     background: transparent;
     border: none;
     font-size: 16px;
-    color: #0891b2;
+    color: #3C78C8;
     cursor: pointer;
     padding: 4px;
 }
@@ -2772,13 +2765,13 @@ body {
 
 .wizard-email-input:focus {
     outline: none;
-    border-color: #0891b2;
+    border-color: #3C78C8;
 }
 
 .wizard-add-email-btn {
     width: 48px;
     height: 48px;
-    background: #0891b2;
+    background: #3C78C8;
     border: none;
     border-radius: 10px;
     font-size: 24px;
@@ -2788,7 +2781,7 @@ body {
 }
 
 .wizard-add-email-btn:hover {
-    background: #0e7490;
+    background: #2D5A9A;
 }
 
 /* 区切り線 */
@@ -2904,7 +2897,7 @@ body {
 
 .wizard-summary-list li::before {
     content: '•';
-    color: #0891b2;
+    color: #3C78C8;
     font-weight: bold;
 }
 
@@ -2951,7 +2944,7 @@ body {
 }
 
 .wizard-btn.primary {
-    background: linear-gradient(135deg, #0891b2, #0e7490);
+    background: linear-gradient(135deg, #3C78C8, #2D5A9A);
     border: none;
     color: white;
     box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
@@ -3015,7 +3008,7 @@ body {
 .invite-landing-logo {
     font-size: 18px;
     font-weight: 700;
-    color: #0891b2;
+    color: #3C78C8;
 }
 
 .invite-landing-content {
@@ -3057,7 +3050,7 @@ body {
 .invite-sender-avatar {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #0891b2, #0e7490);
+    background: linear-gradient(135deg, #3C78C8, #2D5A9A);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -3232,7 +3225,7 @@ body {
     bottom: 24px;
     right: 24px;
     padding: 16px 24px;
-    background: linear-gradient(135deg, #0891b2, #0e7490);
+    background: linear-gradient(135deg, #3C78C8, #2D5A9A);
     border: none;
     border-radius: 12px;
     font-size: 15px;
@@ -3299,7 +3292,7 @@ body {
 
 .members-count {
     font-weight: 600;
-    color: #0891b2;
+    color: #3C78C8;
 }
 
 .members-icon {
@@ -3364,7 +3357,7 @@ body {
 .member-you {
     font-size: 11px;
     font-weight: 400;
-    color: #0891b2;
+    color: #3C78C8;
     margin-left: 4px;
 }
 
@@ -3391,8 +3384,8 @@ body {
 }
 
 .members-add-btn:hover {
-    border-color: #0891b2;
-    color: #0891b2;
+    border-color: #3C78C8;
+    color: #3C78C8;
     background: #f0f9ff;
 }
 
@@ -3429,12 +3422,12 @@ body {
 
 .add-member-input:focus {
     outline: none;
-    border-color: #0891b2;
+    border-color: #3C78C8;
 }
 
 .add-member-send-btn {
     padding: 12px 20px;
-    background: #0891b2;
+    background: #3C78C8;
     border: none;
     border-radius: 8px;
     font-size: 14px;
@@ -3446,7 +3439,7 @@ body {
 }
 
 .add-member-send-btn:hover {
-    background: #0e7490;
+    background: #2D5A9A;
 }
 
 .add-member-divider {
@@ -3532,14 +3525,13 @@ body {
 }
 
 .negotiations-logo {
-    font-size: 20px;
-    font-weight: 700;
-    color: #0891b2;
+    height: 28px;
+    width: auto;
 }
 
 .negotiations-new-btn {
     padding: 12px 24px;
-    background: linear-gradient(135deg, #0891b2, #0e7490);
+    background: linear-gradient(135deg, #3C78C8, #2D5A9A);
     border: none;
     border-radius: 10px;
     font-size: 14px;
@@ -3580,7 +3572,7 @@ body {
 }
 
 .negotiations-search:focus-within {
-    border-color: #0891b2;
+    border-color: #3C78C8;
 }
 
 .search-icon {
@@ -3622,7 +3614,7 @@ body {
 
 .negotiations-filter-select:focus {
     outline: none;
-    border-color: #0891b2;
+    border-color: #3C78C8;
 }
 
 /* コンテンツ */
@@ -3679,7 +3671,7 @@ body {
 
 .negotiation-card:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-color: #0891b2;
+    border-color: #3C78C8;
     transform: translateY(-2px);
 }
 
@@ -3798,15 +3790,37 @@ body {
 }
 
 .invite-page-header {
+    display: flex;
+    align-items: center;
     padding: 20px 32px;
     background: white;
     border-bottom: 1px solid #e5e7eb;
 }
 
 .invite-page-logo {
-    font-size: 18px;
-    font-weight: 700;
-    color: #0891b2;
+    height: 28px;
+    width: auto;
+}
+
+.invite-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #f3f4f6;
+    border: none;
+    border-radius: 10px;
+    font-size: 24px;
+    color: #6b7280;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.invite-close-btn:hover {
+    background: #e5e7eb;
+    color: #1a1a1a;
 }
 
 .invite-page-content {
@@ -3845,7 +3859,7 @@ body {
 .invite-sender-card .invite-sender-avatar {
     width: 52px;
     height: 52px;
-    background: linear-gradient(135deg, #0891b2, #0e7490);
+    background: linear-gradient(135deg, #3C78C8, #2D5A9A);
     border-radius: 50%;
     display: flex;
     align-items: center;

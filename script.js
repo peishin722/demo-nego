@@ -876,12 +876,15 @@ function startNegotiation() {
 // 招待された側のランディング画面
 // ============================================
 
+// 後方互換性のため（古いオーバーレイ版）
 function openInviteLanding() {
-    document.getElementById('inviteLandingOverlay').classList.add('active');
+    // 独立ページに遷移
+    location.href = 'invite.html';
 }
 
 function closeInviteLanding() {
-    document.getElementById('inviteLandingOverlay').classList.remove('active');
+    // 一覧ページに戻る
+    location.href = 'index.html';
 }
 
 function signInWithGoogle() {

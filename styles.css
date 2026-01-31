@@ -3242,11 +3242,16 @@ body {
     box-shadow: 0 8px 24px rgba(8, 145, 178, 0.4);
     transition: all 0.2s;
     z-index: 100;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .demo-trigger-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 12px 32px rgba(8, 145, 178, 0.5);
+    color: white;
 }
 
 .demo-trigger-btn.invite-demo {
@@ -3776,4 +3781,391 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* ============================================
+   招待ページ（独立ページ版）
+   ============================================ */
+
+.page-invite {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e0f2fe 100%);
+    min-height: 100vh;
+    overflow-y: auto;
+}
+
+.invite-page {
+    min-height: 100vh;
+}
+
+.invite-page-header {
+    padding: 20px 32px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.invite-page-logo {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0891b2;
+}
+
+.invite-page-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 60px;
+}
+
+.invite-page-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+}
+
+.invite-page-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+/* 送信者カード */
+.invite-sender-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    background: #f8f9fa;
+    border-radius: 14px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+}
+
+.invite-sender-card .invite-sender-avatar {
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(135deg, #0891b2, #0e7490);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+    flex-shrink: 0;
+}
+
+.invite-sender-details {
+    flex: 1;
+    min-width: 120px;
+}
+
+.invite-sender-card .invite-sender-name {
+    font-size: 17px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.invite-sender-card .invite-sender-company {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.invite-sender-message {
+    font-size: 15px;
+    color: #6b7280;
+}
+
+/* AI概要カード */
+.invite-ai-summary {
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border: 2px solid #3b82f6;
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+}
+
+.invite-ai-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.invite-ai-icon {
+    font-size: 22px;
+}
+
+.invite-ai-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e40af;
+}
+
+.invite-ai-points {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px 0;
+}
+
+.invite-ai-points li {
+    padding: 8px 0;
+    padding-left: 24px;
+    position: relative;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #1e3a8a;
+}
+
+.invite-ai-points li::before {
+    content: '•';
+    position: absolute;
+    left: 8px;
+    color: #3b82f6;
+    font-weight: bold;
+}
+
+.invite-ai-warning {
+    color: #d97706;
+    font-weight: 600;
+}
+
+.invite-ai-hint {
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    font-size: 13px;
+    color: #1e40af;
+}
+
+/* 契約書プレビュー */
+.invite-contract-preview {
+    margin-bottom: 28px;
+}
+
+.invite-contract-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.invite-contract-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.invite-contract-scroll-hint {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.invite-contract-body {
+    max-height: 420px;
+    overflow-y: auto;
+    background: #fafafa;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 28px;
+}
+
+/* 契約書ドキュメント */
+.invite-doc {
+    font-size: 14px;
+    line-height: 1.9;
+    color: #374151;
+}
+
+.invite-doc-title {
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 28px;
+    color: #1a1a1a;
+}
+
+.invite-doc-preamble {
+    margin-bottom: 24px;
+    text-indent: 1em;
+}
+
+.invite-doc-article {
+    margin-bottom: 20px;
+}
+
+.invite-article-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #1a1a1a;
+}
+
+.invite-article-content {
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+.invite-article-list {
+    padding-left: 24px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.invite-highlight {
+    background: #fef3c7;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+/* 署名欄 */
+.invite-signature-section {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.invite-signature-text {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.invite-signature-date {
+    text-align: center;
+    margin-bottom: 28px;
+    letter-spacing: 0.3em;
+}
+
+.invite-signature-parties {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.invite-signature-party {
+    padding: 16px 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.invite-party-label {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #1a1a1a;
+}
+
+.invite-party-info {
+    font-size: 13px;
+    line-height: 1.8;
+    color: #374151;
+}
+
+/* サインインでできることカード */
+.invite-benefits-card {
+    background: #f8f9fa;
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 28px;
+}
+
+.invite-benefits-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+}
+
+.invite-benefits-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.invite-benefit-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: white;
+    border-radius: 10px;
+}
+
+.invite-benefit-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.invite-benefit-text {
+    font-size: 14px;
+    color: #374151;
+}
+
+/* サインインセクション */
+.invite-auth-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.invite-page .invite-auth-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.invite-page .invite-auth-btn.google {
+    background: white;
+    border: 2px solid #e5e7eb;
+    color: #374151;
+}
+
+.invite-page .invite-auth-btn.google:hover {
+    background: #f8f9fa;
+    border-color: #4285f4;
+}
+
+.invite-page .invite-auth-btn.microsoft {
+    background: #2f2f2f;
+    border: 2px solid #2f2f2f;
+    color: white;
+}
+
+.invite-page .invite-auth-btn.microsoft:hover {
+    background: #1a1a1a;
+}
+
+.invite-page .invite-footer-note {
+    text-align: center;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 640px) {
+    .invite-page-card {
+        padding: 28px 20px;
+    }
+    
+    .invite-benefits-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .invite-sender-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .invite-sender-message {
+        width: 100%;
+    }
 }

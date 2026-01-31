@@ -712,6 +712,108 @@ body {
     font-weight: 500;
 }
 
+/* 契約書前文 */
+.doc-preamble {
+    font-size: 14px;
+    line-height: 1.9;
+    color: #374151;
+    margin-bottom: 32px;
+    text-indent: 1em;
+}
+
+/* 契約書リスト */
+.article-list {
+    padding-left: 24px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+/* 署名欄 */
+.signature-section {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.signature-date {
+    font-size: 14px;
+    line-height: 1.9;
+    color: #374151;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.signature-date-line {
+    font-size: 14px;
+    color: #374151;
+    text-align: center;
+    margin-bottom: 40px;
+    letter-spacing: 0.5em;
+}
+
+.signature-parties {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.signature-party {
+    padding: 20px 24px;
+    background: #fafafa;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.party-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+}
+
+.party-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.party-line {
+    display: flex;
+    align-items: baseline;
+    font-size: 14px;
+    color: #374151;
+}
+
+.party-field {
+    width: 60px;
+    flex-shrink: 0;
+    color: #6b7280;
+}
+
+.party-value {
+    flex: 1;
+}
+
+.party-value.signature-line {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.seal-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #dc2626;
+    border-radius: 50%;
+    color: #dc2626;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: auto;
+}
+
 /* 管理タブのスタイル */
 .management-container {
     max-width: 900px;

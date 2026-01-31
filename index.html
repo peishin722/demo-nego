@@ -160,6 +160,187 @@
 
                     <!-- 契約書コンテンツ -->
                     <div class="contract-content-area">
+                        <!-- 左側: バージョンツリー -->
+                        <div class="version-tree-panel">
+                            <div class="version-tree-header">
+                                <span class="version-tree-title">📋 バージョン履歴</span>
+                                <label class="version-compare-toggle">
+                                    <input type="checkbox" id="compareMode" onchange="toggleCompareMode()">
+                                    <span>比較</span>
+                                </label>
+                            </div>
+                            <div class="version-tree-list">
+                                <!-- Ver 8 (現在) -->
+                                <div class="version-item current" data-version="8">
+                                    <div class="version-node">
+                                        <div class="version-line"></div>
+                                        <div class="version-dot"></div>
+                                    </div>
+                                    <div class="version-info">
+                                        <div class="version-header">
+                                            <span class="version-number">Ver. 8</span>
+                                            <span class="version-badge current">最新</span>
+                                        </div>
+                                        <div class="version-meta">
+                                            <span class="version-editor">田中太郎</span>
+                                            <span class="version-date">01/28 14:15</span>
+                                        </div>
+                                        <div class="version-changes">契約期間を6ヶ月に変更</div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <input type="checkbox" class="compare-checkbox" data-version="8">
+                                    </div>
+                                </div>
+                                <!-- Ver 7 -->
+                                <div class="version-item" data-version="7">
+                                    <div class="version-node">
+                                        <div class="version-line"></div>
+                                        <div class="version-dot"></div>
+                                    </div>
+                                    <div class="version-info">
+                                        <div class="version-header">
+                                            <span class="version-number">Ver. 7</span>
+                                        </div>
+                                        <div class="version-meta">
+                                            <span class="version-editor">佐藤一郎</span>
+                                            <span class="version-date">01/28 11:35</span>
+                                        </div>
+                                        <div class="version-changes">報酬を48万円に修正</div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <input type="checkbox" class="compare-checkbox" data-version="7">
+                                    </div>
+                                </div>
+                                <!-- Ver 6 -->
+                                <div class="version-item" data-version="6">
+                                    <div class="version-node">
+                                        <div class="version-line"></div>
+                                        <div class="version-dot"></div>
+                                    </div>
+                                    <div class="version-info">
+                                        <div class="version-header">
+                                            <span class="version-number">Ver. 6</span>
+                                        </div>
+                                        <div class="version-meta">
+                                            <span class="version-editor">田中太郎</span>
+                                            <span class="version-date">01/28 10:20</span>
+                                        </div>
+                                        <div class="version-changes">初回ドラフト送付</div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <input type="checkbox" class="compare-checkbox" data-version="6">
+                                    </div>
+                                </div>
+                                <!-- Ver 5 -->
+                                <div class="version-item" data-version="5">
+                                    <div class="version-node">
+                                        <div class="version-line"></div>
+                                        <div class="version-dot"></div>
+                                    </div>
+                                    <div class="version-info">
+                                        <div class="version-header">
+                                            <span class="version-number">Ver. 5</span>
+                                        </div>
+                                        <div class="version-meta">
+                                            <span class="version-editor">佐藤一郎</span>
+                                            <span class="version-date">01/27 16:40</span>
+                                        </div>
+                                        <div class="version-changes">秘密保持条項を追加</div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <input type="checkbox" class="compare-checkbox" data-version="5">
+                                    </div>
+                                </div>
+                                <!-- Ver 4 -->
+                                <div class="version-item" data-version="4">
+                                    <div class="version-node">
+                                        <div class="version-line"></div>
+                                        <div class="version-dot"></div>
+                                    </div>
+                                    <div class="version-info">
+                                        <div class="version-header">
+                                            <span class="version-number">Ver. 4</span>
+                                        </div>
+                                        <div class="version-meta">
+                                            <span class="version-editor">田中太郎</span>
+                                            <span class="version-date">01/27 14:20</span>
+                                        </div>
+                                        <div class="version-changes">業務内容を詳細化</div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <input type="checkbox" class="compare-checkbox" data-version="4">
+                                    </div>
+                                </div>
+                                <!-- Ver 3 -->
+                                <div class="version-item" data-version="3">
+                                    <div class="version-node">
+                                        <div class="version-line"></div>
+                                        <div class="version-dot"></div>
+                                    </div>
+                                    <div class="version-info">
+                                        <div class="version-header">
+                                            <span class="version-number">Ver. 3</span>
+                                        </div>
+                                        <div class="version-meta">
+                                            <span class="version-editor">佐藤一郎</span>
+                                            <span class="version-date">01/26 11:00</span>
+                                        </div>
+                                        <div class="version-changes">報酬条項を修正</div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <input type="checkbox" class="compare-checkbox" data-version="3">
+                                    </div>
+                                </div>
+                                <!-- Ver 2 -->
+                                <div class="version-item" data-version="2">
+                                    <div class="version-node">
+                                        <div class="version-line"></div>
+                                        <div class="version-dot"></div>
+                                    </div>
+                                    <div class="version-info">
+                                        <div class="version-header">
+                                            <span class="version-number">Ver. 2</span>
+                                        </div>
+                                        <div class="version-meta">
+                                            <span class="version-editor">田中太郎</span>
+                                            <span class="version-date">01/25 15:30</span>
+                                        </div>
+                                        <div class="version-changes">契約期間を1年に設定</div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <input type="checkbox" class="compare-checkbox" data-version="2">
+                                    </div>
+                                </div>
+                                <!-- Ver 1 (初版) -->
+                                <div class="version-item" data-version="1">
+                                    <div class="version-node first">
+                                        <div class="version-line"></div>
+                                        <div class="version-dot"></div>
+                                    </div>
+                                    <div class="version-info">
+                                        <div class="version-header">
+                                            <span class="version-number">Ver. 1</span>
+                                            <span class="version-badge initial">初版</span>
+                                        </div>
+                                        <div class="version-meta">
+                                            <span class="version-editor">佐藤一郎</span>
+                                            <span class="version-date">01/24 10:00</span>
+                                        </div>
+                                        <div class="version-changes">契約書作成</div>
+                                    </div>
+                                    <div class="version-actions">
+                                        <input type="checkbox" class="compare-checkbox" data-version="1">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="version-tree-footer">
+                                <button class="compare-btn" id="compareBtn" disabled>
+                                    🔍 バージョン比較
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 右側: 契約書本文 -->
                         <div class="contract-content-inner">
                             <!-- AI解説カード -->
                             <div class="ai-explain-card">

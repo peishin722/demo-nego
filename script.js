@@ -4,6 +4,8 @@ let editLockState = 'none'; // none, me, them
 let isAgreed = false;
 let selectedText = '';
 let currentCommentThread = null;
+let compareMode = false;
+let selectedVersions = [];
 
 // デモ用コメントデータ
 const commentThreads = {
@@ -239,6 +241,79 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+// バージョンツリー機能
+function toggleCompareMode() {
+    compareMode = document.getElementById('compareMode').checked;
+    const panel = document.querySelector('.version-tree-panel');
+    
+    if (compareMode) {
+        panel.classList.add('compare-mode');
+    } else {
+        panel.classList.remove('compare-mode');
+        // チェックボックスをリセット
+        document.querySelectorAll('.compare-checkbox').forEach(cb => {
+            cb.checked = false;
+        });
+        selectedVersions = [];
+        updateCompareButton();
+    }
+}
+
+function updateCompareButton() {
+    const btn = document.getElementById('compareBtn');
+    btn.disabled = selectedVersions.length !== 2;
+    
+    if (selectedVersions.length === 2) {
+        const sorted = selectedVersions.sort((a, b) => b - a);
+        btn.textContent = `🔍 Ver.${sorted[0]} と Ver.${sorted[1]} を比較`;
+    } else {
+        btn.textContent = '🔍 バージョン比較';
+    }
+}
+
+function initVersionTree() {
+    // バージョンアイテムのクリック
+    document.querySelectorAll('.version-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            if (e.target.classList.contains('compare-checkbox')) return;
+            
+            document.querySelectorAll('.version-item').forEach(v => v.classList.remove('selected'));
+            this.classList.add('selected');
+            
+            const version = this.dataset.version;
+            console.log(`Ver.${version} を選択`);
+        });
+    });
+    
+    // 比較チェックボックス
+    document.querySelectorAll('.compare-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function(e) {
+            e.stopPropagation();
+            const version = parseInt(this.dataset.version);
+            
+            if (this.checked) {
+                if (selectedVersions.length < 2) {
+                    selectedVersions.push(version);
+                } else {
+                    this.checked = false;
+                    alert('比較できるのは2つのバージョンまでです');
+                }
+            } else {
+                selectedVersions = selectedVersions.filter(v => v !== version);
+            }
+            
+            updateCompareButton();
+        });
+    });
+    
+    // 比較ボタン
+    document.getElementById('compareBtn')?.addEventListener('click', function() {
+        if (selectedVersions.length === 2) {
+            openDiffModal();
+        }
+    });
+}
+
 // テキスト選択ポップアップ
 function handleTextSelection(e) {
     const popup = document.getElementById('selectionPopup');
@@ -413,6 +488,9 @@ function sendThreadReply() {
 // DOMContentLoaded後に初期化
 document.addEventListener('DOMContentLoaded', function() {
     const textarea = document.getElementById('messageInput');
+    
+    // バージョンツリーの初期化
+    initVersionTree();
 
     // テキストエリア自動リサイズ
     textarea.addEventListener('input', function() {

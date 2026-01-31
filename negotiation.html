@@ -69,12 +69,20 @@
                                 <div class="header-member-name">田中太郎</div>
                                 <div class="header-member-company">株式会社XYZ</div>
                             </div>
+                            <div class="header-member-permission signer">
+                                <span class="permission-icon">🔑</span>
+                                <span class="permission-label">合意権限あり</span>
+                            </div>
                         </div>
                         <div class="header-member-item me">
                             <div class="header-member-avatar avatar-me">佐</div>
                             <div class="header-member-info">
                                 <div class="header-member-name">佐藤一郎 <span class="header-member-you">あなた</span></div>
                                 <div class="header-member-company">株式会社ABC</div>
+                            </div>
+                            <div class="header-member-permission signer">
+                                <span class="permission-icon">🔑</span>
+                                <span class="permission-label">合意権限あり</span>
                             </div>
                         </div>
                     </div>
@@ -1034,6 +1042,35 @@
                 <button class="modal-close" onclick="closeAddMemberModal()">&times;</button>
             </div>
             <div class="modal-body">
+                <!-- 権限選択 -->
+                <div class="add-member-section">
+                    <label class="add-member-label">権限を選択</label>
+                    <div class="permission-selector">
+                        <label class="permission-option selected" data-permission="signer">
+                            <input type="radio" name="memberPermission" value="signer" checked>
+                            <div class="permission-option-content">
+                                <div class="permission-option-icon">🔑</div>
+                                <div class="permission-option-info">
+                                    <div class="permission-option-title">合意権限あり</div>
+                                    <div class="permission-option-desc">契約への合意が可能</div>
+                                </div>
+                            </div>
+                            <div class="permission-option-check">✓</div>
+                        </label>
+                        <label class="permission-option" data-permission="member">
+                            <input type="radio" name="memberPermission" value="member">
+                            <div class="permission-option-content">
+                                <div class="permission-option-icon">👤</div>
+                                <div class="permission-option-info">
+                                    <div class="permission-option-title">メンバー</div>
+                                    <div class="permission-option-desc">閲覧・編集・コメントのみ</div>
+                                </div>
+                            </div>
+                            <div class="permission-option-check">✓</div>
+                        </label>
+                    </div>
+                </div>
+
                 <div class="add-member-section">
                     <label class="add-member-label">メールアドレスで招待</label>
                     <div class="add-member-input-row">

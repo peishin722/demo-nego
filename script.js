@@ -947,8 +947,30 @@ function sendMemberInvite() {
         return;
     }
 
+    // 選択された権限を取得
+    const selectedPermission = document.querySelector('input[name="memberPermission"]:checked');
+    const permissionLabel = selectedPermission && selectedPermission.value === 'signer' 
+        ? '合意権限あり' 
+        : 'メンバー（閲覧・編集・コメントのみ）';
+
     closeAddMemberModal();
-    alert(`${email} に招待メールを送信しました！`);
+    alert(`${email} に招待メールを送信しました！\n\n権限: ${permissionLabel}`);
+}
+
+// 権限選択のトグル
+function initPermissionSelector() {
+    const options = document.querySelectorAll('.permission-option');
+    options.forEach(option => {
+        option.addEventListener('click', function() {
+            // すべての選択状態をリセット
+            options.forEach(opt => opt.classList.remove('selected'));
+            // クリックされたオプションを選択状態に
+            this.classList.add('selected');
+            // ラジオボタンもチェック
+            const radio = this.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+        });
+    });
 }
 
 function copyMemberInviteLink() {
@@ -1150,7 +1172,8 @@ function downloadContract() {
     alert('📄 契約書をダウンロードします（デモ）\n\n実際にはPDF形式でダウンロードされます。');
 }
 
-// ページ読み込み時にデモバナーを初期化
+// ページ読み込み時に初期化
 document.addEventListener('DOMContentLoaded', function() {
     initDemoStatusBanner();
+    initPermissionSelector();
 });

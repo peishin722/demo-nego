@@ -216,8 +216,8 @@
                                 <div class="doc-article">
                                     <div class="article-title">第4条（報酬）</div>
                                     <div class="article-content">
-                                        1. 甲は乙に対し、本業務の対価として、月額<span class="highlight-change">金48万円</span>（消費税別）を支払うものとする。<br>
-                                        2. 報酬の支払いは、毎月末日締め、翌月末日払いとする。<br>
+                                        1. 甲は乙に対し、本業務の対価として、月額<span class="highlight-change commented" data-comment-id="1">金48万円</span><span class="comment-indicator" onclick="showCommentThread(1)">💬 2</span>（消費税別）を支払うものとする。<br>
+                                        2. 報酬の支払いは、<span class="commented" data-comment-id="2">毎月末日締め、翌月末日払い</span><span class="comment-indicator" onclick="showCommentThread(2)">💬 1</span>とする。<br>
                                         3. 振込手数料は甲の負担とする。
                                     </div>
                                 </div>
@@ -233,7 +233,7 @@
                                     <div class="article-title">第6条（秘密保持）</div>
                                     <div class="article-content">
                                         1. 甲及び乙は、本契約に関連して知り得た相手方の技術上、営業上その他の秘密情報を、相手方の事前の書面による承諾なく第三者に開示・漏洩してはならない。<br>
-                                        2. 前項の義務は、本契約終了後3年間存続するものとする。<br>
+                                        2. 前項の義務は、<span class="commented" data-comment-id="3">本契約終了後3年間</span><span class="comment-indicator" onclick="showCommentThread(3)">💬 1</span>存続するものとする。<br>
                                         3. 次の各号に該当する情報は、秘密情報から除外する。<br>
                                         <div class="article-list">
                                             (1) 開示時点で既に公知であった情報<br>
@@ -471,6 +471,20 @@
 
         <!-- 右カラム: 交渉チャット -->
         <div class="right-column">
+            <!-- コメントスレッドパネル -->
+            <div class="comment-thread-panel" id="commentThreadPanel">
+                <div class="thread-header">
+                    <div class="thread-title">📍 コメントスレッド</div>
+                    <button class="thread-close" onclick="closeCommentThread()">&times;</button>
+                </div>
+                <div class="thread-reference" id="threadReference"></div>
+                <div class="thread-comments" id="threadComments"></div>
+                <div class="thread-input">
+                    <textarea class="thread-textarea" id="threadTextarea" placeholder="返信を入力..."></textarea>
+                    <button class="thread-send-btn" onclick="sendThreadReply()">送信</button>
+                </div>
+            </div>
+
             <div class="chat-header">
                 <div class="chat-title">💬 田中様との交渉</div>
             </div>
@@ -519,6 +533,59 @@
                         </svg>
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- テキスト選択ポップアップメニュー -->
+    <div class="selection-popup" id="selectionPopup">
+        <button class="popup-btn" onclick="aiExplain()">
+            <span class="popup-icon">🤖</span>
+            <span>AIで解説</span>
+        </button>
+        <button class="popup-btn" onclick="openCommentInput()">
+            <span class="popup-icon">💬</span>
+            <span>コメント</span>
+        </button>
+    </div>
+
+    <!-- コメント入力モーダル -->
+    <div class="modal-overlay" id="commentModal" onclick="closeCommentModal(event)">
+        <div class="modal-content comment-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title">💬 コメントを追加</div>
+                <button class="modal-close" onclick="closeCommentModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="comment-selected-text" id="commentSelectedText"></div>
+                <textarea class="comment-textarea" id="commentTextarea" placeholder="コメントを入力..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeCommentModal()">キャンセル</button>
+                <button class="modal-btn primary" onclick="submitComment()">コメントを送信</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI解説モーダル -->
+    <div class="modal-overlay" id="aiExplainModal" onclick="closeAiExplainModal(event)">
+        <div class="modal-content ai-explain-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title">🤖 AI解説</div>
+                <button class="modal-close" onclick="closeAiExplainModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="ai-selected-text" id="aiSelectedText"></div>
+                <div class="ai-explanation" id="aiExplanation">
+                    <div class="ai-loading" id="aiLoading">
+                        <div class="loading-spinner"></div>
+                        <span>解説を生成中...</span>
+                    </div>
+                    <div class="ai-result" id="aiResult"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeAiExplainModal()">閉じる</button>
             </div>
         </div>
     </div>

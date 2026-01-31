@@ -667,7 +667,37 @@
             </div>
 
             <div class="chat-header">
-                <div class="chat-title">💬 田中様との交渉</div>
+                <div class="chat-header-top">
+                    <div class="chat-title">💬 田中様との交渉</div>
+                    <button class="chat-members-toggle" onclick="toggleMembersPanel()">
+                        <span class="members-count">2</span>
+                        <span class="members-icon">👥</span>
+                    </button>
+                </div>
+                <!-- メンバーパネル -->
+                <div class="members-panel" id="membersPanel">
+                    <div class="members-list">
+                        <div class="member-item">
+                            <div class="member-avatar avatar-them">田</div>
+                            <div class="member-info">
+                                <div class="member-name">田中太郎</div>
+                                <div class="member-company">株式会社XYZ</div>
+                            </div>
+                        </div>
+                        <div class="member-item me">
+                            <div class="member-avatar avatar-me">佐</div>
+                            <div class="member-info">
+                                <div class="member-name">佐藤一郎 <span class="member-you">あなた</span></div>
+                                <div class="member-company">株式会社ABC</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="members-add-section">
+                        <button class="members-add-btn" onclick="openAddMemberModal()">
+                            ＋ メンバーを追加
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <div class="messages-area" id="messages">
@@ -838,6 +868,362 @@
             </div>
         </div>
     </div>
+
+    <!-- 新規交渉開始ウィザード -->
+    <div class="wizard-overlay" id="wizardOverlay">
+        <div class="wizard-container">
+            <!-- ステッパー -->
+            <div class="wizard-stepper">
+                <div class="stepper-item active" data-step="1">
+                    <div class="stepper-circle">1</div>
+                    <div class="stepper-label">契約書</div>
+                </div>
+                <div class="stepper-line"></div>
+                <div class="stepper-item" data-step="2">
+                    <div class="stepper-circle">2</div>
+                    <div class="stepper-label">相手を招待</div>
+                </div>
+                <div class="stepper-line"></div>
+                <div class="stepper-item" data-step="3">
+                    <div class="stepper-circle">3</div>
+                    <div class="stepper-label">確認・開始</div>
+                </div>
+            </div>
+
+            <!-- Step 1: 契約書アップロード -->
+            <div class="wizard-step active" id="wizardStep1">
+                <div class="wizard-step-header">
+                    <h2 class="wizard-step-title">📄 交渉する契約書をアップロード</h2>
+                    <p class="wizard-step-desc">契約書をアップロードして交渉を始めましょう。複数の契約書をまとめてアップロードできます。</p>
+                </div>
+
+                <div class="wizard-upload-area" id="wizardUploadArea"
+                     ondragover="handleWizardDragOver(event)"
+                     ondragleave="handleWizardDragLeave(event)"
+                     ondrop="handleWizardDrop(event)">
+                    <div class="wizard-upload-icon">📎</div>
+                    <div class="wizard-upload-text">ファイルをドラッグ＆ドロップ</div>
+                    <div class="wizard-upload-subtext">または クリックして選択</div>
+                    <div class="wizard-upload-formats">Word (.docx) / PDF 対応</div>
+                    <label class="wizard-upload-btn">
+                        ファイルを選択
+                        <input type="file" accept=".docx,.doc,.pdf" multiple onchange="handleWizardFileSelect(event)" hidden>
+                    </label>
+                </div>
+
+                <div class="wizard-files-list" id="wizardFilesList">
+                    <!-- ファイルリストがここに表示される -->
+                </div>
+            </div>
+
+            <!-- Step 2: 相手を招待 -->
+            <div class="wizard-step" id="wizardStep2">
+                <div class="wizard-step-header">
+                    <h2 class="wizard-step-title">👥 交渉相手を招待</h2>
+                    <p class="wizard-step-desc">メールアドレスで招待するか、招待リンクを共有してください。</p>
+                </div>
+
+                <div class="wizard-invite-section">
+                    <label class="wizard-label">メールアドレスで招待</label>
+                    <div class="wizard-invite-emails" id="wizardInviteEmails">
+                        <!-- 招待メールリストがここに表示される -->
+                    </div>
+                    <div class="wizard-email-input-row">
+                        <input type="email" class="wizard-email-input" id="wizardEmailInput" placeholder="メールアドレスを入力...">
+                        <button class="wizard-add-email-btn" onclick="addInviteEmail()">+</button>
+                    </div>
+                </div>
+
+                <div class="wizard-divider">
+                    <span>または</span>
+                </div>
+
+                <div class="wizard-link-section">
+                    <label class="wizard-label">🔗 招待リンクをコピー</label>
+                    <div class="wizard-link-row">
+                        <input type="text" class="wizard-link-input" id="wizardLinkInput" value="https://nego.app/join/x7k2mP9qL..." readonly>
+                        <button class="wizard-copy-btn" onclick="copyInviteLink()">📋 コピー</button>
+                    </div>
+                    <p class="wizard-link-note">💡 招待された方は契約書を閲覧できます。編集・合意にはサインインが必要です。</p>
+                </div>
+            </div>
+
+            <!-- Step 3: 確認・開始 -->
+            <div class="wizard-step" id="wizardStep3">
+                <div class="wizard-step-header">
+                    <h2 class="wizard-step-title">✨ 交渉を開始する準備ができました</h2>
+                    <p class="wizard-step-desc">以下の内容で交渉を開始します。</p>
+                </div>
+
+                <div class="wizard-summary">
+                    <div class="wizard-summary-section">
+                        <div class="wizard-summary-label">📄 契約書</div>
+                        <ul class="wizard-summary-list" id="wizardSummaryFiles">
+                            <!-- ファイルリストがここに表示される -->
+                        </ul>
+                    </div>
+
+                    <div class="wizard-summary-section">
+                        <div class="wizard-summary-label">👥 招待</div>
+                        <ul class="wizard-summary-list" id="wizardSummaryInvites">
+                            <!-- 招待リストがここに表示される -->
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="wizard-start-note">
+                    開始すると、招待した方にメールが送信されます。
+                </div>
+            </div>
+
+            <!-- ウィザードフッター -->
+            <div class="wizard-footer">
+                <button class="wizard-btn secondary" id="wizardBackBtn" onclick="wizardBack()" style="display: none;">
+                    ← 戻る
+                </button>
+                <div class="wizard-footer-spacer"></div>
+                <button class="wizard-btn secondary" onclick="closeWizard()">キャンセル</button>
+                <button class="wizard-btn primary" id="wizardNextBtn" onclick="wizardNext()">
+                    次へ →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 招待された側のランディング画面 -->
+    <div class="invite-landing-overlay" id="inviteLandingOverlay">
+        <div class="invite-landing-container">
+            <div class="invite-landing-header">
+                <div class="invite-landing-logo">📝 ContractNego</div>
+            </div>
+
+            <div class="invite-landing-content">
+                <div class="invite-landing-card">
+                    <div class="invite-landing-title">📄 業務委託基本契約書</div>
+                    <div class="invite-landing-sender">
+                        <div class="invite-sender-avatar">佐</div>
+                        <div class="invite-sender-info">
+                            <div class="invite-sender-name">佐藤 一郎さん</div>
+                            <div class="invite-sender-company">株式会社ABC</div>
+                        </div>
+                        <div class="invite-sender-action">があなたを交渉に招待しました</div>
+                    </div>
+
+                    <!-- 契約書プレビュー -->
+                    <div class="invite-preview-container">
+                        <div class="invite-preview-label">契約書プレビュー</div>
+                        <div class="invite-preview-content" id="invitePreviewContent">
+                            <div class="invite-preview-title">業務委託基本契約書</div>
+                            <div class="invite-preview-text">
+                                株式会社ABC（以下「甲」という）と株式会社XYZ（以下「乙」という）は、甲が乙に委託する業務に関し、以下のとおり業務委託基本契約（以下「本契約」という）を締結する。
+                            </div>
+                            <div class="invite-preview-article">
+                                <div class="invite-preview-article-title">第1条（目的）</div>
+                                <div class="invite-preview-article-text">
+                                    本契約は、甲が乙に対してデジタルマーケティング支援業務（以下「本業務」という）を委託し、乙がこれを受託するにあたり、甲乙間の権利義務関係を定めることを目的とする。
+                                </div>
+                            </div>
+                            <div class="invite-preview-fade"></div>
+                        </div>
+                    </div>
+
+                    <div class="invite-action-divider">
+                        <span>コメント・編集・合意するにはサインインが必要です</span>
+                    </div>
+
+                    <div class="invite-auth-buttons">
+                        <button class="invite-auth-btn google" onclick="signInWithGoogle()">
+                            <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
+                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                            Googleでサインイン
+                        </button>
+                        <button class="invite-auth-btn microsoft" onclick="signInWithMicrosoft()">
+                            <svg class="microsoft-icon" viewBox="0 0 24 24" width="20" height="20">
+                                <path fill="#F25022" d="M1 1h10v10H1z"/>
+                                <path fill="#00A4EF" d="M1 13h10v10H1z"/>
+                                <path fill="#7FBA00" d="M13 1h10v10H13z"/>
+                                <path fill="#FFB900" d="M13 13h10v10H13z"/>
+                            </svg>
+                            Microsoftでサインイン
+                        </button>
+                    </div>
+
+                    <div class="invite-footer-note">
+                        💼 ビジネスアカウントでのサインインを推奨します
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- メンバー追加モーダル -->
+    <div class="modal-overlay" id="addMemberModal" onclick="closeAddMemberModal(event)">
+        <div class="modal-content add-member-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title">👥 メンバーを追加</div>
+                <button class="modal-close" onclick="closeAddMemberModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="add-member-section">
+                    <label class="add-member-label">メールアドレスで招待</label>
+                    <div class="add-member-input-row">
+                        <input type="email" class="add-member-input" id="addMemberEmailInput" placeholder="メールアドレスを入力...">
+                        <button class="add-member-send-btn" onclick="sendMemberInvite()">招待</button>
+                    </div>
+                </div>
+
+                <div class="add-member-divider">
+                    <span>または</span>
+                </div>
+
+                <div class="add-member-section">
+                    <label class="add-member-label">🔗 招待リンクをコピー</label>
+                    <div class="add-member-link-row">
+                        <input type="text" class="add-member-link-input" id="addMemberLinkInput" value="https://nego.app/join/abc123xyz..." readonly>
+                        <button class="add-member-copy-btn" onclick="copyMemberInviteLink()">📋</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 交渉一覧画面 -->
+    <div class="negotiations-list-overlay" id="negotiationsListOverlay">
+        <div class="negotiations-list-container">
+            <!-- ヘッダー -->
+            <div class="negotiations-header">
+                <div class="negotiations-logo">📝 ContractNego</div>
+                <button class="negotiations-new-btn" onclick="closeNegotiationsList(); openWizard();">
+                    ＋ 新しい交渉を始める
+                </button>
+            </div>
+
+            <!-- 検索・フィルター -->
+            <div class="negotiations-toolbar">
+                <div class="negotiations-search">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="negotiations-search-input" placeholder="契約書名、相手先で検索...">
+                </div>
+                <div class="negotiations-filters">
+                    <select class="negotiations-filter-select">
+                        <option value="all">すべて</option>
+                        <option value="negotiating">交渉中</option>
+                        <option value="waiting">返答待ち</option>
+                        <option value="agreed">合意済み</option>
+                    </select>
+                    <select class="negotiations-filter-select">
+                        <option value="recent">最新順</option>
+                        <option value="oldest">古い順</option>
+                        <option value="name">名前順</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 交渉リスト -->
+            <div class="negotiations-content">
+                <!-- 交渉中セクション -->
+                <div class="negotiations-section">
+                    <div class="negotiations-section-header">
+                        <span class="negotiations-section-icon">💬</span>
+                        <span class="negotiations-section-title">交渉中</span>
+                        <span class="negotiations-section-count">2</span>
+                    </div>
+                    <div class="negotiations-cards">
+                        <!-- カード1 -->
+                        <div class="negotiation-card" onclick="closeNegotiationsList()">
+                            <div class="negotiation-card-header">
+                                <div class="negotiation-card-icon">📄</div>
+                                <div class="negotiation-card-title">業務委託基本契約書</div>
+                                <div class="negotiation-card-badge negotiating">交渉中</div>
+                            </div>
+                            <div class="negotiation-card-meta">
+                                <span class="negotiation-card-partner">株式会社XYZ 田中様</span>
+                                <span class="negotiation-card-separator">·</span>
+                                <span class="negotiation-card-date">最終更新: 1月28日 14:15</span>
+                                <span class="negotiation-card-separator">·</span>
+                                <span class="negotiation-card-version">Ver.8</span>
+                            </div>
+                            <div class="negotiation-card-activity">
+                                <div class="activity-avatar avatar-them">田</div>
+                                <div class="activity-text">「承知しました!6ヶ月で問題ありません。」</div>
+                            </div>
+                        </div>
+                        <!-- カード2 -->
+                        <div class="negotiation-card">
+                            <div class="negotiation-card-header">
+                                <div class="negotiation-card-icon">📄</div>
+                                <div class="negotiation-card-title">秘密保持契約書</div>
+                                <div class="negotiation-card-badge waiting">返答待ち</div>
+                            </div>
+                            <div class="negotiation-card-meta">
+                                <span class="negotiation-card-partner">株式会社DEF 山田様</span>
+                                <span class="negotiation-card-separator">·</span>
+                                <span class="negotiation-card-date">最終更新: 1月25日 10:30</span>
+                                <span class="negotiation-card-separator">·</span>
+                                <span class="negotiation-card-version">Ver.3</span>
+                            </div>
+                            <div class="negotiation-card-activity">
+                                <div class="activity-icon">📝</div>
+                                <div class="activity-text">相手がドラフトを確認中</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 合意済みセクション -->
+                <div class="negotiations-section">
+                    <div class="negotiations-section-header">
+                        <span class="negotiations-section-icon">✅</span>
+                        <span class="negotiations-section-title">合意済み</span>
+                        <span class="negotiations-section-count">2</span>
+                    </div>
+                    <div class="negotiations-cards">
+                        <!-- カード3 -->
+                        <div class="negotiation-card agreed">
+                            <div class="negotiation-card-header">
+                                <div class="negotiation-card-icon">📄</div>
+                                <div class="negotiation-card-title">システム開発契約書</div>
+                                <div class="negotiation-card-badge agreed">✅ 合意済み</div>
+                            </div>
+                            <div class="negotiation-card-meta">
+                                <span class="negotiation-card-partner">株式会社GHI 鈴木様</span>
+                                <span class="negotiation-card-separator">·</span>
+                                <span class="negotiation-card-date">合意日: 2024年12月15日</span>
+                            </div>
+                        </div>
+                        <!-- カード4 -->
+                        <div class="negotiation-card agreed">
+                            <div class="negotiation-card-header">
+                                <div class="negotiation-card-icon">📄</div>
+                                <div class="negotiation-card-title">コンサルティング契約書</div>
+                                <div class="negotiation-card-badge agreed">✅ 合意済み</div>
+                            </div>
+                            <div class="negotiation-card-meta">
+                                <span class="negotiation-card-partner">株式会社JKL 高橋様</span>
+                                <span class="negotiation-card-separator">·</span>
+                                <span class="negotiation-card-date">合意日: 2024年11月20日</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- デモ用: 新規交渉開始ボタン（ヘッダーに追加するトリガー） -->
+    <button class="demo-trigger-btn" id="demoTriggerBtn" onclick="openWizard()">
+        ＋ 新しい交渉を始める
+    </button>
+    <button class="demo-trigger-btn invite-demo" id="demoInviteTriggerBtn" onclick="openInviteLanding()">
+        📩 招待された側を体験
+    </button>
+    <button class="demo-trigger-btn list-demo" id="demoListTriggerBtn" onclick="openNegotiationsList()">
+        📋 交渉一覧を見る
+    </button>
 
     <script src="script.js"></script>
 </body>

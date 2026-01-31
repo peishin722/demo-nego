@@ -7,6 +7,11 @@ let currentCommentThread = null;
 let compareMode = false;
 let selectedVersions = [];
 
+// ウィザード状態管理
+let wizardCurrentStep = 1;
+let wizardFiles = [];
+let wizardInviteEmails = [];
+
 // デモ用コメントデータ
 const commentThreads = {
     1: {
@@ -524,4 +529,412 @@ document.addEventListener('DOMContentLoaded', function() {
             popup.classList.remove('active');
         }
     });
+
+    // ウィザードのメール入力でEnterキー対応
+    const wizardEmailInput = document.getElementById('wizardEmailInput');
+    if (wizardEmailInput) {
+        wizardEmailInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addInviteEmail();
+            }
+        });
+    }
 });
+
+// ============================================
+// 新規交渉開始ウィザード
+// ============================================
+
+function openWizard() {
+    // 状態をリセット
+    wizardCurrentStep = 1;
+    wizardFiles = [];
+    wizardInviteEmails = [];
+
+    // UIをリセット
+    updateWizardStep(1);
+    renderWizardFiles();
+    renderWizardInviteEmails();
+
+    document.getElementById('wizardOverlay').classList.add('active');
+}
+
+function closeWizard() {
+    document.getElementById('wizardOverlay').classList.remove('active');
+}
+
+function updateWizardStep(step) {
+    wizardCurrentStep = step;
+
+    // ステッパーの更新
+    document.querySelectorAll('.stepper-item').forEach((item, index) => {
+        const itemStep = index + 1;
+        item.classList.remove('active', 'completed');
+
+        if (itemStep < step) {
+            item.classList.add('completed');
+        } else if (itemStep === step) {
+            item.classList.add('active');
+        }
+    });
+
+    // ステッパーラインの更新
+    document.querySelectorAll('.stepper-line').forEach((line, index) => {
+        if (index < step - 1) {
+            line.classList.add('completed');
+        } else {
+            line.classList.remove('completed');
+        }
+    });
+
+    // ステップコンテンツの更新
+    document.querySelectorAll('.wizard-step').forEach((stepEl, index) => {
+        stepEl.classList.remove('active');
+        if (index + 1 === step) {
+            stepEl.classList.add('active');
+        }
+    });
+
+    // フッターボタンの更新
+    const backBtn = document.getElementById('wizardBackBtn');
+    const nextBtn = document.getElementById('wizardNextBtn');
+
+    // 戻るボタン
+    if (step === 1) {
+        backBtn.style.display = 'none';
+    } else {
+        backBtn.style.display = 'block';
+    }
+
+    // 次へボタン
+    if (step === 3) {
+        nextBtn.textContent = '🚀 交渉を開始する';
+        nextBtn.classList.add('start');
+    } else {
+        nextBtn.textContent = '次へ →';
+        nextBtn.classList.remove('start');
+    }
+
+    // Step 3のサマリーを更新
+    if (step === 3) {
+        updateWizardSummary();
+    }
+
+    updateWizardNextButton();
+}
+
+function wizardNext() {
+    if (wizardCurrentStep === 1) {
+        // ファイルが1つ以上必要
+        if (wizardFiles.length === 0) {
+            alert('契約書を1つ以上アップロードしてください。');
+            return;
+        }
+        updateWizardStep(2);
+    } else if (wizardCurrentStep === 2) {
+        updateWizardStep(3);
+    } else if (wizardCurrentStep === 3) {
+        // 交渉を開始
+        startNegotiation();
+    }
+}
+
+function wizardBack() {
+    if (wizardCurrentStep > 1) {
+        updateWizardStep(wizardCurrentStep - 1);
+    }
+}
+
+function updateWizardNextButton() {
+    const nextBtn = document.getElementById('wizardNextBtn');
+
+    if (wizardCurrentStep === 1) {
+        nextBtn.disabled = wizardFiles.length === 0;
+    } else {
+        nextBtn.disabled = false;
+    }
+}
+
+// ファイルアップロード処理
+function handleWizardDragOver(event) {
+    event.preventDefault();
+    document.getElementById('wizardUploadArea').classList.add('dragover');
+}
+
+function handleWizardDragLeave(event) {
+    document.getElementById('wizardUploadArea').classList.remove('dragover');
+}
+
+function handleWizardDrop(event) {
+    event.preventDefault();
+    document.getElementById('wizardUploadArea').classList.remove('dragover');
+
+    const files = event.dataTransfer.files;
+    for (let i = 0; i < files.length; i++) {
+        addWizardFile(files[i]);
+    }
+}
+
+function handleWizardFileSelect(event) {
+    const files = event.target.files;
+    for (let i = 0; i < files.length; i++) {
+        addWizardFile(files[i]);
+    }
+    // inputをリセット（同じファイルを再選択できるように）
+    event.target.value = '';
+}
+
+function addWizardFile(file) {
+    const validExtensions = ['.docx', '.doc', '.pdf'];
+    const extension = '.' + file.name.split('.').pop().toLowerCase();
+
+    if (!validExtensions.includes(extension)) {
+        alert('Word (.docx, .doc) または PDF ファイルを選択してください。');
+        return;
+    }
+
+    // 重複チェック
+    if (wizardFiles.some(f => f.name === file.name)) {
+        alert('同じ名前のファイルが既にアップロードされています。');
+        return;
+    }
+
+    wizardFiles.push({
+        name: file.name,
+        size: file.size,
+        type: extension
+    });
+
+    renderWizardFiles();
+    updateWizardNextButton();
+}
+
+function removeWizardFile(index) {
+    wizardFiles.splice(index, 1);
+    renderWizardFiles();
+    updateWizardNextButton();
+}
+
+function renderWizardFiles() {
+    const container = document.getElementById('wizardFilesList');
+
+    if (wizardFiles.length === 0) {
+        container.innerHTML = '';
+        return;
+    }
+
+    let html = '<div class="wizard-files-header">📎 アップロード済み (' + wizardFiles.length + '件)</div>';
+
+    wizardFiles.forEach((file, index) => {
+        const isPdf = file.type === '.pdf';
+        const iconClass = isPdf ? 'wizard-file-icon pdf' : 'wizard-file-icon';
+        const icon = isPdf ? '📕' : '📄';
+        const sizeStr = formatFileSize(file.size);
+
+        html += `
+            <div class="wizard-file-item">
+                <div class="${iconClass}">${icon}</div>
+                <div class="wizard-file-info">
+                    <div class="wizard-file-name">${escapeHtml(file.name)}</div>
+                    <div class="wizard-file-size">${sizeStr}</div>
+                </div>
+                <button class="wizard-file-remove" onclick="removeWizardFile(${index})">✕</button>
+            </div>
+        `;
+    });
+
+    container.innerHTML = html;
+}
+
+function formatFileSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+// 招待メール処理
+function addInviteEmail() {
+    const input = document.getElementById('wizardEmailInput');
+    const email = input.value.trim();
+
+    if (!email) return;
+
+    // 簡易的なメールバリデーション
+    if (!email.includes('@') || !email.includes('.')) {
+        alert('有効なメールアドレスを入力してください。');
+        return;
+    }
+
+    // 重複チェック
+    if (wizardInviteEmails.includes(email)) {
+        alert('このメールアドレスは既に追加されています。');
+        return;
+    }
+
+    wizardInviteEmails.push(email);
+    input.value = '';
+    renderWizardInviteEmails();
+}
+
+function removeInviteEmail(index) {
+    wizardInviteEmails.splice(index, 1);
+    renderWizardInviteEmails();
+}
+
+function renderWizardInviteEmails() {
+    const container = document.getElementById('wizardInviteEmails');
+
+    if (wizardInviteEmails.length === 0) {
+        container.innerHTML = '';
+        return;
+    }
+
+    let html = '';
+    wizardInviteEmails.forEach((email, index) => {
+        html += `
+            <div class="wizard-invite-email-item">
+                <span class="wizard-invite-email-text">${escapeHtml(email)}</span>
+                <button class="wizard-invite-email-remove" onclick="removeInviteEmail(${index})">✕</button>
+            </div>
+        `;
+    });
+
+    container.innerHTML = html;
+}
+
+function copyInviteLink() {
+    const input = document.getElementById('wizardLinkInput');
+    input.select();
+    document.execCommand('copy');
+
+    const btn = document.querySelector('.wizard-copy-btn');
+    const originalText = btn.textContent;
+    btn.textContent = '✓ コピーしました';
+    btn.classList.add('copied');
+
+    setTimeout(() => {
+        btn.textContent = originalText;
+        btn.classList.remove('copied');
+    }, 2000);
+}
+
+function updateWizardSummary() {
+    // ファイルリスト
+    const filesContainer = document.getElementById('wizardSummaryFiles');
+    if (wizardFiles.length === 0) {
+        filesContainer.innerHTML = '<li>（ファイルなし）</li>';
+    } else {
+        filesContainer.innerHTML = wizardFiles.map(f => `<li>${escapeHtml(f.name)}</li>`).join('');
+    }
+
+    // 招待リスト
+    const invitesContainer = document.getElementById('wizardSummaryInvites');
+    if (wizardInviteEmails.length === 0) {
+        invitesContainer.innerHTML = '<li>招待リンクで共有</li>';
+    } else {
+        invitesContainer.innerHTML = wizardInviteEmails.map(e => `<li>${escapeHtml(e)}</li>`).join('');
+    }
+}
+
+function startNegotiation() {
+    // 交渉開始処理（デモ）
+    closeWizard();
+
+    // ファイル名から案件名を生成
+    const projectName = wizardFiles[0].name.replace(/\.(docx|doc|pdf)$/i, '');
+
+    alert(`「${projectName}」の交渉を開始しました！\n\n招待した方にメールが送信されました。`);
+
+    // 実際のアプリでは、ここで既存の交渉画面に遷移
+}
+
+// ============================================
+// 招待された側のランディング画面
+// ============================================
+
+function openInviteLanding() {
+    document.getElementById('inviteLandingOverlay').classList.add('active');
+}
+
+function closeInviteLanding() {
+    document.getElementById('inviteLandingOverlay').classList.remove('active');
+}
+
+function signInWithGoogle() {
+    // デモ: サインイン成功をシミュレート
+    alert('Googleアカウントでサインインしました！\n\n交渉画面に移動します...');
+    closeInviteLanding();
+}
+
+function signInWithMicrosoft() {
+    // デモ: サインイン成功をシミュレート
+    alert('Microsoftアカウントでサインインしました！\n\n交渉画面に移動します...');
+    closeInviteLanding();
+}
+
+// ============================================
+// メンバー管理機能
+// ============================================
+
+function toggleMembersPanel() {
+    const panel = document.getElementById('membersPanel');
+    panel.classList.toggle('active');
+}
+
+function openAddMemberModal() {
+    document.getElementById('addMemberModal').classList.add('active');
+}
+
+function closeAddMemberModal(event) {
+    if (!event || event.target === event.currentTarget) {
+        document.getElementById('addMemberModal').classList.remove('active');
+        document.getElementById('addMemberEmailInput').value = '';
+    }
+}
+
+function sendMemberInvite() {
+    const input = document.getElementById('addMemberEmailInput');
+    const email = input.value.trim();
+
+    if (!email) {
+        alert('メールアドレスを入力してください。');
+        return;
+    }
+
+    if (!email.includes('@') || !email.includes('.')) {
+        alert('有効なメールアドレスを入力してください。');
+        return;
+    }
+
+    closeAddMemberModal();
+    alert(`${email} に招待メールを送信しました！`);
+}
+
+function copyMemberInviteLink() {
+    const input = document.getElementById('addMemberLinkInput');
+    input.select();
+    document.execCommand('copy');
+
+    const btn = document.querySelector('.add-member-copy-btn');
+    const originalText = btn.textContent;
+    btn.textContent = '✓';
+    btn.classList.add('copied');
+
+    setTimeout(() => {
+        btn.textContent = originalText;
+        btn.classList.remove('copied');
+    }, 2000);
+}
+
+// ============================================
+// 交渉一覧画面
+// ============================================
+
+function openNegotiationsList() {
+    document.getElementById('negotiationsListOverlay').classList.add('active');
+}
+
+function closeNegotiationsList() {
+    document.getElementById('negotiationsListOverlay').classList.remove('active');
+}

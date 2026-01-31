@@ -35,12 +35,143 @@ body {
     color: #1a1a1a;
 }
 
-.partner-badge {
-    padding: 5px 12px;
+/* ヘッダーメンバー機能 */
+.header-members {
+    position: relative;
+}
+
+.header-members-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
     background: #f3f4f6;
-    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    font-size: 13px;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.header-members-toggle:hover {
+    background: #e5e7eb;
+}
+
+.header-members-count {
+    font-weight: 600;
+    color: #0891b2;
+}
+
+.header-members-icon {
+    font-size: 14px;
+}
+
+.header-members-arrow {
+    font-size: 10px;
+    color: #9ca3af;
+    transition: transform 0.2s;
+}
+
+.header-members.active .header-members-arrow {
+    transform: rotate(180deg);
+}
+
+/* ヘッダーメンバーパネル（ドロップダウン） */
+.header-members-panel {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 280px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    padding: 12px;
+    z-index: 1000;
+}
+
+.header-members.active .header-members-panel {
+    display: block;
+}
+
+.header-members-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.header-member-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.header-member-item.me {
+    background: #f0f9ff;
+}
+
+.header-member-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.header-member-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.header-member-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.header-member-you {
+    font-size: 11px;
+    font-weight: 400;
+    color: #0891b2;
+    margin-left: 4px;
+}
+
+.header-member-company {
     font-size: 12px;
     color: #6b7280;
+}
+
+.header-members-add {
+    padding-top: 8px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.header-members-add-btn {
+    width: 100%;
+    padding: 10px 16px;
+    background: white;
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.header-members-add-btn:hover {
+    border-color: #0891b2;
+    color: #0891b2;
+    background: #f0f9ff;
 }
 
 .header-actions {
@@ -1220,28 +1351,277 @@ body {
     color: #9ca3af;
 }
 
-/* 契約ステータス表示 */
-.contract-status-display {
+/* 重要な日付カード */
+.important-dates-card {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.important-dates-card .action-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.contract-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.contract-status-badge.active {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.contract-status-badge.negotiating {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.important-dates-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.important-date-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.important-date-item.highlight {
+    background: #fef3c7;
+    border: 1px solid #fcd34d;
+}
+
+.date-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.date-icon.start {
+    background: #d1fae5;
+}
+
+.date-icon.warning {
+    background: #fef3c7;
+}
+
+.date-icon.end {
+    background: #e0e7ff;
+}
+
+.date-info {
+    flex: 1;
+}
+
+.date-label {
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 2px;
+}
+
+.date-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.date-note {
+    font-size: 11px;
+    color: #d97706;
+    margin-top: 2px;
+}
+
+.date-status {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+.date-status.completed {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.date-countdown {
+    font-size: 12px;
+    font-weight: 600;
+    color: #d97706;
+    background: #fff;
+    padding: 4px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+/* 金額サマリーカード */
+.amount-summary-card {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.amount-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.amount-main {
     text-align: center;
     padding: 16px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-radius: 10px;
 }
 
-.status-icon {
-    font-size: 40px;
-    margin-bottom: 8px;
+.amount-label {
+    font-size: 12px;
+    color: #92400e;
+    margin-bottom: 4px;
 }
 
-.status-text {
-    font-size: 16px;
-    font-weight: 600;
-    color: #10b981;
-    margin-bottom: 8px;
+.amount-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #92400e;
 }
 
-.status-dates {
+.amount-tax {
+    font-size: 12px;
+    font-weight: 400;
+    color: #b45309;
+}
+
+.amount-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.amount-detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-radius: 6px;
     font-size: 13px;
+}
+
+.detail-label {
     color: #6b7280;
-    line-height: 1.6;
+}
+
+.detail-value {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+/* アクティビティログカード */
+.activity-log-card {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.activity-log-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.activity-log-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.activity-log-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.activity-log-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.activity-log-text {
+    font-size: 13px;
+    color: #374151;
+    line-height: 1.4;
+}
+
+.activity-log-text strong {
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.activity-log-time {
+    font-size: 11px;
+    color: #9ca3af;
+    margin-top: 2px;
+}
+
+.activity-log-more {
+    margin-top: 12px;
+    padding: 8px;
+    width: 100%;
+    background: none;
+    border: 1px dashed #d1d5db;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.activity-log-more:hover {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+    color: #374151;
+}
+
+/* 関連ドキュメントカードのヘッダー追加ボタン */
+.add-document-btn {
+    padding: 4px 10px;
+    background: none;
+    border: 1px dashed #d1d5db;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.add-document-btn:hover {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+    color: #374151;
 }
 
 /* モーダル */

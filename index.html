@@ -11,7 +11,38 @@
     <div class="header">
         <div class="header-left">
             <div class="contract-title">業務委託基本契約書</div>
-            <span class="partner-badge">株式会社XYZ 田中様</span>
+            <!-- メンバー表示 -->
+            <div class="header-members" id="headerMembers">
+                <button class="header-members-toggle" onclick="toggleHeaderMembersPanel(event)">
+                    <span class="header-members-count">2人</span>
+                    <span class="header-members-icon">👥</span>
+                    <span class="header-members-arrow">▼</span>
+                </button>
+                <!-- メンバーパネル（ドロップダウン） -->
+                <div class="header-members-panel" id="headerMembersPanel">
+                    <div class="header-members-list">
+                        <div class="header-member-item">
+                            <div class="header-member-avatar avatar-them">田</div>
+                            <div class="header-member-info">
+                                <div class="header-member-name">田中太郎</div>
+                                <div class="header-member-company">株式会社XYZ</div>
+                            </div>
+                        </div>
+                        <div class="header-member-item me">
+                            <div class="header-member-avatar avatar-me">佐</div>
+                            <div class="header-member-info">
+                                <div class="header-member-name">佐藤一郎 <span class="header-member-you">あなた</span></div>
+                                <div class="header-member-company">株式会社ABC</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-members-add">
+                        <button class="header-members-add-btn" onclick="openAddMemberModal()">
+                            ＋ メンバーを追加
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="header-actions">
             <button class="header-btn primary agree-btn" id="agreeBtn" onclick="agreeContract()">
@@ -548,6 +579,67 @@
             <div class="tab-content" id="management">
                 <div class="management-container">
                     <div class="management-grid">
+                        <!-- 重要な日付カード（左上に配置・最重要） -->
+                        <div class="action-card important-dates-card">
+                            <div class="action-header">
+                                <div class="action-title">📅 重要な日付</div>
+                                <div class="contract-status-badge active">✅ 契約進行中</div>
+                            </div>
+                            <div class="important-dates-list">
+                                <div class="important-date-item">
+                                    <div class="date-icon start">🚀</div>
+                                    <div class="date-info">
+                                        <div class="date-label">契約開始日</div>
+                                        <div class="date-value">2026年2月1日</div>
+                                    </div>
+                                    <div class="date-status completed">完了</div>
+                                </div>
+                                <div class="important-date-item highlight">
+                                    <div class="date-icon warning">⚠️</div>
+                                    <div class="date-info">
+                                        <div class="date-label">更新判断期限</div>
+                                        <div class="date-value">2026年5月31日</div>
+                                        <div class="date-note">この日までに連絡しないと自動更新</div>
+                                    </div>
+                                    <div class="date-countdown">あと93日</div>
+                                </div>
+                                <div class="important-date-item">
+                                    <div class="date-icon end">🏁</div>
+                                    <div class="date-info">
+                                        <div class="date-label">契約満了日</div>
+                                        <div class="date-value">2026年7月31日</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 金額サマリーカード -->
+                        <div class="action-card amount-summary-card">
+                            <div class="action-header">
+                                <div class="action-title">💰 金額サマリー</div>
+                            </div>
+                            <div class="amount-summary">
+                                <div class="amount-main">
+                                    <div class="amount-label">月額報酬</div>
+                                    <div class="amount-value">¥480,000<span class="amount-tax">（税別）</span></div>
+                                </div>
+                                <div class="amount-details">
+                                    <div class="amount-detail-item">
+                                        <span class="detail-label">契約期間合計（6ヶ月）</span>
+                                        <span class="detail-value">¥2,880,000</span>
+                                    </div>
+                                    <div class="amount-detail-item">
+                                        <span class="detail-label">支払い条件</span>
+                                        <span class="detail-value">毎月末締め / 翌月末払い</span>
+                                    </div>
+                                    <div class="amount-detail-item">
+                                        <span class="detail-label">振込手数料</span>
+                                        <span class="detail-value">甲（ABC社）負担</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- 次のアクションカード -->
                         <div class="action-card">
                             <div class="action-header">
@@ -578,33 +670,49 @@
                             </div>
                         </div>
 
-                        <!-- 通知設定カード -->
-                        <div class="action-card">
+                        <!-- アクティビティログカード -->
+                        <div class="action-card activity-log-card">
                             <div class="action-header">
-                                <div class="action-title">🔔 通知設定</div>
+                                <div class="action-title">📝 アクティビティ</div>
                             </div>
-                            <div class="notification-toggle">
-                                <span class="toggle-label">契約更新期限の1ヶ月前に通知</span>
-                                <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
+                            <div class="activity-log-list">
+                                <div class="activity-log-item">
+                                    <div class="activity-log-avatar avatar-them">田</div>
+                                    <div class="activity-log-content">
+                                        <div class="activity-log-text"><strong>田中太郎</strong>が契約期間を6ヶ月に変更</div>
+                                        <div class="activity-log-time">1月28日 14:15</div>
+                                    </div>
+                                </div>
+                                <div class="activity-log-item">
+                                    <div class="activity-log-avatar avatar-me">佐</div>
+                                    <div class="activity-log-content">
+                                        <div class="activity-log-text"><strong>佐藤一郎</strong>が報酬を48万円に修正</div>
+                                        <div class="activity-log-time">1月28日 11:35</div>
+                                    </div>
+                                </div>
+                                <div class="activity-log-item">
+                                    <div class="activity-log-avatar avatar-them">田</div>
+                                    <div class="activity-log-content">
+                                        <div class="activity-log-text"><strong>田中太郎</strong>が初回ドラフトを送付</div>
+                                        <div class="activity-log-time">1月28日 10:20</div>
+                                    </div>
+                                </div>
+                                <div class="activity-log-item">
+                                    <div class="activity-log-avatar avatar-me">佐</div>
+                                    <div class="activity-log-content">
+                                        <div class="activity-log-text"><strong>佐藤一郎</strong>が秘密保持条項を追加</div>
+                                        <div class="activity-log-time">1月27日 16:40</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="notification-toggle">
-                                <span class="toggle-label">支払期限の3日前に通知</span>
-                                <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
-                            </div>
-                            <div class="notification-toggle">
-                                <span class="toggle-label">レポート提出期限の1週間前に通知</span>
-                                <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
-                            </div>
-                            <div class="notification-toggle">
-                                <span class="toggle-label">相手からメッセージが来たら通知</span>
-                                <div class="toggle-switch" onclick="toggleSwitch(this)"></div>
-                            </div>
+                            <button class="activity-log-more">すべてのアクティビティを見る →</button>
                         </div>
 
                         <!-- 関連ドキュメントカード -->
                         <div class="action-card">
                             <div class="action-header">
                                 <div class="action-title">📎 関連ドキュメント</div>
+                                <button class="add-document-btn">+ 追加</button>
                             </div>
                             <div class="document-list">
                                 <div class="document-item">
@@ -630,21 +738,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- 契約ステータスカード -->
-                        <div class="action-card">
-                            <div class="action-header">
-                                <div class="action-title">📊 契約ステータス</div>
-                            </div>
-                            <div class="contract-status-display">
-                                <div class="status-icon">✅</div>
-                                <div class="status-text">契約進行中</div>
-                                <div class="status-dates">
-                                    開始: 2026/02/01<br>
-                                    満了: 2026/07/31
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -667,37 +760,7 @@
             </div>
 
             <div class="chat-header">
-                <div class="chat-header-top">
-                    <div class="chat-title">💬 田中様との交渉</div>
-                    <button class="chat-members-toggle" onclick="toggleMembersPanel()">
-                        <span class="members-count">2</span>
-                        <span class="members-icon">👥</span>
-                    </button>
-                </div>
-                <!-- メンバーパネル -->
-                <div class="members-panel" id="membersPanel">
-                    <div class="members-list">
-                        <div class="member-item">
-                            <div class="member-avatar avatar-them">田</div>
-                            <div class="member-info">
-                                <div class="member-name">田中太郎</div>
-                                <div class="member-company">株式会社XYZ</div>
-                            </div>
-                        </div>
-                        <div class="member-item me">
-                            <div class="member-avatar avatar-me">佐</div>
-                            <div class="member-info">
-                                <div class="member-name">佐藤一郎 <span class="member-you">あなた</span></div>
-                                <div class="member-company">株式会社ABC</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="members-add-section">
-                        <button class="members-add-btn" onclick="openAddMemberModal()">
-                            ＋ メンバーを追加
-                        </button>
-                    </div>
-                </div>
+                <div class="chat-title">💬 メッセージ</div>
             </div>
 
             <div class="messages-area" id="messages">

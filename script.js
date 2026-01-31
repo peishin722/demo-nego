@@ -874,15 +874,29 @@ function signInWithMicrosoft() {
 }
 
 // ============================================
-// メンバー管理機能
+// メンバー管理機能（ヘッダー）
 // ============================================
 
-function toggleMembersPanel() {
-    const panel = document.getElementById('membersPanel');
-    panel.classList.toggle('active');
+function toggleHeaderMembersPanel(event) {
+    event.stopPropagation();
+    const container = document.getElementById('headerMembers');
+    container.classList.toggle('active');
 }
 
+// ドキュメントクリックでパネルを閉じる
+document.addEventListener('click', function(e) {
+    const headerMembers = document.getElementById('headerMembers');
+    if (headerMembers && !headerMembers.contains(e.target)) {
+        headerMembers.classList.remove('active');
+    }
+});
+
 function openAddMemberModal() {
+    // ヘッダーのメンバーパネルを閉じる
+    const headerMembers = document.getElementById('headerMembers');
+    if (headerMembers) {
+        headerMembers.classList.remove('active');
+    }
     document.getElementById('addMemberModal').classList.add('active');
 }
 

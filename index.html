@@ -14,9 +14,9 @@
             <span class="partner-badge">株式会社XYZ 田中様</span>
         </div>
         <div class="header-actions">
-            <button class="header-btn">📥 Wordダウンロード</button>
-            <button class="header-btn">📤 Wordアップロード</button>
-            <button class="header-btn primary">📌 この版をFIX</button>
+            <button class="header-btn primary agree-btn" id="agreeBtn" onclick="agreeContract()">
+                ✅ この内容で合意
+            </button>
         </div>
     </div>
 
@@ -43,61 +43,58 @@
             <!-- 概要タブ -->
             <div class="tab-content active" id="overview">
                 <div class="overview-container">
-                    <div class="summary-card">
+                    <!-- この契約の要点カード -->
+                    <div class="summary-card key-points-card">
                         <div class="card-header">
                             <div class="card-icon">🎯</div>
                             <div class="card-title">この契約の要点</div>
                         </div>
-                        <div class="summary-text">
-                            <strong>ABC社がXYZ社にマーケティング支援を提供する契約です。</strong><br>
-                            期間は6ヶ月間で、月額48万円の報酬をいただきます。初めてのお取引なので短期でスタートし、問題なければ自動更新される形です。
+                        <div class="key-points-content">
+                            <ul class="key-points-list">
+                                <li>ABC社がXYZ社にマーケティング支援を提供する契約です</li>
+                                <li>期間は6ヶ月間、月額48万円の報酬</li>
+                                <li>問題なければ自動更新される形式</li>
+                            </ul>
                         </div>
                     </div>
 
+                    <!-- 人・モノ・金の流れ図 -->
                     <div class="summary-card">
                         <div class="card-header">
                             <div class="card-icon">📈</div>
                             <div class="card-title">人・モノ・金の流れ</div>
                         </div>
-                        <div class="flow-diagram">
-                            <div class="flow-node">
-                                <div class="flow-box">ABC社<br>(あなたの会社)</div>
-                                <div class="flow-detail">サービス提供側</div>
-                            </div>
-                            <div class="flow-arrow">→</div>
-                            <div class="flow-node">
-                                <div class="flow-label">📦 提供するもの</div>
-                                <div style="margin-top: 8px; font-size: 13px; color: #374151;">
-                                    • マーケティング戦略<br>
-                                    • 広告運用サポート<br>
-                                    • 月次レポート
+                        <div class="flow-section">
+                            <div class="flow-diagram">
+                                <div class="flow-node">
+                                    <div class="flow-box">ABC社<br><span class="flow-sub">(あなたの会社)</span></div>
+                                </div>
+                                <div class="flow-arrow-container">
+                                    <div class="flow-arrow-line"></div>
+                                    <div class="flow-arrow-label">サービス提供</div>
+                                    <div class="flow-arrow-head">→</div>
+                                </div>
+                                <div class="flow-node">
+                                    <div class="flow-box partner">XYZ社<br><span class="flow-sub">(田中様)</span></div>
                                 </div>
                             </div>
-                            <div class="flow-arrow">→</div>
-                            <div class="flow-node">
-                                <div class="flow-box partner">XYZ社<br>(田中様)</div>
-                                <div class="flow-detail">サービス受領側</div>
-                            </div>
-                        </div>
-                        <div class="flow-diagram" style="margin-top: 0;">
-                            <div class="flow-node">
-                                <div class="flow-box partner">XYZ社<br>(田中様)</div>
-                            </div>
-                            <div class="flow-arrow">→</div>
-                            <div class="flow-node">
-                                <div class="flow-label">💰 支払い</div>
-                                <div style="margin-top: 8px; font-size: 13px; color: #374151;">
-                                    <strong>月額48万円</strong>(税別)<br>
-                                    月末締め翌月末払い
+                            <div class="flow-diagram">
+                                <div class="flow-node">
+                                    <div class="flow-box partner">XYZ社<br><span class="flow-sub">(田中様)</span></div>
                                 </div>
-                            </div>
-                            <div class="flow-arrow">→</div>
-                            <div class="flow-node">
-                                <div class="flow-box">ABC社<br>(あなたの会社)</div>
+                                <div class="flow-arrow-container">
+                                    <div class="flow-arrow-line reverse"></div>
+                                    <div class="flow-arrow-label money">月48万円</div>
+                                    <div class="flow-arrow-head">→</div>
+                                </div>
+                                <div class="flow-node">
+                                    <div class="flow-box">ABC社<br><span class="flow-sub">(あなたの会社)</span></div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- タイムラインカード -->
                     <div class="summary-card">
                         <div class="card-header">
                             <div class="card-icon">📅</div>
@@ -105,34 +102,25 @@
                         </div>
                         <div class="timeline">
                             <div class="timeline-item success">
-                                <div class="timeline-date">2026年2月1日</div>
-                                <div class="timeline-title">契約開始</div>
-                                <div class="timeline-description">マーケティング支援業務がスタートします</div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-date">2026年2月末</div>
-                                <div class="timeline-title">初回請求書発行</div>
-                                <div class="timeline-description">月額48万円(税別)の請求書を送付</div>
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">2026年2月1日</div>
+                                    <div class="timeline-title">契約開始</div>
+                                </div>
                             </div>
                             <div class="timeline-item warning">
-                                <div class="timeline-date">2026年5月31日</div>
-                                <div class="timeline-title">⚠️ 契約更新の判断期限</div>
-                                <div class="timeline-description">この日までに更新しない旨を連絡しないと自動更新されます</div>
-                                <div class="timeline-alert">
-                                    <strong>📌 重要:</strong> この日の1ヶ月前(4/30)に自動で通知します
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">2026年5月31日</div>
+                                    <div class="timeline-title">⚠️ 契約更新判断期限</div>
+                                    <div class="timeline-alert">この日までに連絡しないと自動更新</div>
                                 </div>
                             </div>
                             <div class="timeline-item">
-                                <div class="timeline-date">2026年7月31日</div>
-                                <div class="timeline-title">契約満了日</div>
-                                <div class="timeline-description">初回6ヶ月間の契約期間が終了</div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-date">2026年8月1日〜</div>
-                                <div class="timeline-title">自動更新 または 契約終了</div>
-                                <div class="timeline-description">
-                                    5/31までに連絡がない場合 → さらに6ヶ月間自動更新<br>
-                                    5/31までに連絡があった場合 → 7/31で契約終了
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">2026年7月31日</div>
+                                    <div class="timeline-title">契約満了</div>
                                 </div>
                             </div>
                         </div>
@@ -143,6 +131,20 @@
             <!-- 契約書タブ -->
             <div class="tab-content" id="contract">
                 <div class="contract-container">
+                    <!-- ステータスバー -->
+                    <div class="contract-status-bar">
+                        <div class="status-left">
+                            <span class="status-badge" id="contractStatusBadge">💬 交渉中</span>
+                        </div>
+                        <div class="status-right">
+                            <button class="status-action-btn" id="editLockBtn" onclick="toggleEditLock()">
+                                📝 Wordで編集
+                            </button>
+                            <button class="status-action-btn" onclick="openUploadModal()">📤 アップロード</button>
+                            <button class="status-action-btn" onclick="downloadWord()">📥 ダウンロード</button>
+                        </div>
+                    </div>
+
                     <!-- 契約書サブタブ -->
                     <div class="contract-subtabs">
                         <button class="contract-subtab active" onclick="switchContractSubtab('basic')">
@@ -150,9 +152,6 @@
                         </button>
                         <button class="contract-subtab" onclick="switchContractSubtab('individual-a')">
                             📋 個別契約(案件A)
-                        </button>
-                        <button class="contract-subtab" onclick="switchContractSubtab('individual-b')">
-                            📋 個別契約(案件B)
                         </button>
                         <button class="add-contract-subtab" onclick="addNewContract()">
                             + 新規追加
@@ -162,20 +161,21 @@
                     <!-- 契約書コンテンツ -->
                     <div class="contract-content-area">
                         <div class="contract-content-inner">
+                            <!-- AI解説カード -->
                             <div class="ai-explain-card">
                                 <div class="explain-header">
                                     <span class="explain-icon">💡</span>
                                     <span class="explain-title">第3条をわかりやすく</span>
                                 </div>
                                 <div class="explain-text">
-                                    <strong>つまり:</strong> 半年間の契約です。やめたい時は2ヶ月前(5/31まで)に言えばOK。<br>
-                                    <strong>何もしなければ:</strong> 自動的にもう半年延長されます。
+                                    <strong>つまり:</strong> 半年間の契約です。やめたい時は2ヶ月前(5/31まで)に言えばOK。何もしなければ自動的にもう半年延長されます。
                                 </div>
                                 <div class="explain-alert">
-                                    ⚠️ <strong>注意:</strong> 5/31までに連絡しないと自動で更新されます
+                                    ⚠️ <strong>注意:</strong> 5/31までに連絡しないと自動更新されます
                                 </div>
                             </div>
 
+                            <!-- 契約書本文 -->
                             <div class="document">
                                 <div class="doc-main-title">業務委託基本契約書</div>
 
@@ -187,57 +187,10 @@
                                 </div>
 
                                 <div class="doc-article">
-                                    <div class="article-title">第2条(業務内容)</div>
-                                    <div class="article-content">
-                                        甲は乙に対し、以下の業務を提供する。<br>
-                                        (1) デジタルマーケティング戦略の立案<br>
-                                        (2) 広告運用の最適化及び改善提案<br>
-                                        (3) 月次レポートの作成及び提出
-                                    </div>
-                                </div>
-
-                                <div class="doc-article">
                                     <div class="article-title">第3条(契約期間)</div>
                                     <div class="article-content">
                                         本契約の有効期間は、2026年2月1日から<span class="highlight-change">6ヶ月間</span>とする。<br>
                                         本契約は、期間満了の<span class="highlight-change">2ヶ月前</span>までに当事者いずれからも書面による別段の意思表示がない場合には、同一条件にて6ヶ月間自動的に更新されるものとする。
-                                    </div>
-                                </div>
-
-                                <div class="doc-article">
-                                    <div class="article-title">第4条(報酬及び支払条件)</div>
-                                    <div class="article-content">
-                                        1. 乙は甲に対し、月額<span class="highlight-change">48万円</span>(税別)を報酬として支払う。<br>
-                                        2. 報酬の支払いは、月末締め翌月末払いとする。<br>
-                                        3. 振込手数料は乙の負担とする。
-                                    </div>
-                                </div>
-
-                                <div class="doc-article">
-                                    <div class="article-title">第5条(知的財産権)</div>
-                                    <div class="article-content">
-                                        本契約に基づき甲が作成した成果物に関する知的財産権は、対価の完済をもって乙に帰属する。
-                                    </div>
-                                </div>
-
-                                <div class="doc-article">
-                                    <div class="article-title">第6条(秘密保持)</div>
-                                    <div class="article-content">
-                                        甲及び乙は、本契約の履行に関連して知り得た相手方の秘密情報を、相手方の事前の書面による承諾なく第三者に開示又は漏洩してはならない。
-                                    </div>
-                                </div>
-
-                                <div class="doc-article">
-                                    <div class="article-title">第7条(損害賠償)</div>
-                                    <div class="article-content">
-                                        甲及び乙は、本契約に違反して相手方に損害を与えた場合、その損害を賠償する責任を負う。ただし、賠償額の上限は直近3ヶ月分の報酬額とする。
-                                    </div>
-                                </div>
-
-                                <div class="doc-article">
-                                    <div class="article-title">第8条(契約解除)</div>
-                                    <div class="article-content">
-                                        甲及び乙は、相手方が本契約に重大な違反をし、相当期間を定めた書面による催告後も是正されない場合、本契約を解除することができる。
                                     </div>
                                 </div>
                             </div>
@@ -250,6 +203,7 @@
             <div class="tab-content" id="management">
                 <div class="management-container">
                     <div class="management-grid">
+                        <!-- 次のアクションカード -->
                         <div class="action-card">
                             <div class="action-header">
                                 <div class="action-title">📌 次のアクション</div>
@@ -279,28 +233,30 @@
                             </div>
                         </div>
 
+                        <!-- 通知設定カード -->
                         <div class="action-card">
                             <div class="action-header">
                                 <div class="action-title">🔔 通知設定</div>
                             </div>
                             <div class="notification-toggle">
                                 <span class="toggle-label">契約更新期限の1ヶ月前に通知</span>
-                                <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                                <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
                             </div>
                             <div class="notification-toggle">
                                 <span class="toggle-label">支払期限の3日前に通知</span>
-                                <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                                <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
                             </div>
                             <div class="notification-toggle">
                                 <span class="toggle-label">レポート提出期限の1週間前に通知</span>
-                                <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                                <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
                             </div>
                             <div class="notification-toggle">
                                 <span class="toggle-label">相手からメッセージが来たら通知</span>
-                                <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                                <div class="toggle-switch" onclick="toggleSwitch(this)"></div>
                             </div>
                         </div>
 
+                        <!-- 関連ドキュメントカード -->
                         <div class="action-card">
                             <div class="action-header">
                                 <div class="action-title">📎 関連ドキュメント</div>
@@ -330,14 +286,15 @@
                             </div>
                         </div>
 
+                        <!-- 契約ステータスカード -->
                         <div class="action-card">
                             <div class="action-header">
                                 <div class="action-title">📊 契約ステータス</div>
                             </div>
-                            <div style="padding: 20px; text-align: center;">
-                                <div style="font-size: 48px; margin-bottom: 12px;">✅</div>
-                                <div style="font-size: 18px; font-weight: 600; color: #10b981; margin-bottom: 8px;">契約進行中</div>
-                                <div style="font-size: 14px; color: #6b7280;">
+                            <div class="contract-status-display">
+                                <div class="status-icon">✅</div>
+                                <div class="status-text">契約進行中</div>
+                                <div class="status-dates">
                                     開始: 2026/02/01<br>
                                     満了: 2026/07/31
                                 </div>
@@ -352,7 +309,6 @@
         <div class="right-column">
             <div class="chat-header">
                 <div class="chat-title">💬 田中様との交渉</div>
-                <div class="chat-subtitle">契約内容について話し合う</div>
             </div>
 
             <div class="messages-area" id="messages">
@@ -399,6 +355,74 @@
                         </svg>
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wordアップロードモーダル -->
+    <div class="modal-overlay" id="uploadModal" onclick="closeUploadModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title">📤 Wordファイルをアップロード</div>
+                <button class="modal-close" onclick="closeUploadModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="upload-area" id="uploadArea"
+                     ondragover="handleDragOver(event)"
+                     ondragleave="handleDragLeave(event)"
+                     ondrop="handleDrop(event)">
+                    <div class="upload-icon">📄</div>
+                    <div class="upload-text">ファイルをドラッグ&ドロップ</div>
+                    <div class="upload-subtext">または</div>
+                    <label class="upload-btn">
+                        ファイルを選択
+                        <input type="file" accept=".docx,.doc" onchange="handleFileSelect(event)" hidden>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 差分確認モーダル -->
+    <div class="modal-overlay" id="diffModal" onclick="closeDiffModal(event)">
+        <div class="modal-content diff-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title">🔍 変更内容の確認</div>
+                <button class="modal-close" onclick="closeDiffModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="diff-list">
+                    <div class="diff-item">
+                        <div class="diff-location">第3条(契約期間)</div>
+                        <div class="diff-content">
+                            <div class="diff-old">
+                                <span class="diff-label">変更前:</span>
+                                <span class="diff-text">期間満了の<span class="diff-removed">1ヶ月前</span>までに...</span>
+                            </div>
+                            <div class="diff-new">
+                                <span class="diff-label">変更後:</span>
+                                <span class="diff-text">期間満了の<span class="diff-added">2ヶ月前</span>までに...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="diff-item">
+                        <div class="diff-location">第4条(報酬)</div>
+                        <div class="diff-content">
+                            <div class="diff-old">
+                                <span class="diff-label">変更前:</span>
+                                <span class="diff-text">月額<span class="diff-removed">45万円</span>(税別)</span>
+                            </div>
+                            <div class="diff-new">
+                                <span class="diff-label">変更後:</span>
+                                <span class="diff-text">月額<span class="diff-added">48万円</span>(税別)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeDiffModal()">キャンセル</button>
+                <button class="modal-btn primary" onclick="applyChanges()">反映する</button>
             </div>
         </div>
     </div>

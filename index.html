@@ -74,11 +74,22 @@
             <!-- 概要タブ -->
             <div class="tab-content active" id="overview">
                 <div class="overview-container">
+                    <!-- ステータスバナー -->
+                    <div class="overview-status-banner negotiating" id="overviewStatusBanner">
+                        <div class="status-banner-icon">🔄</div>
+                        <div class="status-banner-content">
+                            <div class="status-banner-title">交渉中の内容（Ver.8 時点）</div>
+                            <div class="status-banner-desc">この概要は交渉の進行に応じて自動更新されます</div>
+                        </div>
+                        <div class="status-banner-meta">最終更新: 1/28 14:15</div>
+                    </div>
+
                     <!-- この契約の要点カード -->
-                    <div class="summary-card key-points-card">
+                    <div class="summary-card key-points-card ai-generated-card">
                         <div class="card-header">
                             <div class="card-icon">🎯</div>
                             <div class="card-title">この契約の要点</div>
+                            <div class="ai-badge">🤖 AI生成</div>
                         </div>
                         <div class="key-points-content">
                             <ul class="key-points-list">
@@ -87,13 +98,17 @@
                                 <li>問題なければ自動更新される形式</li>
                             </ul>
                         </div>
+                        <div class="ai-card-footer">
+                            <span class="ai-footer-note">💡 契約書から自動生成されています。内容をご確認ください。</span>
+                        </div>
                     </div>
 
                     <!-- 人・モノ・金の流れ図 -->
-                    <div class="summary-card">
+                    <div class="summary-card ai-generated-card">
                         <div class="card-header">
                             <div class="card-icon">📈</div>
                             <div class="card-title">人・モノ・金の流れ</div>
+                            <div class="ai-badge">🤖 AI生成</div>
                         </div>
                         <div class="flow-section">
                             <div class="flow-diagram">
@@ -126,19 +141,51 @@
                     </div>
 
                     <!-- タイムラインカード -->
-                    <div class="summary-card">
+                    <div class="summary-card ai-generated-card">
                         <div class="card-header">
                             <div class="card-icon">📅</div>
                             <div class="card-title">これからのタイムライン</div>
+                            <div class="ai-badge">🤖 AI生成</div>
                         </div>
                         <div class="timeline">
+                            <!-- 契約開始 -->
                             <div class="timeline-item success">
                                 <div class="timeline-dot"></div>
                                 <div class="timeline-content">
                                     <div class="timeline-date">2026年2月1日</div>
-                                    <div class="timeline-title">契約開始</div>
+                                    <div class="timeline-title">🚀 契約開始</div>
+                                </div>
+                                <div class="timeline-badge completed">完了</div>
+                            </div>
+                            <!-- 2月請求 -->
+                            <div class="timeline-item payment upcoming">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">2026年2月28日</div>
+                                    <div class="timeline-title">💰 請求書発行（2月分）</div>
+                                    <div class="timeline-amount">¥480,000（税別）</div>
+                                </div>
+                                <div class="timeline-badge upcoming">今月</div>
+                            </div>
+                            <!-- 2月分支払い -->
+                            <div class="timeline-item payment">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">2026年3月31日</div>
+                                    <div class="timeline-title">💳 支払期日（2月分）</div>
                                 </div>
                             </div>
+                            <!-- 3月請求 -->
+                            <div class="timeline-item payment recurring">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">2026年3月31日</div>
+                                    <div class="timeline-title">💰 請求書発行（3月分）</div>
+                                    <div class="timeline-amount">¥480,000（税別）</div>
+                                </div>
+                                <div class="timeline-badge recurring">毎月</div>
+                            </div>
+                            <!-- 更新判断期限 -->
                             <div class="timeline-item warning">
                                 <div class="timeline-dot"></div>
                                 <div class="timeline-content">
@@ -146,14 +193,19 @@
                                     <div class="timeline-title">⚠️ 契約更新判断期限</div>
                                     <div class="timeline-alert">この日までに連絡しないと自動更新</div>
                                 </div>
+                                <div class="timeline-badge warning">重要</div>
                             </div>
+                            <!-- 契約満了 -->
                             <div class="timeline-item">
                                 <div class="timeline-dot"></div>
                                 <div class="timeline-content">
                                     <div class="timeline-date">2026年7月31日</div>
-                                    <div class="timeline-title">契約満了</div>
+                                    <div class="timeline-title">🏁 契約満了</div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="timeline-note">
+                            <span>💡 請求・支払いは契約条件に基づいて自動計算されています</span>
                         </div>
                     </div>
                 </div>

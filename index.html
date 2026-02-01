@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>交渉一覧 - ContractNego</title>
     <link rel="icon" href="favicon-32.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="hubble-design-tokens.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="page-list">
@@ -15,14 +17,14 @@
             <div class="negotiations-header">
                 <img src="hubble-logo.svg" alt="Hubble" class="negotiations-logo">
                 <button class="negotiations-new-btn" onclick="showWizard()">
-                    ＋ 新しい交渉を始める
+                    <span class="material-symbols-outlined icon-sm">add</span> 新しい交渉を始める
                 </button>
             </div>
 
             <!-- 検索・フィルター -->
             <div class="negotiations-toolbar">
                 <div class="negotiations-search">
-                    <span class="search-icon">🔍</span>
+                    <span class="search-icon material-symbols-outlined">search</span>
                     <input type="text" class="negotiations-search-input" placeholder="契約書名、相手先で検索...">
                         </div>
                 <div class="negotiations-filters">
@@ -45,7 +47,7 @@
                 <!-- 交渉中セクション -->
                 <div class="negotiations-section">
                     <div class="negotiations-section-header">
-                        <span class="negotiations-section-icon">💬</span>
+                        <span class="negotiations-section-icon material-symbols-outlined">forum</span>
                         <span class="negotiations-section-title">交渉中</span>
                         <span class="negotiations-section-count">2</span>
                     </div>
@@ -53,7 +55,7 @@
                         <!-- カード1 -->
                         <div class="negotiation-card" onclick="location.href='negotiation.html'">
                             <div class="negotiation-card-header">
-                                <div class="negotiation-card-icon">📄</div>
+                                <div class="negotiation-card-icon"><span class="material-symbols-outlined">description</span></div>
                                 <div class="negotiation-card-title">業務委託基本契約書</div>
                                 <div class="negotiation-card-badge negotiating">交渉中</div>
                             </div>
@@ -72,7 +74,7 @@
                         <!-- カード2 -->
                         <div class="negotiation-card">
                             <div class="negotiation-card-header">
-                                <div class="negotiation-card-icon">📄</div>
+                                <div class="negotiation-card-icon"><span class="material-symbols-outlined">description</span></div>
                                 <div class="negotiation-card-title">秘密保持契約書</div>
                                 <div class="negotiation-card-badge waiting">返答待ち</div>
                                 </div>
@@ -84,7 +86,7 @@
                                 <span class="negotiation-card-version">Ver.3</span>
                             </div>
                             <div class="negotiation-card-activity">
-                                <div class="activity-icon">📝</div>
+                                <div class="activity-icon"><span class="material-symbols-outlined icon-sm">edit_note</span></div>
                                 <div class="activity-text">相手がドラフトを確認中</div>
                         </div>
                     </div>
@@ -94,7 +96,7 @@
                 <!-- 合意済みセクション -->
                 <div class="negotiations-section">
                     <div class="negotiations-section-header">
-                        <span class="negotiations-section-icon">✅</span>
+                        <span class="negotiations-section-icon material-symbols-outlined">check_circle</span>
                         <span class="negotiations-section-title">合意済み</span>
                         <span class="negotiations-section-count">2</span>
                             </div>
@@ -102,9 +104,9 @@
                         <!-- カード3 -->
                         <div class="negotiation-card agreed">
                             <div class="negotiation-card-header">
-                                <div class="negotiation-card-icon">📄</div>
+                                <div class="negotiation-card-icon"><span class="material-symbols-outlined">description</span></div>
                                 <div class="negotiation-card-title">システム開発契約書</div>
-                                <div class="negotiation-card-badge agreed">✅ 合意済み</div>
+                                <div class="negotiation-card-badge agreed"><span class="material-symbols-outlined icon-xs">check_circle</span> 合意済み</div>
                             </div>
                             <div class="negotiation-card-meta">
                                 <span class="negotiation-card-partner">株式会社GHI 鈴木様</span>
@@ -115,9 +117,9 @@
                         <!-- カード4 -->
                         <div class="negotiation-card agreed">
                             <div class="negotiation-card-header">
-                                <div class="negotiation-card-icon">📄</div>
+                                <div class="negotiation-card-icon"><span class="material-symbols-outlined">description</span></div>
                                 <div class="negotiation-card-title">コンサルティング契約書</div>
-                                <div class="negotiation-card-badge agreed">✅ 合意済み</div>
+                                <div class="negotiation-card-badge agreed"><span class="material-symbols-outlined icon-xs">check_circle</span> 合意済み</div>
                             </div>
                             <div class="negotiation-card-meta">
                                 <span class="negotiation-card-partner">株式会社JKL 高橋様</span>
@@ -161,7 +163,7 @@
             <!-- Step 1: 契約書アップロード -->
             <div class="wizard-step active" id="wizardStep1">
                 <div class="wizard-step-header">
-                    <h2 class="wizard-step-title">📄 交渉する契約書をアップロード</h2>
+                    <h2 class="wizard-step-title"><span class="material-symbols-outlined">description</span> 交渉する契約書をアップロード</h2>
                     <p class="wizard-step-desc">契約書をアップロードして交渉を始めましょう。複数の契約書をまとめてアップロードできます。</p>
                 </div>
 
@@ -169,7 +171,7 @@
                      ondragover="handleWizardDragOver(event)"
                      ondragleave="handleWizardDragLeave(event)"
                      ondrop="handleWizardDrop(event)">
-                    <div class="wizard-upload-icon">📎</div>
+                    <div class="wizard-upload-icon"><span class="material-symbols-outlined icon-xl">attach_file</span></div>
                     <div class="wizard-upload-text">ファイルをドラッグ＆ドロップ</div>
                     <div class="wizard-upload-subtext">または クリックして選択</div>
                     <div class="wizard-upload-formats">Word (.docx) / PDF 対応</div>
@@ -187,8 +189,37 @@
             <!-- Step 2: 相手を招待 -->
             <div class="wizard-step" id="wizardStep2">
                 <div class="wizard-step-header">
-                    <h2 class="wizard-step-title">👥 交渉相手を招待</h2>
+                    <h2 class="wizard-step-title"><span class="material-symbols-outlined">group_add</span> 交渉相手を招待</h2>
                     <p class="wizard-step-desc">メールアドレスで招待するか、招待リンクを共有してください。</p>
+                </div>
+
+                <!-- 権限選択 -->
+                <div class="wizard-permission-section">
+                    <label class="wizard-label">この相手の権限</label>
+                    <div class="wizard-permission-selector">
+                        <label class="wizard-permission-option selected" data-permission="signer">
+                            <input type="radio" name="invitePermission" value="signer" checked>
+                            <div class="wizard-permission-content">
+                                <div class="wizard-permission-icon"><span class="material-symbols-outlined">key</span></div>
+                                <div class="wizard-permission-info">
+                                    <div class="wizard-permission-title">合意権限あり</div>
+                                    <div class="wizard-permission-desc">契約への合意が可能</div>
+                                </div>
+                            </div>
+                            <div class="wizard-permission-check"><span class="material-symbols-outlined icon-sm">check</span></div>
+                        </label>
+                        <label class="wizard-permission-option" data-permission="member">
+                            <input type="radio" name="invitePermission" value="member">
+                            <div class="wizard-permission-content">
+                                <div class="wizard-permission-icon"><span class="material-symbols-outlined">person</span></div>
+                                <div class="wizard-permission-info">
+                                    <div class="wizard-permission-title">メンバー</div>
+                                    <div class="wizard-permission-desc">閲覧・編集・コメントのみ</div>
+                                </div>
+                            </div>
+                            <div class="wizard-permission-check"><span class="material-symbols-outlined icon-sm">check</span></div>
+                        </label>
+                    </div>
                 </div>
 
                 <div class="wizard-invite-section">
@@ -207,32 +238,32 @@
                 </div>
 
                 <div class="wizard-link-section">
-                    <label class="wizard-label">🔗 招待リンクをコピー</label>
+                    <label class="wizard-label"><span class="material-symbols-outlined icon-sm">link</span> 招待リンクをコピー</label>
                     <div class="wizard-link-row">
                         <input type="text" class="wizard-link-input" id="wizardLinkInput" value="https://nego.app/join/x7k2mP9qL..." readonly>
-                        <button class="wizard-copy-btn" onclick="copyInviteLink()">📋 コピー</button>
+                        <button class="wizard-copy-btn" onclick="copyInviteLink()"><span class="material-symbols-outlined icon-sm">content_copy</span> コピー</button>
                     </div>
-                    <p class="wizard-link-note">💡 招待された方は契約書を閲覧できます。編集・合意にはサインインが必要です。</p>
+                    <p class="wizard-link-note"><span class="material-symbols-outlined icon-sm">lightbulb</span> 招待された方は契約書を閲覧できます。編集・合意にはサインインが必要です。</p>
                 </div>
             </div>
 
             <!-- Step 3: 確認・開始 -->
             <div class="wizard-step" id="wizardStep3">
                 <div class="wizard-step-header">
-                    <h2 class="wizard-step-title">✨ 交渉を開始する準備ができました</h2>
+                    <h2 class="wizard-step-title"><span class="material-symbols-outlined">auto_awesome</span> 交渉を開始する準備ができました</h2>
                     <p class="wizard-step-desc">以下の内容で交渉を開始します。</p>
                 </div>
 
                 <div class="wizard-summary">
                     <div class="wizard-summary-section">
-                        <div class="wizard-summary-label">📄 契約書</div>
+                        <div class="wizard-summary-label"><span class="material-symbols-outlined icon-sm">description</span> 契約書</div>
                         <ul class="wizard-summary-list" id="wizardSummaryFiles">
                             <!-- ファイルリストがここに表示される -->
                         </ul>
                     </div>
 
                     <div class="wizard-summary-section">
-                        <div class="wizard-summary-label">👥 招待</div>
+                        <div class="wizard-summary-label"><span class="material-symbols-outlined icon-sm">group</span> 招待</div>
                         <ul class="wizard-summary-list" id="wizardSummaryInvites">
                             <!-- 招待リストがここに表示される -->
                         </ul>
@@ -247,12 +278,12 @@
             <!-- ウィザードフッター -->
             <div class="wizard-footer">
                 <button class="wizard-btn secondary" id="wizardBackBtn" onclick="wizardBack()" style="display: none;">
-                    ← 戻る
+                    <span class="material-symbols-outlined icon-sm">chevron_left</span> 戻る
                 </button>
                 <div class="wizard-footer-spacer"></div>
                 <button class="wizard-btn secondary" onclick="hideWizard()">キャンセル</button>
                 <button class="wizard-btn primary" id="wizardNextBtn" onclick="wizardNext()">
-                    次へ →
+                    次へ <span class="material-symbols-outlined icon-sm">chevron_right</span>
                 </button>
             </div>
         </div>
@@ -260,12 +291,12 @@
 
     <!-- デモ用: LPを見るボタン -->
     <a href="website.html" class="demo-trigger-btn website-demo">
-        🌐 サービスサイトを見る
+        <span class="material-symbols-outlined icon-sm">language</span> サービスサイトを見る
     </a>
 
     <!-- デモ用: 招待された側を体験ボタン -->
     <a href="invite.html" class="demo-trigger-btn invite-demo">
-        📩 招待された側を体験
+        <span class="material-symbols-outlined icon-sm">mail</span> 招待された側を体験
     </a>
 
     <script src="script.js"></script>

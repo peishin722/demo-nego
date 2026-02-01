@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>業務委託基本契約書 - ContractNego</title>
     <link rel="icon" href="favicon-32.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="hubble-design-tokens.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="page-negotiation">
@@ -15,7 +17,7 @@
     <div class="global-status-banner waiting" id="globalStatusBanner">
         <div class="global-status-content">
             <div class="global-status-pulse"></div>
-            <div class="global-status-icon">⏳</div>
+            <div class="global-status-icon"><span class="material-symbols-outlined">hourglass_empty</span></div>
             <div class="global-status-text">
                 <div class="global-status-title">相手方の合意を待っています</div>
                 <div class="global-status-desc">株式会社XYZ（田中太郎様）が「この内容で合意」を押すと契約が成立します</div>
@@ -29,20 +31,20 @@
     <!-- 合意完了バナー（非表示） -->
     <div class="global-status-banner agreed hidden" id="globalAgreedBanner">
         <div class="global-status-content">
-            <div class="global-status-icon">🎉</div>
+            <div class="global-status-icon"><span class="material-symbols-outlined">celebration</span></div>
             <div class="global-status-text">
                 <div class="global-status-title">契約が成立しました！</div>
                 <div class="global-status-desc">両者の合意が完了しました。契約書をダウンロードできます。</div>
             </div>
         </div>
         <div class="global-status-action">
-            <button class="global-status-download-btn" onclick="downloadContract()">📥 契約書をダウンロード</button>
+            <button class="global-status-download-btn" onclick="downloadContract()"><span class="material-symbols-outlined icon-sm">download</span> 契約書をダウンロード</button>
         </div>
     </div>
 
     <!-- デモ用トグルボタン -->
     <button class="demo-status-toggle" id="demoStatusToggle" onclick="toggleDemoStatus()">
-        🎭 ステータスをデモ
+        <span class="material-symbols-outlined icon-sm">theater_comedy</span> ステータスをデモ
     </button>
 
     <!-- ヘッダー -->
@@ -50,16 +52,15 @@
         <div class="header-left">
             <!-- 一覧に戻るボタン -->
             <a href="index.html" class="back-to-list-btn">
-                <span class="back-arrow">←</span>
-                <span class="back-text">一覧</span>
+                <span class="material-symbols-outlined">chevron_left</span>
             </a>
             <div class="contract-title">業務委託基本契約書</div>
             <!-- メンバー表示 -->
             <div class="header-members" id="headerMembers">
                 <button class="header-members-toggle" onclick="toggleHeaderMembersPanel(event)">
                     <span class="header-members-count">2人</span>
-                    <span class="header-members-icon">👥</span>
-                    <span class="header-members-arrow">▼</span>
+                    <span class="header-members-icon material-symbols-outlined icon-sm">group</span>
+                    <span class="header-members-arrow material-symbols-outlined icon-xs">expand_more</span>
                 </button>
                 <!-- メンバーパネル（ドロップダウン） -->
                 <div class="header-members-panel" id="headerMembersPanel">
@@ -71,7 +72,7 @@
                                 <div class="header-member-company">株式会社XYZ</div>
                             </div>
                             <div class="header-member-permission signer">
-                                <span class="permission-icon">🔑</span>
+                                <span class="permission-icon material-symbols-outlined icon-xs">key</span>
                                 <span class="permission-label">合意権限あり</span>
                             </div>
                         </div>
@@ -82,14 +83,14 @@
                                 <div class="header-member-company">株式会社ABC</div>
                             </div>
                             <div class="header-member-permission signer">
-                                <span class="permission-icon">🔑</span>
+                                <span class="permission-icon material-symbols-outlined icon-xs">key</span>
                                 <span class="permission-label">合意権限あり</span>
                             </div>
                         </div>
                     </div>
                     <div class="header-members-add">
                         <button class="header-members-add-btn" onclick="openAddMemberModal()">
-                            ＋ メンバーを追加
+                            <span class="material-symbols-outlined icon-sm">person_add</span> メンバーを追加
                         </button>
                     </div>
                 </div>
@@ -97,7 +98,7 @@
         </div>
         <div class="header-actions">
             <button class="header-btn primary agree-btn" id="agreeBtn" onclick="agreeContract()">
-                ✅ この内容で合意
+                <span class="material-symbols-outlined icon-sm">check_circle</span> この内容で合意
             </button>
         </div>
     </div>
@@ -109,15 +110,15 @@
             <!-- メインタブ -->
             <div class="main-tabs">
                 <button class="main-tab active" onclick="switchMainTab('overview')">
-                    <span>📊</span>
+                    <span class="material-symbols-outlined icon-sm">dashboard</span>
                     <span>概要</span>
                 </button>
                 <button class="main-tab" onclick="switchMainTab('contract')">
-                    <span>📄</span>
+                    <span class="material-symbols-outlined icon-sm">description</span>
                     <span>契約書</span>
                 </button>
                 <button class="main-tab" onclick="switchMainTab('management')">
-                    <span>📅</span>
+                    <span class="material-symbols-outlined icon-sm">settings</span>
                     <span>管理</span>
                 </button>
             </div>
@@ -127,7 +128,7 @@
                 <div class="overview-container">
                     <!-- ステータスバナー -->
                     <div class="overview-status-banner negotiating" id="overviewStatusBanner">
-                        <div class="status-banner-icon">🔄</div>
+                        <div class="status-banner-icon"><span class="material-symbols-outlined">sync</span></div>
                         <div class="status-banner-content">
                             <div class="status-banner-title">交渉中の内容（Ver.8 時点）</div>
                             <div class="status-banner-desc">この概要は交渉の進行に応じて自動更新されます</div>
@@ -138,9 +139,9 @@
                     <!-- この契約の要点カード -->
                     <div class="summary-card key-points-card ai-generated-card">
                         <div class="card-header">
-                            <div class="card-icon">🎯</div>
+                            <div class="card-icon"><span class="material-symbols-outlined icon-filled">adjust</span></div>
                             <div class="card-title">この契約の要点</div>
-                            <div class="ai-badge">🤖 AI生成</div>
+                            <div class="ai-badge"><span class="material-symbols-outlined icon-xs">smart_toy</span> AI生成</div>
                         </div>
                         <div class="key-points-content">
                             <ul class="key-points-list">
@@ -150,16 +151,16 @@
                             </ul>
                         </div>
                         <div class="ai-card-footer">
-                            <span class="ai-footer-note">💡 契約書から自動生成されています。内容をご確認ください。</span>
+                            <span class="ai-footer-note"><span class="material-symbols-outlined icon-xs">lightbulb</span> 契約書から自動生成されています。内容をご確認ください。</span>
                         </div>
                     </div>
 
                     <!-- 人・モノ・金の流れ図 -->
                     <div class="summary-card ai-generated-card">
                         <div class="card-header">
-                            <div class="card-icon">📈</div>
+                            <div class="card-icon"><span class="material-symbols-outlined icon-filled">trending_up</span></div>
                             <div class="card-title">人・モノ・金の流れ</div>
-                            <div class="ai-badge">🤖 AI生成</div>
+                            <div class="ai-badge"><span class="material-symbols-outlined icon-xs">smart_toy</span> AI生成</div>
                         </div>
                         <div class="flow-section">
                             <div class="flow-diagram">
@@ -169,7 +170,7 @@
                                 <div class="flow-arrow-container">
                                     <div class="flow-arrow-line"></div>
                                     <div class="flow-arrow-label">サービス提供</div>
-                                    <div class="flow-arrow-head">→</div>
+                                    <div class="flow-arrow-head"><span class="material-symbols-outlined icon-sm">arrow_forward</span></div>
                                 </div>
                                 <div class="flow-node">
                                     <div class="flow-box partner">XYZ社<br><span class="flow-sub">(田中様)</span></div>
@@ -182,7 +183,7 @@
                                 <div class="flow-arrow-container">
                                     <div class="flow-arrow-line reverse"></div>
                                     <div class="flow-arrow-label money">月48万円</div>
-                                    <div class="flow-arrow-head">→</div>
+                                    <div class="flow-arrow-head"><span class="material-symbols-outlined icon-sm">arrow_forward</span></div>
                                 </div>
                                 <div class="flow-node">
                                     <div class="flow-box">ABC社<br><span class="flow-sub">(あなたの会社)</span></div>
@@ -194,9 +195,9 @@
                     <!-- タイムラインカード -->
                     <div class="summary-card ai-generated-card">
                         <div class="card-header">
-                            <div class="card-icon">📅</div>
+                            <div class="card-icon"><span class="material-symbols-outlined">calendar_month</span></div>
                             <div class="card-title">これからのタイムライン</div>
-                            <div class="ai-badge">🤖 AI生成</div>
+                            <div class="ai-badge"><span class="material-symbols-outlined icon-xs">smart_toy</span> AI生成</div>
                         </div>
                         <div class="timeline">
                             <!-- 契約開始 -->
@@ -204,7 +205,7 @@
                                 <div class="timeline-dot"></div>
                                 <div class="timeline-content">
                                     <div class="timeline-date">2026年2月1日</div>
-                                    <div class="timeline-title">🚀 契約開始</div>
+                                    <div class="timeline-title"><span class="material-symbols-outlined icon-sm">rocket_launch</span> 契約開始</div>
                                 </div>
                                 <div class="timeline-badge completed">完了</div>
                             </div>
@@ -213,7 +214,7 @@
                                 <div class="timeline-dot"></div>
                                 <div class="timeline-content">
                                     <div class="timeline-date">2026年2月28日</div>
-                                    <div class="timeline-title">💰 請求書発行（2月分）</div>
+                                    <div class="timeline-title"><span class="material-symbols-outlined icon-sm">payments</span> 請求書発行（2月分）</div>
                                     <div class="timeline-amount">¥480,000（税別）</div>
                                 </div>
                                 <div class="timeline-badge upcoming">今月</div>
@@ -223,7 +224,7 @@
                                 <div class="timeline-dot"></div>
                                 <div class="timeline-content">
                                     <div class="timeline-date">2026年3月31日</div>
-                                    <div class="timeline-title">💳 支払期日（2月分）</div>
+                                    <div class="timeline-title"><span class="material-symbols-outlined icon-sm">credit_card</span> 支払期日（2月分）</div>
                                 </div>
                             </div>
                             <!-- 3月請求 -->
@@ -231,7 +232,7 @@
                                 <div class="timeline-dot"></div>
                                 <div class="timeline-content">
                                     <div class="timeline-date">2026年3月31日</div>
-                                    <div class="timeline-title">💰 請求書発行（3月分）</div>
+                                    <div class="timeline-title"><span class="material-symbols-outlined icon-sm">payments</span> 請求書発行（3月分）</div>
                                     <div class="timeline-amount">¥480,000（税別）</div>
                                 </div>
                                 <div class="timeline-badge recurring">毎月</div>
@@ -241,7 +242,7 @@
                                 <div class="timeline-dot"></div>
                                 <div class="timeline-content">
                                     <div class="timeline-date">2026年5月31日</div>
-                                    <div class="timeline-title">⚠️ 契約更新判断期限</div>
+                                    <div class="timeline-title"><span class="material-symbols-outlined icon-sm">warning</span> 契約更新判断期限</div>
                                     <div class="timeline-alert">この日までに連絡しないと自動更新</div>
                                 </div>
                                 <div class="timeline-badge warning">重要</div>
@@ -251,12 +252,12 @@
                                 <div class="timeline-dot"></div>
                                 <div class="timeline-content">
                                     <div class="timeline-date">2026年7月31日</div>
-                                    <div class="timeline-title">🏁 契約満了</div>
+                                    <div class="timeline-title"><span class="material-symbols-outlined icon-sm">flag</span> 契約満了</div>
                                 </div>
                             </div>
                         </div>
                         <div class="timeline-note">
-                            <span>💡 請求・支払いは契約条件に基づいて自動計算されています</span>
+                            <span><span class="material-symbols-outlined icon-xs">lightbulb</span> 請求・支払いは契約条件に基づいて自動計算されています</span>
                         </div>
                     </div>
                 </div>
@@ -268,24 +269,24 @@
                     <!-- ステータスバー -->
                     <div class="contract-status-bar">
                         <div class="status-left">
-                            <span class="status-badge" id="contractStatusBadge">💬 交渉中</span>
+                            <span class="status-badge" id="contractStatusBadge"><span class="material-symbols-outlined icon-xs">forum</span> 交渉中</span>
                         </div>
                         <div class="status-right">
                             <button class="status-action-btn" id="editLockBtn" onclick="toggleEditLock()">
-                                📝 Wordで編集
+                                <span class="material-symbols-outlined icon-sm">edit_document</span> Wordで編集
                             </button>
-                            <button class="status-action-btn" onclick="openUploadModal()">📤 アップロード</button>
-                            <button class="status-action-btn" onclick="downloadWord()">📥 ダウンロード</button>
+                            <button class="status-action-btn" onclick="openUploadModal()"><span class="material-symbols-outlined icon-sm">upload</span> アップロード</button>
+                            <button class="status-action-btn" onclick="downloadWord()"><span class="material-symbols-outlined icon-sm">download</span> ダウンロード</button>
                         </div>
                     </div>
 
                     <!-- 契約書サブタブ -->
                     <div class="contract-subtabs">
                         <button class="contract-subtab active" onclick="switchContractSubtab('basic')">
-                            📄 基本契約書
+                            <span class="material-symbols-outlined icon-sm">description</span> 基本契約書
                         </button>
                         <button class="contract-subtab" onclick="switchContractSubtab('individual-a')">
-                            📋 個別契約(案件A)
+                            <span class="material-symbols-outlined icon-sm">article</span> 個別契約(案件A)
                         </button>
                         <button class="add-contract-subtab" onclick="addNewContract()">
                             + 新規追加
@@ -297,7 +298,7 @@
                         <!-- 左側: バージョンツリー -->
                         <div class="version-tree-panel">
                             <div class="version-tree-header">
-                                <span class="version-tree-title">📋 バージョン履歴</span>
+                                <span class="version-tree-title"><span class="material-symbols-outlined icon-sm">history</span> バージョン履歴</span>
                                 <label class="version-compare-toggle">
                                     <input type="checkbox" id="compareMode" onchange="toggleCompareMode()">
                                     <span>比較</span>
@@ -469,7 +470,7 @@
                             </div>
                             <div class="version-tree-footer">
                                 <button class="compare-btn" id="compareBtn" disabled>
-                                    🔍 バージョン比較
+                                    <span class="material-symbols-outlined icon-sm">compare</span> バージョン比較
                                 </button>
                             </div>
                         </div>
@@ -479,14 +480,14 @@
                             <!-- AI解説カード -->
                             <div class="ai-explain-card">
                                 <div class="explain-header">
-                                    <span class="explain-icon">💡</span>
+                                    <span class="explain-icon material-symbols-outlined icon-sm">lightbulb</span>
                                     <span class="explain-title">第3条をわかりやすく</span>
                                 </div>
                                 <div class="explain-text">
                                     <strong>つまり:</strong> 半年間の契約です。やめたい時は2ヶ月前(5/31まで)に言えばOK。何もしなければ自動的にもう半年延長されます。
                                 </div>
                                 <div class="explain-alert">
-                                    ⚠️ <strong>注意:</strong> 5/31までに連絡しないと自動更新されます
+                                    <span class="material-symbols-outlined icon-sm">warning</span> <strong>注意:</strong> 5/31までに連絡しないと自動更新されます
                                 </div>
                             </div>
 
@@ -531,8 +532,8 @@
                                 <div class="doc-article">
                                     <div class="article-title">第4条（報酬）</div>
                                     <div class="article-content">
-                                        1. 甲は乙に対し、本業務の対価として、月額<span class="highlight-change commented" data-comment-id="1">金48万円</span><span class="comment-indicator" onclick="showCommentThread(1)">💬 2</span>（消費税別）を支払うものとする。<br>
-                                        2. 報酬の支払いは、<span class="commented" data-comment-id="2">毎月末日締め、翌月末日払い</span><span class="comment-indicator" onclick="showCommentThread(2)">💬 1</span>とする。<br>
+                                        1. 甲は乙に対し、本業務の対価として、月額<span class="highlight-change commented" data-comment-id="1">金48万円</span><span class="comment-indicator" onclick="showCommentThread(1)"><span class="material-symbols-outlined icon-xs">chat</span> 2</span>（消費税別）を支払うものとする。<br>
+                                        2. 報酬の支払いは、<span class="commented" data-comment-id="2">毎月末日締め、翌月末日払い</span><span class="comment-indicator" onclick="showCommentThread(2)"><span class="material-symbols-outlined icon-xs">chat</span> 1</span>とする。<br>
                                         3. 振込手数料は甲の負担とする。
                                     </div>
                                 </div>
@@ -548,7 +549,7 @@
                                     <div class="article-title">第6条（秘密保持）</div>
                                     <div class="article-content">
                                         1. 甲及び乙は、本契約に関連して知り得た相手方の技術上、営業上その他の秘密情報を、相手方の事前の書面による承諾なく第三者に開示・漏洩してはならない。<br>
-                                        2. 前項の義務は、<span class="commented" data-comment-id="3">本契約終了後3年間</span><span class="comment-indicator" onclick="showCommentThread(3)">💬 1</span>存続するものとする。<br>
+                                        2. 前項の義務は、<span class="commented" data-comment-id="3">本契約終了後3年間</span><span class="comment-indicator" onclick="showCommentThread(3)"><span class="material-symbols-outlined icon-xs">chat</span> 1</span>存続するものとする。<br>
                                         3. 次の各号に該当する情報は、秘密情報から除外する。<br>
                                         <div class="article-list">
                                             (1) 開示時点で既に公知であった情報<br>
@@ -685,12 +686,12 @@
                         <!-- 重要な日付カード（左上に配置・最重要） -->
                         <div class="action-card important-dates-card">
                             <div class="action-header">
-                                <div class="action-title">📅 重要な日付</div>
-                                <div class="contract-status-badge active">✅ 契約進行中</div>
+                                <div class="action-title"><span class="material-symbols-outlined icon-sm">calendar_month</span> 重要な日付</div>
+                                <div class="contract-status-badge active"><span class="material-symbols-outlined icon-xs">check_circle</span> 契約進行中</div>
                             </div>
                             <div class="important-dates-list">
                                 <div class="important-date-item">
-                                    <div class="date-icon start">🚀</div>
+                                    <div class="date-icon start"><span class="material-symbols-outlined icon-sm">rocket_launch</span></div>
                                     <div class="date-info">
                                         <div class="date-label">契約開始日</div>
                                         <div class="date-value">2026年2月1日</div>
@@ -698,7 +699,7 @@
                                     <div class="date-status completed">完了</div>
                                 </div>
                                 <div class="important-date-item highlight">
-                                    <div class="date-icon warning">⚠️</div>
+                                    <div class="date-icon warning"><span class="material-symbols-outlined">warning</span></div>
                                     <div class="date-info">
                                         <div class="date-label">更新判断期限</div>
                                         <div class="date-value">2026年5月31日</div>
@@ -707,7 +708,7 @@
                                     <div class="date-countdown">あと93日</div>
                                 </div>
                                 <div class="important-date-item">
-                                    <div class="date-icon end">🏁</div>
+                                    <div class="date-icon end"><span class="material-symbols-outlined icon-sm">flag</span></div>
                                     <div class="date-info">
                                         <div class="date-label">契約満了日</div>
                                         <div class="date-value">2026年7月31日</div>
@@ -719,7 +720,7 @@
                         <!-- 金額サマリーカード -->
                         <div class="action-card amount-summary-card">
                             <div class="action-header">
-                                <div class="action-title">💰 金額サマリー</div>
+                                <div class="action-title"><span class="material-symbols-outlined icon-sm">payments</span> 金額サマリー</div>
                             </div>
                             <div class="amount-summary">
                                 <div class="amount-main">
@@ -746,7 +747,7 @@
                         <!-- 次のアクションカード -->
                         <div class="action-card">
                             <div class="action-header">
-                                <div class="action-title">📌 次のアクション</div>
+                                <div class="action-title"><span class="material-symbols-outlined icon-sm">push_pin</span> 次のアクション</div>
                             </div>
                             <div class="action-list">
                                 <div class="action-item urgent">
@@ -776,7 +777,7 @@
                         <!-- アクティビティログカード -->
                         <div class="action-card activity-log-card">
                             <div class="action-header">
-                                <div class="action-title">📝 アクティビティ</div>
+                                <div class="action-title"><span class="material-symbols-outlined icon-sm">history</span> アクティビティ</div>
                             </div>
                             <div class="activity-log-list">
                                 <div class="activity-log-item">
@@ -808,32 +809,32 @@
                                     </div>
                                 </div>
                             </div>
-                            <button class="activity-log-more">すべてのアクティビティを見る →</button>
+                            <button class="activity-log-more">すべてのアクティビティを見る <span class="material-symbols-outlined icon-sm">arrow_forward</span></button>
                         </div>
 
                         <!-- 関連ドキュメントカード -->
                         <div class="action-card">
                             <div class="action-header">
-                                <div class="action-title">📎 関連ドキュメント</div>
+                                <div class="action-title"><span class="material-symbols-outlined icon-sm">attach_file</span> 関連ドキュメント</div>
                                 <button class="add-document-btn">+ 追加</button>
                             </div>
                             <div class="document-list">
                                 <div class="document-item">
-                                    <div class="document-icon">📄</div>
+                                    <div class="document-icon"><span class="material-symbols-outlined">description</span></div>
                                     <div class="document-info">
                                         <div class="document-name">見積書</div>
                                         <div class="document-date">2026/01/15</div>
                                     </div>
                                 </div>
                                 <div class="document-item">
-                                    <div class="document-icon">📋</div>
+                                    <div class="document-icon"><span class="material-symbols-outlined">article</span></div>
                                     <div class="document-info">
                                         <div class="document-name">発注書</div>
                                         <div class="document-date">2026/01/20</div>
                                     </div>
                                 </div>
                                 <div class="document-item">
-                                    <div class="document-icon">💰</div>
+                                    <div class="document-icon"><span class="material-symbols-outlined">payments</span></div>
                                     <div class="document-info">
                                         <div class="document-name">請求書(1月分)</div>
                                         <div class="document-date">2026/01/31</div>
@@ -851,7 +852,7 @@
             <!-- コメントスレッドパネル -->
             <div class="comment-thread-panel" id="commentThreadPanel">
                 <div class="thread-header">
-                    <div class="thread-title">📍 コメントスレッド</div>
+                    <div class="thread-title"><span class="material-symbols-outlined icon-sm">location_on</span> コメントスレッド</div>
                     <button class="thread-close" onclick="closeCommentThread()">&times;</button>
                 </div>
                 <div class="thread-reference" id="threadReference"></div>
@@ -863,7 +864,7 @@
             </div>
 
             <div class="chat-header">
-                <div class="chat-title">💬 メッセージ</div>
+                <div class="chat-title"><span class="material-symbols-outlined icon-sm">chat</span> メッセージ</div>
             </div>
 
             <div class="messages-area" id="messages">
@@ -917,11 +918,11 @@
     <!-- テキスト選択ポップアップメニュー -->
     <div class="selection-popup" id="selectionPopup">
         <button class="popup-btn" onclick="aiExplain()">
-            <span class="popup-icon">🤖</span>
+            <span class="popup-icon material-symbols-outlined">smart_toy</span>
             <span>AIで解説</span>
         </button>
         <button class="popup-btn" onclick="openCommentInput()">
-            <span class="popup-icon">💬</span>
+            <span class="popup-icon material-symbols-outlined">chat</span>
             <span>コメント</span>
         </button>
     </div>
@@ -930,7 +931,7 @@
     <div class="modal-overlay" id="commentModal" onclick="closeCommentModal(event)">
         <div class="modal-content comment-modal" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <div class="modal-title">💬 コメントを追加</div>
+                <div class="modal-title"><span class="material-symbols-outlined">chat</span> コメントを追加</div>
                 <button class="modal-close" onclick="closeCommentModal()">&times;</button>
             </div>
             <div class="modal-body">
@@ -948,7 +949,7 @@
     <div class="modal-overlay" id="aiExplainModal" onclick="closeAiExplainModal(event)">
         <div class="modal-content ai-explain-modal" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <div class="modal-title">🤖 AI解説</div>
+                <div class="modal-title"><span class="material-symbols-outlined">smart_toy</span> AI解説</div>
                 <button class="modal-close" onclick="closeAiExplainModal()">&times;</button>
             </div>
             <div class="modal-body">
@@ -971,7 +972,7 @@
     <div class="modal-overlay" id="uploadModal" onclick="closeUploadModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <div class="modal-title">📤 Wordファイルをアップロード</div>
+                <div class="modal-title"><span class="material-symbols-outlined icon-sm">upload</span> Wordファイルをアップロード</div>
                 <button class="modal-close" onclick="closeUploadModal()">&times;</button>
             </div>
             <div class="modal-body">
@@ -979,7 +980,7 @@
                      ondragover="handleDragOver(event)"
                      ondragleave="handleDragLeave(event)"
                      ondrop="handleDrop(event)">
-                    <div class="upload-icon">📄</div>
+                    <div class="upload-icon"><span class="material-symbols-outlined icon-lg">upload_file</span></div>
                     <div class="upload-text">ファイルをドラッグ&ドロップ</div>
                     <div class="upload-subtext">または</div>
                     <label class="upload-btn">
@@ -995,7 +996,7 @@
     <div class="modal-overlay" id="diffModal" onclick="closeDiffModal(event)">
         <div class="modal-content diff-modal" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <div class="modal-title">🔍 変更内容の確認</div>
+                <div class="modal-title"><span class="material-symbols-outlined">compare</span> 変更内容の確認</div>
                 <button class="modal-close" onclick="closeDiffModal()">&times;</button>
             </div>
             <div class="modal-body">
@@ -1039,7 +1040,7 @@
     <div class="modal-overlay" id="addMemberModal" onclick="closeAddMemberModal(event)">
         <div class="modal-content add-member-modal" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <div class="modal-title">👥 メンバーを追加</div>
+                <div class="modal-title"><span class="material-symbols-outlined">group_add</span> メンバーを追加</div>
                 <button class="modal-close" onclick="closeAddMemberModal()">&times;</button>
             </div>
             <div class="modal-body">
@@ -1050,7 +1051,7 @@
                         <label class="permission-option selected" data-permission="signer">
                             <input type="radio" name="memberPermission" value="signer" checked>
                             <div class="permission-option-content">
-                                <div class="permission-option-icon">🔑</div>
+                                <div class="permission-option-icon"><span class="material-symbols-outlined icon-sm">key</span></div>
                                 <div class="permission-option-info">
                                     <div class="permission-option-title">合意権限あり</div>
                                     <div class="permission-option-desc">契約への合意が可能</div>
@@ -1061,7 +1062,7 @@
                         <label class="permission-option" data-permission="member">
                             <input type="radio" name="memberPermission" value="member">
                             <div class="permission-option-content">
-                                <div class="permission-option-icon">👤</div>
+                                <div class="permission-option-icon"><span class="material-symbols-outlined icon-sm">person</span></div>
                                 <div class="permission-option-info">
                                     <div class="permission-option-title">メンバー</div>
                                     <div class="permission-option-desc">閲覧・編集・コメントのみ</div>
@@ -1085,10 +1086,10 @@
                 </div>
 
                 <div class="add-member-section">
-                    <label class="add-member-label">🔗 招待リンクをコピー</label>
+                    <label class="add-member-label"><span class="material-symbols-outlined icon-sm">link</span> 招待リンクをコピー</label>
                     <div class="add-member-link-row">
                         <input type="text" class="add-member-link-input" id="addMemberLinkInput" value="https://nego.app/join/abc123xyz..." readonly>
-                        <button class="add-member-copy-btn" onclick="copyMemberInviteLink()">📋</button>
+                        <button class="add-member-copy-btn" onclick="copyMemberInviteLink()"><span class="material-symbols-outlined icon-sm">content_copy</span></button>
                     </div>
                 </div>
             </div>

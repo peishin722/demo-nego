@@ -10,7 +10,7 @@ let selectedVersions = [];
 // ウィザード状態管理
 let wizardCurrentStep = 1;
 let wizardFiles = [];
-let wizardInviteEmails = [];
+let wizardInviteEmails = []; // { email: string, permission: 'signer' | 'member' }[]
 
 // デモ用コメントデータ
 const commentThreads = {
@@ -69,7 +69,7 @@ function addNewContract() {
 
         const newTab = document.createElement('button');
         newTab.className = 'contract-subtab';
-        newTab.textContent = `📋 ${contractName}`;
+        newTab.innerHTML = `<span class="material-symbols-outlined icon-xs">description</span> ${contractName}`;
         newTab.onclick = function() { switchContractSubtab('new'); };
 
         subtabs.insertBefore(newTab, addBtn);
@@ -85,17 +85,17 @@ function toggleEditLock() {
     if (editLockState === 'none') {
         // 編集開始
         editLockState = 'me';
-        btn.textContent = '🔒 編集を終了';
+        btn.innerHTML = '<span class="material-symbols-outlined icon-sm">lock</span> 編集を終了';
         btn.classList.add('active');
-        badge.textContent = '📝 編集中';
+        badge.innerHTML = '<span class="material-symbols-outlined icon-xs">edit</span> 編集中';
         badge.className = 'status-badge editing';
     } else if (editLockState === 'me') {
         // 編集終了
         editLockState = 'none';
-        btn.textContent = '📝 Wordで編集';
+        btn.innerHTML = '<span class="material-symbols-outlined icon-sm">edit_document</span> Wordで編集';
         btn.classList.remove('active');
         btn.classList.remove('locked');
-        badge.textContent = '💬 交渉中';
+        badge.innerHTML = '<span class="material-symbols-outlined icon-xs">chat</span> 交渉中';
         badge.className = 'status-badge';
     }
 }
@@ -105,12 +105,30 @@ function simulatePartnerEditing() {
     const btn = document.getElementById('editLockBtn');
     const badge = document.getElementById('contractStatusBadge');
 
+    if (!btn || !badge) return;
+    
     editLockState = 'them';
-    btn.textContent = '🔒 田中様が編集中';
+    btn.innerHTML = '<span class="material-symbols-outlined icon-sm">lock</span> 田中様が編集中';
     btn.classList.add('locked');
+    btn.classList.remove('active');
     btn.disabled = true;
-    badge.textContent = '🔒 ロック中';
+    badge.innerHTML = '<span class="material-symbols-outlined icon-xs">lock</span> ロック中';
     badge.className = 'status-badge locked';
+}
+
+// 編集ロック状態をリセット
+function resetEditLockState() {
+    const btn = document.getElementById('editLockBtn');
+    const badge = document.getElementById('contractStatusBadge');
+
+    if (!btn || !badge) return;
+    
+    editLockState = 'none';
+    btn.innerHTML = '<span class="material-symbols-outlined icon-sm">edit_document</span> Wordで編集';
+    btn.classList.remove('active', 'locked');
+    btn.disabled = false;
+    badge.innerHTML = '<span class="material-symbols-outlined icon-xs">chat</span> 交渉中';
+    badge.className = 'status-badge';
 }
 
 // アップロードモーダル
@@ -193,12 +211,12 @@ function agreeContract() {
 
         // ボタンを更新
         const agreeBtn = document.getElementById('agreeBtn');
-        agreeBtn.textContent = '✅ 合意済み';
+        agreeBtn.innerHTML = '<span class="material-symbols-outlined icon-sm">check_circle</span> 合意済み';
         agreeBtn.classList.add('agreed');
 
         // ステータスバッジを更新
         const badge = document.getElementById('contractStatusBadge');
-        badge.textContent = '✅ 合意済み';
+        badge.innerHTML = '<span class="material-symbols-outlined icon-xs">check_circle</span> 合意済み';
         badge.className = 'status-badge agreed';
 
         // 編集ボタンを無効化
@@ -270,9 +288,9 @@ function updateCompareButton() {
     
     if (selectedVersions.length === 2) {
         const sorted = selectedVersions.sort((a, b) => b - a);
-        btn.textContent = `🔍 Ver.${sorted[0]} と Ver.${sorted[1]} を比較`;
+        btn.innerHTML = `<span class="material-symbols-outlined icon-sm">compare</span> Ver.${sorted[0]} と Ver.${sorted[1]} を比較`;
     } else {
-        btn.textContent = '🔍 バージョン比較';
+        btn.innerHTML = '<span class="material-symbols-outlined icon-sm">compare</span> バージョン比較';
     }
 }
 
@@ -375,12 +393,12 @@ function aiExplain() {
 function generateAiExplanation(text) {
     // デモ用のAI解説を生成
     const explanations = {
-        '金48万円': '<strong>💰 報酬金額について</strong><br><br>月額48万円（税別）は、デジタルマーケティング支援業務の対価として設定されています。<br><br>• 年間総額: 約576万円（税別）<br>• 消費税10%を加えると月額52.8万円<br><br>一般的なマーケティング支援の相場と比較して妥当な金額です。',
-        '毎月末日締め、翌月末日払い': '<strong>📅 支払いサイクルについて</strong><br><br>「月末締め翌月末払い」は一般的な支払い条件です。<br><br>• 例: 2月分の業務 → 2/28締め → 3/31支払い<br>• 支払いサイトは約30日間<br><br>キャッシュフローの観点から、受注側にとっては標準的な条件です。',
-        '本契約終了後3年間': '<strong>🔒 秘密保持期間について</strong><br><br>契約終了後3年間の秘密保持義務は、業界標準的な期間です。<br><br>• 短い場合: 1〜2年<br>• 一般的: 3〜5年<br>• 長い場合: 無期限<br><br>マーケティング業務の場合、顧客データや戦略情報を扱うため、3年間は適切な期間といえます。'
+        '金48万円': '<strong><span class="material-symbols-outlined icon-sm">payments</span> 報酬金額について</strong><br><br>月額48万円（税別）は、デジタルマーケティング支援業務の対価として設定されています。<br><br>• 年間総額: 約576万円（税別）<br>• 消費税10%を加えると月額52.8万円<br><br>一般的なマーケティング支援の相場と比較して妥当な金額です。',
+        '毎月末日締め、翌月末日払い': '<strong><span class="material-symbols-outlined icon-sm">calendar_month</span> 支払いサイクルについて</strong><br><br>「月末締め翌月末払い」は一般的な支払い条件です。<br><br>• 例: 2月分の業務 → 2/28締め → 3/31支払い<br>• 支払いサイトは約30日間<br><br>キャッシュフローの観点から、受注側にとっては標準的な条件です。',
+        '本契約終了後3年間': '<strong><span class="material-symbols-outlined icon-sm">lock</span> 秘密保持期間について</strong><br><br>契約終了後3年間の秘密保持義務は、業界標準的な期間です。<br><br>• 短い場合: 1〜2年<br>• 一般的: 3〜5年<br>• 長い場合: 無期限<br><br>マーケティング業務の場合、顧客データや戦略情報を扱うため、3年間は適切な期間といえます。'
     };
     
-    return explanations[text] || `<strong>📝 選択テキストの解説</strong><br><br>「${text}」<br><br>この条項は契約上の重要な規定です。具体的な法的効果や実務上の影響については、必要に応じて法務担当者にご確認ください。`;
+    return explanations[text] || `<strong><span class="material-symbols-outlined icon-sm">article</span> 選択テキストの解説</strong><br><br>「${text}」<br><br>この条項は契約上の重要な規定です。具体的な法的効果や実務上の影響については、必要に応じて法務担当者にご確認ください。`;
 }
 
 function closeAiExplainModal(event) {
@@ -423,7 +441,7 @@ function submitComment() {
                 <span class="message-time">今</span>
             </div>
             <div class="message-bubble">
-                <div style="font-size: 12px; color: #6b7280; margin-bottom: 8px;">📍 「${escapeHtml(selectedText)}」へのコメント:</div>
+                <div style="font-size: 12px; color: #6b7280; margin-bottom: 8px;"><span class="material-symbols-outlined icon-xs">location_on</span> 「${escapeHtml(selectedText)}」へのコメント:</div>
                 ${escapeHtml(text)}
             </div>
         `;
@@ -634,7 +652,7 @@ function updateWizardStep(step) {
 
     // 次へボタン
     if (step === 3) {
-        nextBtn.textContent = '🚀 交渉を開始する';
+        nextBtn.innerHTML = '<span class="material-symbols-outlined icon-sm">rocket_launch</span> 交渉を開始する';
         nextBtn.classList.add('start');
     } else {
         nextBtn.textContent = '次へ →';
@@ -749,12 +767,12 @@ function renderWizardFiles() {
         return;
     }
 
-    let html = '<div class="wizard-files-header">📎 アップロード済み (' + wizardFiles.length + '件)</div>';
+    let html = '<div class="wizard-files-header"><span class="material-symbols-outlined icon-sm">attach_file</span> アップロード済み (' + wizardFiles.length + '件)</div>';
 
     wizardFiles.forEach((file, index) => {
         const isPdf = file.type === '.pdf';
         const iconClass = isPdf ? 'wizard-file-icon pdf' : 'wizard-file-icon';
-        const icon = isPdf ? '📕' : '📄';
+        const icon = isPdf ? '<span class="material-symbols-outlined icon-sm">picture_as_pdf</span>' : '<span class="material-symbols-outlined icon-sm">description</span>';
         const sizeStr = formatFileSize(file.size);
 
         html += `
@@ -792,12 +810,16 @@ function addInviteEmail() {
     }
 
     // 重複チェック
-    if (wizardInviteEmails.includes(email)) {
+    if (wizardInviteEmails.some(item => item.email === email)) {
         alert('このメールアドレスは既に追加されています。');
         return;
     }
 
-    wizardInviteEmails.push(email);
+    // 選択中の権限を取得
+    const selectedPermission = document.querySelector('input[name="invitePermission"]:checked');
+    const permission = selectedPermission ? selectedPermission.value : 'signer';
+
+    wizardInviteEmails.push({ email, permission });
     input.value = '';
     renderWizardInviteEmails();
 }
@@ -816,11 +838,21 @@ function renderWizardInviteEmails() {
     }
 
     let html = '';
-    wizardInviteEmails.forEach((email, index) => {
+    wizardInviteEmails.forEach((item, index) => {
+        const isSigner = item.permission === 'signer';
+        const permissionIcon = isSigner ? 'key' : 'person';
+        const permissionLabel = isSigner ? '合意権限あり' : 'メンバー';
+        const permissionClass = isSigner ? 'permission-signer' : 'permission-member';
+        
         html += `
-            <div class="wizard-invite-email-item">
-                <span class="wizard-invite-email-text">${escapeHtml(email)}</span>
-                <button class="wizard-invite-email-remove" onclick="removeInviteEmail(${index})">✕</button>
+            <div class="wizard-invite-email-item ${permissionClass}">
+                <span class="wizard-invite-email-permission" title="${permissionLabel}">
+                    <span class="material-symbols-outlined icon-xs">${permissionIcon}</span>
+                </span>
+                <span class="wizard-invite-email-text">${escapeHtml(item.email)}</span>
+                <button class="wizard-invite-email-remove" onclick="removeInviteEmail(${index})">
+                    <span class="material-symbols-outlined icon-xs">close</span>
+                </button>
             </div>
         `;
     });
@@ -856,9 +888,14 @@ function updateWizardSummary() {
     // 招待リスト
     const invitesContainer = document.getElementById('wizardSummaryInvites');
     if (wizardInviteEmails.length === 0) {
-        invitesContainer.innerHTML = '<li>招待リンクで共有</li>';
+        invitesContainer.innerHTML = '<li><span class="material-symbols-outlined icon-xs">link</span> 招待リンクで共有</li>';
     } else {
-        invitesContainer.innerHTML = wizardInviteEmails.map(e => `<li>${escapeHtml(e)}</li>`).join('');
+        invitesContainer.innerHTML = wizardInviteEmails.map(item => {
+            const isSigner = item.permission === 'signer';
+            const icon = isSigner ? 'key' : 'person';
+            const label = isSigner ? '合意権限あり' : 'メンバー';
+            return `<li><span class="material-symbols-outlined icon-xs">${icon}</span> ${escapeHtml(item.email)} <span class="wizard-summary-permission">(${label})</span></li>`;
+        }).join('');
     }
 }
 
@@ -1023,12 +1060,15 @@ function initDemoStatusBanner() {
 
 function toggleDemoStatus() {
     // ステータスを順番に切り替え
+    // waiting → agreed → negotiating → partner_editing → waiting
     if (demoStatus === 'waiting') {
         demoStatus = 'agreed';
         // 合意完了時に紙吹雪を発射！
         launchConfetti();
     } else if (demoStatus === 'agreed') {
         demoStatus = 'negotiating';
+    } else if (demoStatus === 'negotiating') {
+        demoStatus = 'partner_editing';
     } else {
         demoStatus = 'waiting';
     }
@@ -1047,7 +1087,7 @@ function updateDemoStatus(status) {
     if (!toggleBtn || !waitingBanner || !agreedBanner) return;
     
     // トグルボタンのクラスをリセット
-    toggleBtn.classList.remove('status-waiting', 'status-agreed', 'status-negotiating');
+    toggleBtn.classList.remove('status-waiting', 'status-agreed', 'status-negotiating', 'status-partner-editing');
     
     // バナーの表示状態を更新
     switch(status) {
@@ -1060,7 +1100,7 @@ function updateDemoStatus(status) {
             
             // 合意ボタンを「合意済み」表示
             if (agreeBtn) {
-                agreeBtn.textContent = '✅ あなたは合意済み';
+                agreeBtn.innerHTML = '<span class="material-symbols-outlined icon-sm">check_circle</span> あなたは合意済み';
                 agreeBtn.classList.add('agreed');
                 agreeBtn.disabled = true;
             }
@@ -1075,7 +1115,7 @@ function updateDemoStatus(status) {
             
             // 合意ボタンを「契約成立」表示
             if (agreeBtn) {
-                agreeBtn.textContent = '🎉 契約成立！';
+                agreeBtn.innerHTML = '<span class="material-symbols-outlined icon-sm">celebration</span> 契約成立！';
                 agreeBtn.classList.add('agreed');
                 agreeBtn.disabled = true;
             }
@@ -1090,10 +1130,31 @@ function updateDemoStatus(status) {
             
             // 合意ボタンを通常状態に
             if (agreeBtn) {
-                agreeBtn.textContent = '✅ この内容で合意';
+                agreeBtn.innerHTML = '<span class="material-symbols-outlined icon-sm">check_circle</span> この内容で合意';
                 agreeBtn.classList.remove('agreed');
                 agreeBtn.disabled = false;
             }
+            
+            // 編集ロック状態をリセット
+            resetEditLockState();
+            break;
+            
+        case 'partner_editing':
+            // 相手が編集中（バナーなし）
+            waitingBanner.classList.add('hidden');
+            agreedBanner.classList.add('hidden');
+            body.classList.remove('has-status-banner');
+            toggleBtn.classList.add('status-partner-editing');
+            
+            // 合意ボタンを通常状態に
+            if (agreeBtn) {
+                agreeBtn.innerHTML = '<span class="material-symbols-outlined icon-sm">check_circle</span> この内容で合意';
+                agreeBtn.classList.remove('agreed');
+                agreeBtn.disabled = false;
+            }
+            
+            // 相手が編集中状態をシミュレート
+            simulatePartnerEditing();
             break;
     }
 }
@@ -1169,11 +1230,29 @@ function launchConfetti() {
 
 // 契約書ダウンロード（デモ用）
 function downloadContract() {
-    alert('📄 契約書をダウンロードします（デモ）\n\n実際にはPDF形式でダウンロードされます。');
+    alert('契約書をダウンロードします（デモ）\n\n実際にはPDF形式でダウンロードされます。');
 }
 
 // ページ読み込み時に初期化
 document.addEventListener('DOMContentLoaded', function() {
     initDemoStatusBanner();
     initPermissionSelector();
+    initWizardPermissionSelector();
 });
+
+// ウィザードの権限選択UI初期化
+function initWizardPermissionSelector() {
+    const permissionOptions = document.querySelectorAll('.wizard-permission-option');
+    
+    permissionOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            // 全てのオプションからselectedを削除
+            permissionOptions.forEach(opt => opt.classList.remove('selected'));
+            // クリックしたオプションにselectedを追加
+            this.classList.add('selected');
+            // ラジオボタンをチェック
+            const radio = this.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+        });
+    });
+}

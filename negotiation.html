@@ -8,6 +8,167 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="hubble-design-tokens.css">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 通知設定カード */
+        .notification-card {
+            grid-column: span 1;
+        }
+
+        .notification-setting-content {
+            padding: var(--space-4);
+        }
+
+        /* 通知レベル選択ボタン */
+        .notification-level-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: var(--space-4);
+        }
+
+        .notification-level-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 14px 12px;
+            background: var(--bg-note);
+            border: 2px solid transparent;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .notification-level-btn:hover {
+            background: var(--bg-hover);
+        }
+
+        .notification-level-btn.active {
+            border-color: var(--color-primary);
+            background: var(--color-primary-container);
+        }
+
+        .notification-level-btn .level-icon {
+            font-size: 24px;
+            color: var(--text-assist);
+        }
+
+        .notification-level-btn.active .level-icon {
+            color: var(--color-primary);
+        }
+
+        .notification-level-btn .level-label {
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-default);
+        }
+
+        .notification-level-btn.active .level-label {
+            color: var(--color-primary);
+        }
+
+        /* 選択中の説明 */
+        .notification-level-desc {
+            padding: 12px 14px;
+            background: var(--bg-note);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-4);
+        }
+
+        .level-desc-content.hidden {
+            display: none;
+        }
+
+        .level-desc-title {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-heading);
+            margin-bottom: 4px;
+        }
+
+        .level-desc-detail {
+            font-size: var(--font-size-xs);
+            color: var(--text-assist);
+            line-height: 1.5;
+        }
+
+        /* 重要マークトグル */
+        .notification-important-toggle {
+            border-top: 1px solid var(--border-default);
+            padding-top: var(--space-4);
+        }
+
+        .important-toggle {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 14px;
+            background: var(--bg-note);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .important-toggle:hover {
+            background: var(--bg-hover);
+        }
+
+        .important-toggle.checked {
+            background: #FFF8E1;
+        }
+
+        .important-checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--border-default);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+            transition: all 0.2s;
+        }
+
+        .important-toggle.checked .important-checkbox {
+            background: var(--color-warning);
+            border-color: var(--color-warning);
+        }
+
+        .important-checkbox .material-symbols-outlined {
+            font-size: 16px;
+            color: white;
+            opacity: 0;
+        }
+
+        .important-toggle.checked .important-checkbox .material-symbols-outlined {
+            opacity: 1;
+        }
+
+        .important-content {
+            flex: 1;
+        }
+
+        .important-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-heading);
+        }
+
+        .important-label .material-symbols-outlined {
+            color: var(--color-warning);
+        }
+
+        .important-desc {
+            font-size: var(--font-size-xs);
+            color: var(--text-assist);
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+    </style>
 </head>
 <body class="page-negotiation">
     <!-- 紙吹雪コンテナ -->
@@ -842,6 +1003,62 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- 通知設定カード -->
+                        <div class="action-card notification-card">
+                            <div class="action-header">
+                                <div class="action-title"><span class="material-symbols-outlined icon-sm">notifications</span> この交渉の通知</div>
+                            </div>
+                            <div class="notification-setting-content">
+                                <!-- 通知レベル選択 -->
+                                <div class="notification-level-selector">
+                                    <button class="notification-level-btn active" onclick="setNotificationLevel(this, 'standard')">
+                                        <span class="level-icon material-symbols-outlined">notifications_active</span>
+                                        <span class="level-label">標準</span>
+                                    </button>
+                                    <button class="notification-level-btn" onclick="setNotificationLevel(this, 'minimal')">
+                                        <span class="level-icon material-symbols-outlined">notification_important</span>
+                                        <span class="level-label">最小限</span>
+                                    </button>
+                                    <button class="notification-level-btn" onclick="setNotificationLevel(this, 'off')">
+                                        <span class="level-icon material-symbols-outlined">notifications_off</span>
+                                        <span class="level-label">オフ</span>
+                                    </button>
+                                </div>
+
+                                <!-- 選択中の説明 -->
+                                <div class="notification-level-desc" id="notificationLevelDesc">
+                                    <div class="level-desc-content" data-level="standard">
+                                        <div class="level-desc-title">相手が更新したら通知</div>
+                                        <div class="level-desc-detail">契約書の編集・コメント（まとめて1通）、署名リクエスト、期限リマインダー</div>
+                                    </div>
+                                    <div class="level-desc-content hidden" data-level="minimal">
+                                        <div class="level-desc-title">署名と期限だけ通知</div>
+                                        <div class="level-desc-detail">署名リクエスト、期限リマインダーのみ。編集・コメントは通知しません</div>
+                                    </div>
+                                    <div class="level-desc-content hidden" data-level="off">
+                                        <div class="level-desc-title">通知しない</div>
+                                        <div class="level-desc-detail">すべての通知をオフにします。アプリ内の通知センターでは確認できます</div>
+                                    </div>
+                                </div>
+
+                                <!-- 重要マーク -->
+                                <div class="notification-important-toggle">
+                                    <label class="important-toggle" onclick="toggleImportant(this)">
+                                        <div class="important-checkbox">
+                                            <span class="material-symbols-outlined icon-sm">check</span>
+                                        </div>
+                                        <div class="important-content">
+                                            <div class="important-label">
+                                                <span class="material-symbols-outlined icon-sm">star</span>
+                                                重要な交渉としてマーク
+                                            </div>
+                                            <div class="important-desc">リマインダーが通常より早め（2週間前、1週間前、1日前）に届きます</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1097,5 +1314,27 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+        // 通知レベル切り替え
+        function setNotificationLevel(btn, level) {
+            // ボタンのactive切り替え
+            document.querySelectorAll('.notification-level-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // 説明文の切り替え
+            document.querySelectorAll('.level-desc-content').forEach(desc => {
+                if (desc.dataset.level === level) {
+                    desc.classList.remove('hidden');
+                } else {
+                    desc.classList.add('hidden');
+                }
+            });
+        }
+
+        // 重要マークトグル
+        function toggleImportant(el) {
+            el.classList.toggle('checked');
+        }
+    </script>
 </body>
 </html>

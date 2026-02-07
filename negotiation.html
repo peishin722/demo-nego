@@ -125,6 +125,21 @@
         </div>
     </div>
 
+    <!-- 署名手続き設定済みバナー（交渉者ビュー、非表示） -->
+    <div class="global-status-banner signing-setup-done hidden" id="globalSigningSetupBanner">
+        <div class="global-status-content">
+            <div class="global-status-pulse"></div>
+            <div class="global-status-icon"><span class="material-symbols-outlined">mark_email_read</span></div>
+            <div class="global-status-text">
+                <div class="global-status-title">署名依頼を送信しました</div>
+                <div class="global-status-desc">各署名者にメールで署名ページのリンクが送られました。署名状況はこの画面で確認できます。</div>
+            </div>
+        </div>
+        <div class="global-status-action">
+            <button class="global-status-cert-btn" onclick="openSignPage()" style="cursor: pointer;"><span class="material-symbols-outlined icon-sm">open_in_new</span> 署名者画面をプレビュー</button>
+        </div>
+    </div>
+
     <!-- 署名者ビュー：署名可能バナー（非表示） -->
     <div class="global-status-banner signer-ready hidden" id="globalSignerReadyBanner">
         <div class="global-status-content">

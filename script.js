@@ -677,14 +677,9 @@ function executeMultiSignerCeremony() {
     closeSigningModal();
     launchConfetti(50);
 
-    // ステータス更新
-    if (pendingSigners.length > 0) {
-        demoStatus = 'my_signer_signed';
-        updateDemoStatus('my_signer_signed');
-    } else {
-        demoStatus = 'my_signer_signed';
-        updateDemoStatus('my_signer_signed');
-    }
+    // ステータス更新 → 署名手続き設定済み（送付済み）
+    demoStatus = 'signing_setup_done';
+    updateDemoStatus('signing_setup_done');
 
     // チャットメッセージ
     if (selfSigners.length > 0) {
@@ -696,6 +691,63 @@ function executeMultiSignerCeremony() {
     }
 
     updateSignatureDisplay();
+
+    // 送信完了ダイアログを表示
+    setTimeout(() => {
+        showSigningSentDialog(pendingSigners);
+    }, 600);
+}
+
+// 署名依頼送信完了ダイアログ
+function showSigningSentDialog(pendingSigners) {
+    const names = pendingSigners.map(s => s.name).join('、');
+    const overlay = document.createElement('div');
+    overlay.className = 'signing-sent-overlay';
+    overlay.onclick = function(e) {
+        if (e.target === overlay) overlay.remove();
+    };
+    overlay.innerHTML = `
+        <div class="signing-sent-dialog">
+            <div class="signing-sent-icon">
+                <span class="material-symbols-outlined">mark_email_read</span>
+            </div>
+            <div class="signing-sent-title">署名依頼を送信しました</div>
+            <div class="signing-sent-desc">
+                ${names ? names + ' に' : '各署名者に'}メールで署名ページへのリンクが送信されました。<br>
+                署名者は以下のような画面で署名を行います。
+            </div>
+            <div class="signing-sent-preview">
+                <div class="signing-sent-preview-header">
+                    <span class="material-symbols-outlined" style="font-size: 16px;">laptop_mac</span>
+                    <span>署名者に届く画面イメージ（sign.html）</span>
+                </div>
+                <div class="signing-sent-preview-body">
+                    <div class="signing-sent-preview-mock">
+                        <div class="mock-header">
+                            <span class="material-symbols-outlined" style="font-size: 18px; color: var(--color-collabo);">draw</span>
+                            <span style="font-weight: 600;">署名依頼 - 業務委託基本契約書</span>
+                        </div>
+                        <div class="mock-content">
+                            <div class="mock-contract-area">契約書プレビュー</div>
+                            <div class="mock-sign-area">
+                                <span class="material-symbols-outlined" style="font-size: 20px;">draw</span>
+                                署名欄
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="signing-sent-actions">
+                <button class="signing-sent-preview-btn" onclick="openSignPage(); this.closest('.signing-sent-overlay').remove();">
+                    <span class="material-symbols-outlined icon-sm">open_in_new</span> 署名者画面をプレビュー
+                </button>
+                <button class="signing-sent-close-btn" onclick="this.closest('.signing-sent-overlay').remove();">
+                    閉じる
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
 }
 
 // ============================
@@ -2290,6 +2342,8 @@ function updateDemoStatus(status) {
     if (concludedBanner) concludedBanner.classList.add('hidden');
     const signerReadyBannerEl = document.getElementById('globalSignerReadyBanner');
     if (signerReadyBannerEl) signerReadyBannerEl.classList.add('hidden');
+    const signingSetupBanner = document.getElementById('globalSigningSetupBanner');
+    if (signingSetupBanner) signingSetupBanner.classList.add('hidden');
 
     // 概要バナーも更新
     const overviewBanner = document.getElementById('overviewStatusBanner');
@@ -2298,6 +2352,7 @@ function updateDemoStatus(status) {
         case 'awaiting_my_signer':
         case 'signing_setup_done':
             // 署名手続き設定済み（交渉者ビュー）
+            if (signingSetupBanner) signingSetupBanner.classList.remove('hidden');
             body.classList.add('has-status-banner');
             toggleBtn.classList.add('status-signing-setup-done');
 

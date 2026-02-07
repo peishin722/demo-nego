@@ -4867,6 +4867,22 @@ body {
     cursor: default;
 }
 
+/* --- グローバルバナー: 署名手続き設定済み（送付済み） --- */
+.global-status-banner.signing-setup-done {
+    background: var(--color-collabo-container);
+    color: var(--color-collabo);
+    box-shadow: var(--shadow-md);
+}
+
+.global-status-banner.signing-setup-done .global-status-pulse {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.global-status-banner.signing-setup-done .global-status-cert-btn {
+    border-color: var(--color-collabo);
+    color: var(--color-collabo);
+}
+
 /* --- グローバルバナー: 署名待ち --- */
 .global-status-banner.signing-waiting {
     background: var(--color-collabo-container);
@@ -4907,6 +4923,22 @@ body {
 
 .global-status-cert-btn:hover {
     background: rgba(255, 255, 255, 0.3);
+}
+
+/* --- 概要バナー: 署名手続き設定済み（送付済み） --- */
+.overview-status-banner.awaiting-signer {
+    background: var(--color-collabo-container);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+}
+
+.overview-status-banner.awaiting-signer .status-banner-icon {
+    color: var(--color-collabo);
+}
+
+.overview-status-banner.awaiting-signer .status-banner-title {
+    color: var(--color-collabo);
 }
 
 /* --- 概要バナー: 署名中 --- */
@@ -7065,4 +7097,179 @@ body {
     justify-content: center;
     box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     z-index: 2;
+}
+
+/* ================================================ */
+/* 署名依頼送信完了ダイアログ */
+/* ================================================ */
+.signing-sent-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.signing-sent-dialog {
+    background: var(--bg-white);
+    border-radius: var(--radius-xl);
+    padding: 36px 32px;
+    max-width: 480px;
+    width: 90%;
+    text-align: center;
+    box-shadow: var(--shadow-xl);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.signing-sent-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--color-collabo-container);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+}
+
+.signing-sent-icon .material-symbols-outlined {
+    font-size: 28px;
+    color: var(--color-collabo);
+}
+
+.signing-sent-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-heading);
+    margin-bottom: 8px;
+}
+
+.signing-sent-desc {
+    font-size: var(--font-size-sm);
+    color: var(--text-assist);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.signing-sent-preview {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.signing-sent-preview-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: var(--bg-note);
+    font-size: var(--font-size-xs);
+    color: var(--text-assist);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.signing-sent-preview-body {
+    padding: 16px;
+}
+
+.signing-sent-preview-mock {
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: white;
+}
+
+.signing-sent-preview-mock .mock-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 13px;
+    color: var(--text-heading);
+}
+
+.signing-sent-preview-mock .mock-content {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    min-height: 80px;
+}
+
+.signing-sent-preview-mock .mock-contract-area {
+    flex: 2;
+    background: #f1f3f5;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #adb5bd;
+    min-height: 60px;
+}
+
+.signing-sent-preview-mock .mock-sign-area {
+    flex: 1;
+    background: var(--color-collabo-container);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--color-collabo);
+    min-height: 60px;
+}
+
+.signing-sent-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.signing-sent-preview-btn {
+    padding: 10px 20px;
+    background: var(--color-collabo);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.signing-sent-preview-btn:hover {
+    opacity: 0.9;
+}
+
+.signing-sent-close-btn {
+    padding: 10px 20px;
+    background: var(--bg-surface);
+    color: var(--text-body);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.signing-sent-close-btn:hover {
+    background: var(--bg-hover);
 }

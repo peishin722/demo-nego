@@ -45,7 +45,7 @@ let selectedVersions = [];
 // ウィザード状態管理
 let wizardCurrentStep = 1;
 let wizardFiles = [];
-let wizardInviteEmails = []; // { email: string, permission: 'signer' | 'member' }[]
+let wizardInviteEmails = []; // { email: string }[]
 
 // 署名スタンプ ドラッグ&ドロップ（マルチ署名者: 個別配置はsigners[]内で管理）
 let isDraggingStamp = false;
@@ -2051,11 +2051,7 @@ function addInviteEmail() {
         return;
     }
 
-    // 選択中の権限を取得
-    const selectedPermission = document.querySelector('input[name="invitePermission"]:checked');
-    const permission = selectedPermission ? selectedPermission.value : 'signer';
-
-    wizardInviteEmails.push({ email, permission });
+    wizardInviteEmails.push({ email });
     input.value = '';
     renderWizardInviteEmails();
 }
@@ -2075,15 +2071,10 @@ function renderWizardInviteEmails() {
 
     let html = '';
     wizardInviteEmails.forEach((item, index) => {
-        const isSigner = item.permission === 'signer';
-        const permissionIcon = isSigner ? 'key' : 'person';
-        const permissionLabel = isSigner ? '署名権限あり' : 'メンバー';
-        const permissionClass = isSigner ? 'permission-signer' : 'permission-member';
-        
         html += `
-            <div class="wizard-invite-email-item ${permissionClass}">
-                <span class="wizard-invite-email-permission" title="${permissionLabel}">
-                    <span class="material-symbols-outlined icon-xs">${permissionIcon}</span>
+            <div class="wizard-invite-email-item">
+                <span class="wizard-invite-email-permission" title="編集者">
+                    <span class="material-symbols-outlined icon-xs">edit</span>
                 </span>
                 <span class="wizard-invite-email-text">${escapeHtml(item.email)}</span>
                 <button class="wizard-invite-email-remove" onclick="removeInviteEmail(${index})">
@@ -2139,10 +2130,7 @@ function updateWizardSummary() {
         invitesContainer.innerHTML = '<li><span class="material-symbols-outlined icon-xs">link</span> 招待リンクで共有</li>';
     } else {
         invitesContainer.innerHTML = wizardInviteEmails.map(item => {
-            const isSigner = item.permission === 'signer';
-            const icon = isSigner ? 'key' : 'person';
-            const label = isSigner ? '署名権限あり' : 'メンバー';
-            return `<li><span class="material-symbols-outlined icon-xs">${icon}</span> ${escapeHtml(item.email)} <span class="wizard-summary-permission">(${label})</span></li>`;
+            return `<li><span class="material-symbols-outlined icon-xs">edit</span> ${escapeHtml(item.email)} <span class="wizard-summary-permission">(編集者)</span></li>`;
         }).join('');
     }
 }
@@ -2590,8 +2578,6 @@ function downloadContract() {
 // ページ読み込み時に初期化
 document.addEventListener('DOMContentLoaded', function() {
     initDemoStatusBanner();
-
-    initWizardPermissionSelector();
     initSignatureCanvas();
 
     // ESCキーでモーダルを閉じる
@@ -2602,24 +2588,7 @@ document.addEventListener('DOMContentLoaded', function() {
             closeSigningCertificate();
         }
     });
-});
 
-// ウィザードの権限選択UI初期化
-function initWizardPermissionSelector() {
-    const permissionOptions = document.querySelectorAll('.wizard-permission-option');
-    
-    permissionOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            // 全てのオプションからselectedを削除
-            permissionOptions.forEach(opt => opt.classList.remove('selected'));
-            // クリックしたオプションにselectedを追加
-            this.classList.add('selected');
-            // ラジオボタンをチェック
-            const radio = this.querySelector('input[type="radio"]');
-            if (radio) radio.checked = true;
-        });
-    });
-    
     // 案件名入力フィールドのイベントリスナー
     const projectNameInput = document.getElementById('wizardProjectName');
     if (projectNameInput) {
@@ -2628,4 +2597,4 @@ function initWizardPermissionSelector() {
             this.dataset.autoSet = 'false';
         });
     }
-}
+});

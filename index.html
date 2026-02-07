@@ -220,33 +220,10 @@
                     <p class="wizard-step-desc">メールアドレスで招待するか、招待リンクを共有してください。</p>
                 </div>
 
-                <!-- 権限選択 -->
-                <div class="wizard-permission-section">
-                    <label class="wizard-label">この相手の権限</label>
-                    <div class="wizard-permission-selector">
-                        <label class="wizard-permission-option selected" data-permission="signer">
-                            <input type="radio" name="invitePermission" value="signer" checked>
-                            <div class="wizard-permission-content">
-                                <div class="wizard-permission-icon"><span class="material-symbols-outlined">key</span></div>
-                                <div class="wizard-permission-info">
-                                    <div class="wizard-permission-title">署名権限あり</div>
-                                    <div class="wizard-permission-desc">契約への署名が可能</div>
-                                </div>
-                            </div>
-                            <div class="wizard-permission-check"><span class="material-symbols-outlined icon-sm">check</span></div>
-                        </label>
-                        <label class="wizard-permission-option" data-permission="member">
-                            <input type="radio" name="invitePermission" value="member">
-                            <div class="wizard-permission-content">
-                                <div class="wizard-permission-icon"><span class="material-symbols-outlined">person</span></div>
-                                <div class="wizard-permission-info">
-                                    <div class="wizard-permission-title">メンバー</div>
-                                    <div class="wizard-permission-desc">閲覧・編集・コメントのみ</div>
-                                </div>
-                            </div>
-                            <div class="wizard-permission-check"><span class="material-symbols-outlined icon-sm">check</span></div>
-                        </label>
-                    </div>
+                <!-- 権限表示（編集者のみ） -->
+                <div class="wizard-role-note">
+                    <span class="material-symbols-outlined" style="font-size: 18px;">edit</span>
+                    <span>編集者として招待（閲覧・編集・コメントが可能）</span>
                 </div>
 
                 <div class="wizard-invite-section">

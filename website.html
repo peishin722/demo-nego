@@ -685,42 +685,94 @@
         }
 
         .pricing-inner {
-            max-width: 480px;
+            max-width: 880px;
             margin: 0 auto;
+        }
+
+        .pricing-header {
             text-align: center;
+            margin-bottom: 48px;
         }
 
         .pricing-title {
             font-size: 36px;
             font-weight: 800;
-            margin-bottom: 48px;
+            margin-bottom: 12px;
             color: var(--text-heading);
+        }
+
+        .pricing-subtitle {
+            font-size: 16px;
+            color: var(--text-subtle);
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
         }
 
         .pricing-card {
             background: var(--color-white);
             border: 1px solid var(--border-default);
             border-radius: var(--radius-xl);
-            padding: 48px 40px;
+            padding: 40px 32px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--color-primary);
+            border-width: 2px;
+            position: relative;
+        }
+
+        .pricing-card-badge {
+            position: absolute;
+            top: -13px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-primary);
+            color: var(--color-white);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 16px;
+            border-radius: 100px;
+            white-space: nowrap;
+        }
+
+        .pricing-card-for {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-assist);
+            letter-spacing: 0.03em;
+            margin-bottom: 4px;
         }
 
         .pricing-plan-name {
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 20px;
+            font-weight: 800;
             color: var(--text-heading);
             margin-bottom: 8px;
         }
 
+        .pricing-plan-desc {
+            font-size: 14px;
+            color: var(--text-subtle);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
         .pricing-price {
-            font-size: 48px;
+            font-size: 40px;
             font-weight: 800;
             color: var(--text-heading);
-            margin-bottom: 32px;
+            margin-bottom: 28px;
         }
 
         .pricing-price span {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 500;
             color: var(--text-subtle);
         }
@@ -728,15 +780,16 @@
         .pricing-features {
             list-style: none;
             text-align: left;
-            margin-bottom: 32px;
+            margin-bottom: 28px;
+            flex-grow: 1;
         }
 
         .pricing-features li {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 10px 0;
-            font-size: 15px;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 14px;
             color: var(--text-default);
             border-bottom: 1px solid rgba(0, 0, 0, 0.04);
         }
@@ -747,39 +800,67 @@
 
         .pricing-check {
             color: var(--color-success);
-            font-size: 18px;
+            font-size: 16px;
             flex-shrink: 0;
         }
 
         .pricing-cta-wrapper {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .pricing-cta-wrapper .btn {
             width: 100%;
         }
 
-        .pricing-note {
-            font-size: 13px;
-            color: var(--text-assist);
-        }
-
-        .pricing-hubble {
-            margin-top: 32px;
-            font-size: 14px;
-            color: var(--text-assist);
-            line-height: 1.7;
-        }
-
-        .pricing-hubble a {
-            color: var(--text-subtle);
-            text-decoration: none;
-            border-bottom: 1px solid var(--border-default);
-            transition: color var(--transition-normal);
-        }
-
-        .pricing-hubble a:hover {
+        .btn-outline-dark {
+            background: transparent;
             color: var(--text-heading);
+            border: 1.5px solid var(--border-default);
+        }
+
+        .btn-outline-dark:hover {
+            background: var(--text-heading);
+            color: var(--color-white);
+        }
+
+        .pricing-note {
+            font-size: 12px;
+            color: var(--text-assist);
+        }
+
+        .pricing-referral {
+            margin-top: 48px;
+            background: var(--bg-note);
+            border-radius: var(--radius-xl);
+            padding: 32px 36px;
+            text-align: center;
+        }
+
+        .pricing-referral-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 10px;
+        }
+
+        .pricing-referral-desc {
+            font-size: 14px;
+            color: var(--text-subtle);
+            line-height: 1.8;
+        }
+
+        .pricing-referral-link {
+            display: inline-block;
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-primary);
+            text-decoration: none;
+            transition: opacity var(--transition-normal);
+        }
+
+        .pricing-referral-link:hover {
+            opacity: 0.7;
         }
 
         /* ===== Final CTA ===== */
@@ -955,6 +1036,7 @@
 
             .antithesis-table { grid-template-columns: 1fr; }
             .how-steps { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+            .pricing-cards { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
         }
 
         @media (max-width: 768px) {
@@ -1340,23 +1422,56 @@
     ========================================= -->
     <section class="pricing fade-in" id="pricing">
         <div class="pricing-inner">
-            <h2 class="pricing-title">まずは、無料で。</h2>
-            <div class="pricing-card">
-                <p class="pricing-plan-name">Free</p>
-                <p class="pricing-price">¥0 <span>/ 月</span></p>
-                <ul class="pricing-features">
-                    <li><span class="pricing-check">✓</span> 月3件の交渉</li>
-                    <li><span class="pricing-check">✓</span> AI翻訳（月10回）</li>
-                    <li><span class="pricing-check">✓</span> チャット・コメント</li>
-                    <li><span class="pricing-check">✓</span> タイムライン管理</li>
-                    <li><span class="pricing-check">✓</span> バージョン管理（最新3版）</li>
-                </ul>
-                <div class="pricing-cta-wrapper">
-                    <a href="#" class="btn btn-primary btn-large">無料で始める</a>
-                </div>
-                <p class="pricing-note">クレジットカード不要</p>
+            <div class="pricing-header">
+                <h2 class="pricing-title">まずは、無料で。</h2>
+                <p class="pricing-subtitle">交渉は無料。社内の契約業務を効率化するなら、Hubble。</p>
             </div>
-            <p class="pricing-hubble">チームでの契約業務を効率化したい方には、<a href="#">Hubble</a>をご案内しています。</p>
+            <div class="pricing-cards">
+                <!-- Nego Free -->
+                <div class="pricing-card featured">
+                    <span class="pricing-card-badge">まずはこちら</span>
+                    <p class="pricing-card-for">契約交渉をシンプルに</p>
+                    <p class="pricing-plan-name">Nego</p>
+                    <p class="pricing-plan-desc">相手との交渉から締結まで。<br>個人でもすぐに始められます。</p>
+                    <p class="pricing-price">¥0 <span>/ 月</span></p>
+                    <ul class="pricing-features">
+                        <li><span class="pricing-check">✓</span> 月10件の交渉</li>
+                        <li><span class="pricing-check">✓</span> AI翻訳・要約</li>
+                        <li><span class="pricing-check">✓</span> チャット・コメント</li>
+                        <li><span class="pricing-check">✓</span> タイムライン管理</li>
+                        <li><span class="pricing-check">✓</span> 電子署名</li>
+                        <li><span class="pricing-check">✓</span> バージョン管理</li>
+                    </ul>
+                    <div class="pricing-cta-wrapper">
+                        <a href="#" class="btn btn-primary btn-large">無料で始める</a>
+                    </div>
+                    <p class="pricing-note">クレジットカード不要</p>
+                </div>
+                <!-- Hubble -->
+                <div class="pricing-card">
+                    <p class="pricing-card-for">社内の契約業務を効率化</p>
+                    <p class="pricing-plan-name">Hubble</p>
+                    <p class="pricing-plan-desc">契約書の管理・検索・ナレッジ化。<br>チームの契約業務を一元管理。</p>
+                    <p class="pricing-price"><span>お問い合わせ</span></p>
+                    <ul class="pricing-features">
+                        <li><span class="pricing-check">✓</span> Negoの全機能</li>
+                        <li><span class="pricing-check">✓</span> 契約書の一元管理・検索</li>
+                        <li><span class="pricing-check">✓</span> AIによる自動台帳作成</li>
+                        <li><span class="pricing-check">✓</span> 更新期限の自動通知</li>
+                        <li><span class="pricing-check">✓</span> チーム・権限管理</li>
+                        <li><span class="pricing-check">✓</span> 専任サポート・SLA</li>
+                    </ul>
+                    <div class="pricing-cta-wrapper">
+                        <a href="https://hubble-docs.com/" target="_blank" rel="noopener" class="btn btn-outline-dark btn-large">Hubbleについて →</a>
+                    </div>
+                    <p class="pricing-note">チーム・法人向け</p>
+                </div>
+            </div>
+            <div class="pricing-referral">
+                <p class="pricing-referral-title">法務担当者をご紹介いただくと、Negoの機能制限を緩和します</p>
+                <p class="pricing-referral-desc">社内の法務・契約管理ご担当者をご紹介いただいた方には、<br>Negoの交渉件数やAI翻訳回数の上限を拡張してご利用いただけます。</p>
+                <a href="#" class="pricing-referral-link">詳しくはお問い合わせください →</a>
+            </div>
         </div>
     </section>
 

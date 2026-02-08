@@ -2021,9 +2021,209 @@ window.addEventListener('message', function(event) {
     }
 });
 
-// 署名済みPDFダウンロード（デモ）
+// 署名済みPDFダウンロード（互換性のためリダイレクト）
 function downloadSignedPdf() {
-    alert('署名済み契約書をダウンロードします（デモ）\n\n実際にはPDF形式で電子署名付きの契約書がダウンロードされます。');
+    openConcludedViewer();
+}
+
+// ============================================
+// 締結済み契約書ビューア
+// ============================================
+let activeConcludedDocId = 'doc_basic';
+
+function openConcludedViewer() {
+    const viewer = document.getElementById('concludedDocViewer');
+    if (!viewer) return;
+
+    // 署名パッケージ初期化
+    initSigningDocuments();
+    activeConcludedDocId = 'doc_basic';
+
+    // 表示
+    viewer.style.display = 'flex';
+    requestAnimationFrame(() => {
+        viewer.classList.add('open');
+    });
+
+    // タブバー描画
+    renderConcludedDocTabs();
+
+    // 最初の書類を表示
+    renderConcludedDoc(activeConcludedDocId);
+
+    // 右カラム（締結情報）を描画
+    renderConcludedInfoPanel(activeConcludedDocId);
+}
+
+function closeConcludedViewer() {
+    const viewer = document.getElementById('concludedDocViewer');
+    if (!viewer) return;
+    viewer.classList.remove('open');
+    setTimeout(() => { viewer.style.display = 'none'; }, 300);
+}
+
+function renderConcludedDocTabs() {
+    const container = document.getElementById('concludedDocTabs');
+    if (!container) return;
+    container.innerHTML = '';
+
+    signingDocuments.forEach(doc => {
+        const tab = document.createElement('button');
+        tab.className = 'signing-doc-tab'
+            + (doc.id === activeConcludedDocId ? ' active' : '')
+            + (doc.type === 'attachment' ? ' attachment' : '');
+        tab.onclick = () => switchConcludedDoc(doc.id);
+
+        const icon = doc.type === 'contract' ? 'description' : 'attach_file';
+        const signedMark = doc.type === 'contract'
+            ? '<span class="material-symbols-outlined icon-xs" style="color: var(--color-success); margin-left: 4px;">check_circle</span>'
+            : '';
+        tab.innerHTML = `<span class="material-symbols-outlined tab-type-icon">${icon}</span> ${escapeHtml(doc.title)} ${signedMark}`;
+        container.appendChild(tab);
+    });
+}
+
+function switchConcludedDoc(docId) {
+    activeConcludedDocId = docId;
+    renderConcludedDocTabs();
+    renderConcludedDoc(docId);
+    renderConcludedInfoPanel(docId);
+
+    // 左カラムを先頭にスクロール
+    const docColumn = document.querySelector('.concluded-doc-column');
+    if (docColumn) docColumn.scrollTop = 0;
+}
+
+function renderConcludedDoc(docId) {
+    const docView = document.getElementById('concludedDocView');
+    if (!docView) return;
+
+    const doc = signingDocuments.find(d => d.id === docId);
+    let html = getDocumentHtml(docId);
+
+    // 文書先頭に締結済みバッジを挿入
+    const versionText = doc && doc.version ? '\uFF08' + doc.version + '\uFF09' : '';
+    const badgeHtml = `<div class="concluded-doc-badge">
+        <span class="material-symbols-outlined icon-sm">verified</span>
+        \u7DE0\u7D50\u6E08\u307F${versionText}
+        <span style="margin-left: 8px; font-weight: 400; opacity: 0.8;">2026\u5E742\u67088\u65E5</span>
+    </div>`;
+
+    docView.innerHTML = badgeHtml + html;
+
+    // 契約書タイプの場合、署名欄に署名済み印影を表示
+    if (doc && doc.type === 'contract') {
+        applyConcludedSeals(docView);
+    }
+}
+
+function applyConcludedSeals(docView) {
+    const sealAreas = docView.querySelectorAll('.contract-seal-area');
+
+    sealAreas.forEach((sealArea, index) => {
+        sealArea.classList.add('signed');
+
+        if (index === 0) {
+            // 甲（自分）の署名
+            let sealHtml = '';
+            if (signingData.mySignature && signingData.mySignature.data) {
+                switch (signingData.mySignature.type) {
+                    case 'text':
+                        sealHtml = `<span class="seal-signed seal-signed-text">${escapeHtml(signingData.mySignature.data)}</span>`;
+                        break;
+                    case 'stamp':
+                        const lastName = signingData.mySignature.data.split(/[\s\u3000]/)[0];
+                        sealHtml = `<span class="seal-signed seal-signed-stamp"><span class="seal-text">${escapeHtml(lastName)}</span></span>`;
+                        break;
+                    default:
+                        sealHtml = `<span class="seal-signed seal-signed-stamp"><span class="seal-text">\u4F50\u85E4</span></span>`;
+                }
+                sealHtml += `<span class="signed-timestamp">${signingData.mySignedAt || '2026/2/8 14:30'} \u7F72\u540D\u6E08\u307F</span>`;
+            } else {
+                sealHtml = `<span class="seal-signed seal-signed-stamp"><span class="seal-text">\u4F50\u85E4</span></span>
+                    <span class="signed-timestamp">2026/2/8 14:30 \u7F72\u540D\u6E08\u307F</span>`;
+            }
+            sealArea.innerHTML = sealHtml;
+        } else {
+            // 乙（相手方）の署名
+            const sealHtml = `<span class="seal-signed seal-signed-stamp"><span class="seal-text">\u7530\u4E2D</span></span>
+                <span class="signed-timestamp">${signingData.partnerSignedAt || '2026/2/8 15:00'} \u7F72\u540D\u6E08\u307F</span>`;
+            sealArea.innerHTML = sealHtml;
+        }
+    });
+}
+
+function renderConcludedInfoPanel(docId) {
+    const panel = document.getElementById('concludedInfoBody');
+    if (!panel) return;
+
+    const doc = signingDocuments.find(d => d.id === docId);
+    const isContract = doc && doc.type === 'contract';
+
+    const myDate = signingData.mySignedAt || '2026/2/8 14:30:22';
+    const partnerDate = signingData.partnerSignedAt || '2026/2/8 15:00:45';
+
+    let html = '';
+
+    // 締結ステータス
+    html += `<div class="concluded-status-header">
+        <span class="material-symbols-outlined concluded-status-icon">verified</span>
+        <div>
+            <div class="concluded-status-title">\u5951\u7D04\u7DE0\u7D50\u6E08\u307F</div>
+            <div class="concluded-status-docid">\u6587\u66F8ID: NEGO-2026-0128-ABC-XYZ</div>
+        </div>
+    </div>`;
+
+    // 署名記録（契約書の場合のみ）
+    if (isContract) {
+        html += `<div class="concluded-section-label">\u7F72\u540D\u8A18\u9332</div>`;
+
+        html += `<div class="concluded-signer-card">
+            <div class="concluded-signer-header">
+                <span style="color: #4361ee;">\u25CF</span> \u3010\u7532\u3011\u682A\u5F0F\u4F1A\u793EABC
+            </div>
+            <div class="concluded-signer-row"><span>\u7F72\u540D\u8005</span><span>\u4F50\u85E4 \u4E00\u90CE</span></div>
+            <div class="concluded-signer-row"><span>\u7F72\u540D\u65E5\u6642</span><span>${escapeHtml(myDate)}</span></div>
+            <div class="concluded-signer-row"><span>\u7F72\u540D\u65B9\u6CD5</span><span>${signingData.mySignature ? (signingData.mySignature.type === 'stamp' ? '\u5370\u5F71' : signingData.mySignature.type === 'draw' ? '\u624B\u66F8\u304D' : '\u30C6\u30AD\u30B9\u30C8\u5165\u529B') : '\u5370\u5F71'}</span></div>
+        </div>`;
+
+        html += `<div class="concluded-signer-card">
+            <div class="concluded-signer-header">
+                <span style="color: #e74c3c;">\u25CF</span> \u3010\u4E59\u3011\u682A\u5F0F\u4F1A\u793EXYZ
+            </div>
+            <div class="concluded-signer-row"><span>\u7F72\u540D\u8005</span><span>\u7530\u4E2D \u592A\u90CE</span></div>
+            <div class="concluded-signer-row"><span>\u7F72\u540D\u65E5\u6642</span><span>${escapeHtml(partnerDate)}</span></div>
+            <div class="concluded-signer-row"><span>\u7F72\u540D\u65B9\u6CD5</span><span>\u5370\u5F71</span></div>
+        </div>`;
+    }
+
+    // AI要約
+    const aiSummary = getDocAiSummary(docId);
+    if (aiSummary) {
+        html += `<div class="concluded-section-label">\u6982\u8981</div>
+            <div class="signing-ai-summary">${aiSummary}</div>`;
+    }
+
+    // 署名証明書リンク
+    html += `<div class="concluded-cert-link-section">
+        <button class="concluded-cert-link" onclick="showSigningCertificate()">
+            <span class="material-symbols-outlined icon-sm">verified_user</span>
+            \u7F72\u540D\u8A3C\u660E\u66F8\u3092\u8868\u793A
+        </button>
+    </div>`;
+
+    panel.innerHTML = html;
+}
+
+function downloadCurrentSignedDoc() {
+    const doc = signingDocuments.find(d => d.id === activeConcludedDocId);
+    const title = doc ? doc.title : '\u5951\u7D04\u66F8';
+    alert('\u300C' + title + '\u300D\u3092PDF\u5F62\u5F0F\u3067\u30C0\u30A6\u30F3\u30ED\u30FC\u30C9\u3057\u307E\u3059\uFF08\u30C7\u30E2\uFF09\n\n\u5B9F\u969B\u306B\u306F\u96FB\u5B50\u7F72\u540D\u4ED8\u304DPDF\u304C\u30C0\u30A6\u30F3\u30ED\u30FC\u30C9\u3055\u308C\u307E\u3059\u3002');
+}
+
+function downloadAllSignedDocs() {
+    const docNames = signingDocuments.map(d => '\u30FB' + d.title + '.pdf').join('\n');
+    alert('\u5168\u7F72\u540D\u6E08\u307F\u66F8\u985E\u3092ZIP\u5F62\u5F0F\u3067\u30C0\u30A6\u30F3\u30ED\u30FC\u30C9\u3057\u307E\u3059\uFF08\u30C7\u30E2\uFF09\n\n\u4EE5\u4E0B\u304C\u542B\u307E\u308C\u307E\u3059:\n' + docNames + '\n\u30FB\u96FB\u5B50\u7F72\u540D\u8A3C\u660E\u66F8.pdf');
 }
 
 // トグルスイッチ

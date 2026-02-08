@@ -120,7 +120,7 @@
             </div>
         </div>
         <div class="global-status-action">
-            <button class="global-status-download-btn" onclick="downloadSignedPdf()"><span class="material-symbols-outlined icon-sm">download</span> 締結済み契約書をダウンロード</button>
+            <button class="global-status-download-btn" onclick="openConcludedViewer()"><span class="material-symbols-outlined icon-sm">description</span> 締結済み契約書を確認</button>
             <button class="global-status-cert-btn" onclick="showSigningCertificate()"><span class="material-symbols-outlined icon-sm">verified_user</span> 署名証明書</button>
         </div>
     </div>
@@ -1706,6 +1706,54 @@
         </div>
     </div>
 
+
+    <!-- 締結済み契約書ビューア -->
+    <div class="concluded-doc-viewer" id="concludedDocViewer">
+        <!-- ヘッダー -->
+        <div class="concluded-viewer-header">
+            <div class="concluded-viewer-header-left">
+                <button class="signing-close-btn" onclick="closeConcludedViewer()">&times;</button>
+                <div class="concluded-viewer-title">
+                    <span class="material-symbols-outlined">verified</span>
+                    締結済み契約書
+                </div>
+            </div>
+            <div class="concluded-viewer-header-right">
+                <button class="concluded-download-all-btn" onclick="downloadAllSignedDocs()">
+                    <span class="material-symbols-outlined icon-sm">folder_zip</span>
+                    全書類ダウンロード
+                </button>
+            </div>
+        </div>
+
+        <!-- ドキュメントタブバー -->
+        <div class="signing-doc-tabs" id="concludedDocTabs"></div>
+
+        <!-- ボディ（2カラム） -->
+        <div class="concluded-viewer-body">
+            <!-- 左カラム: 契約書全文 -->
+            <div class="concluded-doc-column">
+                <div class="concluded-doc-wrapper">
+                    <div class="document concluded-doc-view" id="concludedDocView">
+                        <!-- JS動的生成 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右カラム: 締結情報・アクション -->
+            <div class="concluded-info-column">
+                <div class="concluded-info-body" id="concludedInfoBody">
+                    <!-- JS動的生成 -->
+                </div>
+                <div class="concluded-info-footer">
+                    <button class="concluded-download-btn" onclick="downloadCurrentSignedDoc()">
+                        <span class="material-symbols-outlined icon-sm">download</span>
+                        この書類をダウンロード (PDF)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Google Fonts: 手書き風フォント -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap">

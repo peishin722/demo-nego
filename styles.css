@@ -7630,3 +7630,300 @@ body {
     font-size: 13px;
     color: var(--text-assist);
 }
+
+/* ============================================
+   締結済み契約書ビューア
+   ============================================ */
+.concluded-doc-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    background: var(--bg-white);
+    display: none;
+    flex-direction: column;
+    opacity: 0;
+    transform: scale(0.98);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.concluded-doc-viewer.open {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ヘッダー */
+.concluded-viewer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--border-default);
+    background: var(--bg-white);
+    min-height: 56px;
+    flex-shrink: 0;
+}
+
+.concluded-viewer-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.concluded-viewer-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-success);
+}
+
+.concluded-viewer-title .material-symbols-outlined {
+    font-size: 22px;
+}
+
+.concluded-viewer-header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.concluded-download-all-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--bg-white);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    color: var(--text-default);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.concluded-download-all-btn:hover {
+    background: var(--bg-hover);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ボディ: 2カラム */
+.concluded-viewer-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* 左カラム: 文書表示 */
+.concluded-doc-column {
+    flex: 7;
+    overflow-y: auto;
+    padding: 40px;
+    background: var(--bg-note);
+    border-right: 1px solid var(--border-default);
+}
+
+.concluded-doc-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--bg-white);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 2px 12px rgba(93, 123, 168, 0.08);
+    padding: 48px 40px;
+    position: relative;
+}
+
+/* 締結済みバッジ（文書上部） */
+.concluded-doc-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--color-success-container);
+    color: var(--color-success);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+/* 右カラム: 締結情報 */
+.concluded-info-column {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-white);
+    min-width: 320px;
+}
+
+.concluded-info-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+/* 締結ステータスヘッダー */
+.concluded-status-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-default);
+}
+
+.concluded-status-icon {
+    color: var(--color-success);
+    font-size: 36px !important;
+}
+
+.concluded-status-title {
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-md);
+    color: var(--text-heading);
+}
+
+.concluded-status-docid {
+    font-size: 12px;
+    color: var(--text-assist);
+    margin-top: 2px;
+}
+
+/* セクションラベル */
+.concluded-section-label {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--text-assist);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* 署名記録カード */
+.concluded-signer-card {
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.concluded-signer-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    color: var(--text-heading);
+}
+
+.concluded-signer-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 13px;
+    color: var(--text-default);
+}
+
+.concluded-signer-row span:first-child {
+    color: var(--text-assist);
+}
+
+/* 署名証明書リンク */
+.concluded-cert-link-section {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-default);
+}
+
+.concluded-cert-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 8px 0;
+    transition: opacity 0.2s;
+}
+
+.concluded-cert-link:hover {
+    opacity: 0.7;
+}
+
+/* 右カラム固定フッター */
+.concluded-info-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-default);
+    background: var(--bg-white);
+    flex-shrink: 0;
+}
+
+.concluded-download-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    background: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.concluded-download-btn:hover {
+    opacity: 0.9;
+    box-shadow: var(--shadow-md);
+}
+
+/* 印影スタイル（ビューア用） */
+.concluded-doc-view .contract-seal-area.signed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.seal-signed {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.seal-signed-stamp {
+    width: 48px;
+    height: 48px;
+    border: 2px solid #c0392b;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #c0392b;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.seal-signed-text {
+    font-family: 'Klee One', cursive;
+    font-size: 16px;
+    color: var(--text-heading);
+    font-weight: 600;
+}
+
+.signed-timestamp {
+    font-size: 10px;
+    color: var(--text-assist);
+    white-space: nowrap;
+}
+
+.icon-xs {
+    font-size: 16px !important;
+}

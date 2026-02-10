@@ -1426,9 +1426,9 @@
             </div>
             <div class="modal-footer">
                 <button class="modal-btn cancel" onclick="closeShareModal()">キャンセル</button>
-                <button class="modal-btn primary" style="background: var(--color-social);" onclick="confirmShare()" id="inviteSubmitBtn" disabled>
+                <button class="modal-btn primary" style="background: var(--color-social);" onclick="confirmShare()" id="inviteSubmitBtn">
                     <span class="material-symbols-outlined" style="font-size: 18px;">send</span>
-                    招待して交渉を開始
+                    <span id="inviteSubmitLabel">交渉を開始</span>
                 </button>
             </div>
         </div>
@@ -1518,10 +1518,10 @@
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
 
-        // 送信ボタン状態更新
+        // 送信ボタンラベル更新
         function updateInviteSubmitButton() {
-            const btn = document.getElementById('inviteSubmitBtn');
-            btn.disabled = inviteEmails.length === 0;
+            const label = document.getElementById('inviteSubmitLabel');
+            label.textContent = inviteEmails.length > 0 ? '招待して交渉を開始' : '交渉を開始';
         }
 
         // 招待リンクコピー
@@ -1546,8 +1546,9 @@
         });
 
         function confirmShare() {
+            const hasEmails = inviteEmails.length > 0;
             closeShareModal();
-            showToast('招待を送信しました！Negoに移動します...');
+            showToast(hasEmails ? '招待を送信しました！Negoに移動します...' : '交渉を開始しました！Negoに移動します...');
             setTimeout(() => {
                 window.location.href = 'hubble-ui.html';
             }, 1500);

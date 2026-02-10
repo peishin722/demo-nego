@@ -227,56 +227,6 @@
             font-size: 18px;
         }
 
-        /* 期限リマインダー専用 */
-        .reminder-settings {
-            padding: 16px 24px;
-            border-top: 1px solid #f0f0f0;
-        }
-
-        .reminder-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .reminder-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .reminder-label {
-            font-size: 14px;
-            color: #666;
-            min-width: 100px;
-        }
-
-        .reminder-select-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .reminder-select {
-            padding: 8px 12px;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 14px;
-            color: #333;
-            background: white;
-            cursor: pointer;
-            min-width: 120px;
-        }
-
-        .reminder-select:focus {
-            outline: none;
-            border-color: #1a73e8;
-        }
-
-        .reminder-text {
-            font-size: 14px;
-            color: #666;
-        }
-
         /* デモナビ */
         .demo-nav {
             position: fixed;
@@ -400,52 +350,19 @@
                 </div>
             </div>
 
-            <!-- 期限のリマインド -->
+            <!-- 署名関連の通知 -->
             <div class="notification-card">
                 <div class="notification-card-header">
-                    <div class="notification-card-title">期限のリマインド</div>
+                    <div class="notification-card-title">署名関連の通知</div>
                     <div class="notification-card-desc">
-                        相手先との交渉で設定した期限が近づくとお知らせします。<br>
-                        <span style="color: #888; font-size: 12px;">※契約台帳に直接登録した契約は対象外です</span>
+                        署名依頼、署名完了、契約締結の通知です。<br>
+                        <span style="color: #888; font-size: 12px;">※契約の成立に直結するため、OFFにすることはできません。</span>
                     </div>
                 </div>
-                <div class="notification-card-row" onclick="toggleReminderNotification(this)">
+                <div class="notification-card-row">
                     <span class="notification-card-row-label">通知</span>
-                    <span class="notification-card-row-value">
-                        受け取る
-                        <span class="material-symbols-outlined arrow">chevron_right</span>
-                    </span>
-                </div>
-                <div class="reminder-settings" id="reminderSettings">
-                    <div class="reminder-row">
-                        <span class="reminder-label">リマインド</span>
-                        <div class="reminder-select-wrapper">
-                            <select class="reminder-select">
-                                <option value="28">4週間前</option>
-                                <option value="14">2週間前</option>
-                                <option value="7" selected>1週間前</option>
-                                <option value="3">3日前</option>
-                                <option value="1">1日前</option>
-                            </select>
-                            <span class="reminder-text">に通知</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 契約台帳のまとめ -->
-            <div class="notification-card">
-                <div class="notification-card-header">
-                    <div class="notification-card-title">契約更新・解約通知期限お知らせメール（毎月1日配信）</div>
-                    <div class="notification-card-desc">
-                        更新・解約通知期限が迫っている契約書の件数をお知らせします。（契約終了日と契約更新・解約通知期限の双方が入力されたドキュメントが対象です。）
-                    </div>
-                </div>
-                <div class="notification-card-row" onclick="toggleNotification(this)">
-                    <span class="notification-card-row-label">通知</span>
-                    <span class="notification-card-row-value">
-                        受け取る
-                        <span class="material-symbols-outlined arrow">chevron_right</span>
+                    <span class="notification-card-row-value" style="color: #888;">
+                        常に受け取る
                     </span>
                 </div>
             </div>
@@ -472,20 +389,6 @@
                 value.innerHTML = '受け取らない<span class="material-symbols-outlined arrow">chevron_right</span>';
             } else {
                 value.innerHTML = '受け取る<span class="material-symbols-outlined arrow">chevron_right</span>';
-            }
-        }
-
-        // 期限リマインド専用（表示/非表示切り替え）
-        function toggleReminderNotification(el) {
-            const value = el.querySelector('.notification-card-row-value');
-            const reminderSettings = document.getElementById('reminderSettings');
-
-            if (value.textContent.includes('受け取る')) {
-                value.innerHTML = '受け取らない<span class="material-symbols-outlined arrow">chevron_right</span>';
-                reminderSettings.style.display = 'none';
-            } else {
-                value.innerHTML = '受け取る<span class="material-symbols-outlined arrow">chevron_right</span>';
-                reminderSettings.style.display = 'block';
             }
         }
 

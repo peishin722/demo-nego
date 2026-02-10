@@ -3039,6 +3039,28 @@ function initDemoStatusBanner() {
     updateDemoStatus(demoStatus);
 }
 
+// デモ用: Hubble連携状態の切り替え
+function toggleDemoHubbleLink() {
+    const toggle = document.getElementById('demoHubbleToggle');
+    const linkBtn = document.getElementById('hubbleLinkBtn');
+    const connectBtn = document.getElementById('hubbleConnectBtn');
+    if (!toggle || !linkBtn || !connectBtn) return;
+
+    const isLinked = !toggle.classList.contains('unlinked');
+
+    if (isLinked) {
+        // 連携済み → 未連携に
+        toggle.classList.add('unlinked');
+        linkBtn.style.display = 'none';
+        connectBtn.style.display = '';
+    } else {
+        // 未連携 → 連携済みに
+        toggle.classList.remove('unlinked');
+        linkBtn.style.display = '';
+        connectBtn.style.display = 'none';
+    }
+}
+
 function toggleDemoStatus() {
     // ステータスを順番に切り替え
     // negotiating(交渉者) → signing_setup_done(交渉者) → signer_view(署名者) → my_signer_signed(署名者) → concluded(署名者) → partner_editing → negotiating

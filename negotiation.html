@@ -70,6 +70,9 @@
     </div>
 
     <!-- デモ用トグルボタン -->
+    <button class="demo-hubble-toggle" id="demoHubbleToggle" onclick="toggleDemoHubbleLink()">
+        <span class="material-symbols-outlined icon-sm">swap_horiz</span> Hubble連携を切替
+    </button>
     <button class="demo-status-toggle" id="demoStatusToggle" onclick="toggleDemoStatus()">
         <span class="material-symbols-outlined icon-sm">theater_comedy</span> ステータスをデモ
     </button>
@@ -124,9 +127,12 @@
             </div>
         </div>
         <div class="header-actions">
-            <a href="hubble-ui.html" class="header-btn hubble-link">
+            <a href="hubble-ui.html" class="header-btn hubble-link" id="hubbleLinkBtn">
                 <span class="material-symbols-outlined icon-sm">open_in_new</span> Hubbleで見る
             </a>
+            <button class="header-btn hubble-link" id="hubbleConnectBtn" onclick="openLinkHubbleModal()" style="display:none;">
+                <span class="material-symbols-outlined icon-sm">add_link</span> Hubble連携
+            </button>
             <button class="header-btn primary sign-btn" id="signBtn" onclick="handleSignButtonClick()">
                 <span class="material-symbols-outlined icon-sm">draw</span> 署名手続き・設定
             </button>
@@ -977,14 +983,15 @@
     <div class="modal-overlay" id="linkHubbleModal" onclick="closeLinkHubbleModal(event)">
         <div class="modal-content link-hubble-modal" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <div class="modal-title"><span class="material-symbols-outlined icon-sm">link</span> Hubbleドキュメントを連携</div>
+                <div class="modal-title"><span class="material-symbols-outlined icon-sm">link</span> Hubbleと連携する</div>
                 <button class="modal-close" onclick="closeLinkHubbleModal()">&times;</button>
             </div>
             <div class="modal-body">
                 <!-- Step 1: URL入力 -->
                 <div id="linkHubbleStep1">
                     <div class="link-hubble-section">
-                        <label class="link-hubble-label">ドキュメントURL</label>
+                        <p class="link-hubble-description">この交渉をHubbleのドキュメントと連携します。連携すると、交渉の最新バージョンがHubbleに自動で同期されます。</p>
+                        <label class="link-hubble-label">連携するHubbleドキュメントのURL</label>
                         <div class="link-hubble-input-row">
                             <input type="url" class="link-hubble-input" id="hubbleUrlInput"
                                    placeholder="https://app.hubble.jp/docs/xxxxx" onkeydown="if(event.key==='Enter')fetchHubbleDocument()">
@@ -992,17 +999,13 @@
                                 取得
                             </button>
                         </div>
-                        <div class="link-hubble-hint">
-                            <span class="material-symbols-outlined icon-xs">info</span>
-                            HubbleのドキュメントURLを貼り付けてください。最新バージョンが連携されます。
-                        </div>
                     </div>
                 </div>
 
                 <!-- Step 2: プレビューカード（hidden） -->
                 <div id="linkHubbleStep2" class="link-hubble-step2 hidden">
                     <div class="link-hubble-section">
-                        <label class="link-hubble-label">連携するドキュメント</label>
+                        <label class="link-hubble-label">連携先ドキュメント</label>
                         <div class="link-hubble-preview-card">
                             <div class="link-hubble-preview-icon">
                                 <span class="material-symbols-outlined">description</span>
@@ -1018,6 +1021,27 @@
                                 </div>
                                 <div class="link-hubble-preview-badges">
                                     <span class="link-hubble-status-badge" id="hubblePreviewStatus"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 連携後の同期ルール説明 -->
+                    <div class="link-hubble-sync-info">
+                        <div class="link-hubble-sync-title">連携するとどうなる？</div>
+                        <div class="link-hubble-sync-rules">
+                            <div class="link-hubble-sync-rule">
+                                <span class="material-symbols-outlined icon-sm" style="color: var(--color-success);">arrow_forward</span>
+                                <div>
+                                    <strong>Nego → Hubble：自動で同期</strong>
+                                    <span class="link-hubble-sync-detail">この交渉でアップロードされた内容は、Hubbleに自動で反映されます。</span>
+                                </div>
+                            </div>
+                            <div class="link-hubble-sync-rule">
+                                <span class="material-symbols-outlined icon-sm" style="color: var(--color-social);">arrow_back</span>
+                                <div>
+                                    <strong>Hubble → Nego：共有ボタンで反映</strong>
+                                    <span class="link-hubble-sync-detail">Hubbleで編集した内容は「交渉相手に共有」を押すまでNegoには反映されません。社内の編集が意図せず相手に届くことはありません。</span>
                                 </div>
                             </div>
                         </div>

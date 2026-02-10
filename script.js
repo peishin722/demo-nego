@@ -3046,15 +3046,25 @@ function toggleDemoHubbleLink() {
     const connectBtn = document.getElementById('hubbleConnectBtn');
     if (!toggle || !linkBtn || !connectBtn) return;
 
-    const isLinked = !toggle.classList.contains('unlinked');
+    const isLinked = !toggle.classList.contains('unlinked') && !toggle.classList.contains('no-hubble');
+    const isUnlinked = toggle.classList.contains('unlinked');
+    const isNoHubble = toggle.classList.contains('no-hubble');
 
     if (isLinked) {
-        // 連携済み → 未連携に
+        // 連携済み → 未連携（Hubble登録あり）
         toggle.classList.add('unlinked');
+        toggle.classList.remove('no-hubble');
         linkBtn.style.display = 'none';
         connectBtn.style.display = '';
+    } else if (isUnlinked) {
+        // 未連携 → Hubble未登録
+        toggle.classList.remove('unlinked');
+        toggle.classList.add('no-hubble');
+        linkBtn.style.display = 'none';
+        connectBtn.style.display = 'none';
     } else {
-        // 未連携 → 連携済みに
+        // Hubble未登録 → 連携済みに戻す
+        toggle.classList.remove('no-hubble');
         toggle.classList.remove('unlinked');
         linkBtn.style.display = '';
         connectBtn.style.display = 'none';

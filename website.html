@@ -3,52 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nego - 契約書、読めてますか。</title>
+    <title>Nego - 契約書の内容がよくわかる交渉プラットフォーム</title>
     <link rel="icon" href="favicon-32.ico" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        /* ===== Design Tokens ===== */
+        /* ===== Design Tokens — Dark Theme ===== */
         :root {
-            --text-default: #3b3b3b;
-            --text-heading: #1f1f1f;
-            --text-assist: #999999;
-            --text-link: #0047b5;
-            --text-subtle: #6b6b6b;
+            /* Base backgrounds */
+            --bg-canvas:        #0d1117;
+            --bg-canvas-subtle: #161b22;
+            --bg-canvas-inset:  #010409;
+            --bg-overlay:       #1c2128;
 
-            --bg-inverse: #3b3b3b;
-            --bg-input: #f2f4f5;
-            --bg-hover: #f6f6f6;
-            --bg-note: #f7f7f7;
-            --bg-white: #ffffff;
+            /* Text hierarchy */
+            --text-primary:     #e6edf3;
+            --text-heading:     #ffffff;
+            --text-secondary:   #8b949e;
+            --text-muted:       #484f58;
+            --text-link:        #58a6ff;
 
-            --border-default: #e0e0e0;
+            /* Borders */
+            --border-default:   #30363d;
+            --border-muted:     #21262d;
 
-            --color-white: #ffffff;
-            --color-black: #000000;
-            --color-primary: #3c78c8;
-            --color-primary-container: #e8eefa;
-            --color-secondary: #1f1f1f;
-            --color-success: #18776b;
-            --color-success-container: #eaf2ed;
-            --color-social: #da5d10;
-            --color-social-container: #f7ebe4;
-            --color-collabo: #7358cc;
-            --color-collabo-container: #efeaf5;
-            --color-neutral: #626262;
+            /* Accents */
+            --color-primary:          #58a6ff;
+            --color-primary-emphasis:  #1f6feb;
+            --color-success:          #3fb950;
+            --color-success-emphasis:  #238636;
+            --color-purple:           #bc8cff;
+            --color-purple-emphasis:   #8957e5;
+            --color-coral:            #f78166;
+            --color-coral-emphasis:    #da6d42;
 
-            --font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            /* Glow shadows */
+            --glow-blue:   0 0 40px rgba(56, 139, 253, 0.25);
+            --glow-green:  0 0 40px rgba(63, 185, 80, 0.25);
+            --glow-purple: 0 0 40px rgba(188, 140, 255, 0.25);
+            --glow-coral:  0 0 40px rgba(247, 129, 102, 0.25);
 
-            --radius-sm: 5px;
+            /* Diff colors */
+            --diff-add-bg:   rgba(63, 185, 80, 0.15);
+            --diff-add-text: #3fb950;
+            --diff-del-bg:   rgba(248, 81, 73, 0.15);
+            --diff-del-text: #f85149;
+
+            /* Label pills */
+            --label-blue-bg:     rgba(56, 139, 253, 0.15);
+            --label-blue-text:   #58a6ff;
+            --label-coral-bg:    rgba(247, 129, 102, 0.15);
+            --label-coral-text:  #f78166;
+            --label-purple-bg:   rgba(188, 140, 255, 0.15);
+            --label-purple-text: #bc8cff;
+            --label-green-bg:    rgba(63, 185, 80, 0.15);
+            --label-green-text:  #3fb950;
+
+            /* Typography */
+            --font-family: 'Noto Sans JP', 'Inter', 'Hiragino Kaku Gothic ProN', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'SF Mono', 'Consolas', 'Liberation Mono', 'Menlo', monospace;
+
+            /* Radius */
+            --radius-sm: 6px;
             --radius-md: 8px;
             --radius-lg: 12px;
             --radius-xl: 16px;
 
-            --shadow-sm: 0 1px 2px rgba(93, 123, 168, 0.08);
-            --shadow-md: 0 4px 12px rgba(93, 123, 168, 0.15);
-            --shadow-lg: 0 8px 24px rgba(93, 123, 168, 0.20);
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
 
+            /* Transitions */
             --transition-fast: 0.15s ease;
-            --transition-normal: 0.25s ease;
+            --transition-normal: 0.3s ease;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -56,11 +83,35 @@
 
         body {
             font-family: var(--font-family);
-            color: var(--text-default);
+            color: var(--text-primary);
             line-height: 1.7;
-            background: var(--color-white);
+            background: var(--bg-canvas);
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+        }
+
+        /* Subtle dot grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(
+                circle at 1px 1px,
+                rgba(255, 255, 255, 0.03) 1px,
+                transparent 0
+            );
+            background-size: 24px 24px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Ensure all sections sit above dot pattern */
+        .header, section, footer, .demo-float-btn {
+            position: relative;
+            z-index: 1;
         }
 
         /* ===== Header ===== */
@@ -70,15 +121,15 @@
             left: 0;
             right: 0;
             height: 64px;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(13, 17, 23, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 48px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            border-bottom: 1px solid var(--border-default);
         }
 
         .header-left {
@@ -89,6 +140,7 @@
 
         .header-logo {
             height: 24px;
+            filter: brightness(0) invert(1);
         }
 
         .header-nav {
@@ -98,7 +150,7 @@
         }
 
         .header-nav a {
-            color: var(--text-subtle);
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
@@ -133,7 +185,7 @@
 
         .btn-text {
             background: transparent;
-            color: var(--text-subtle);
+            color: var(--text-secondary);
         }
 
         .btn-text:hover {
@@ -141,12 +193,24 @@
         }
 
         .btn-primary {
-            background: var(--color-primary);
-            color: var(--color-white);
+            background: var(--color-success-emphasis);
+            color: #ffffff;
+            border: 1px solid rgba(63, 185, 80, 0.4);
         }
 
         .btn-primary:hover {
-            background: #3069b3;
+            background: var(--color-success);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-default);
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-overlay);
+            border-color: var(--text-secondary);
         }
 
         .btn-large {
@@ -155,16 +219,7 @@
             border-radius: var(--radius-lg);
         }
 
-        .btn-white {
-            background: var(--color-white);
-            color: var(--color-primary);
-        }
-
-        .btn-white:hover {
-            background: #f0f0f0;
-        }
-
-        /* ===== Section Common ===== */
+        /* ===== Section Labels ===== */
         .section-label {
             display: inline-block;
             font-size: 13px;
@@ -176,85 +231,113 @@
         }
 
         .section-label.blue {
-            background: var(--color-primary-container);
-            color: var(--color-primary);
+            background: var(--label-blue-bg);
+            color: var(--label-blue-text);
         }
 
         .section-label.coral {
-            background: var(--color-social-container);
-            color: var(--color-social);
+            background: var(--label-coral-bg);
+            color: var(--label-coral-text);
         }
 
-        .section-label.mint {
-            background: var(--color-success-container);
-            color: var(--color-success);
+        .section-label.purple {
+            background: var(--label-purple-bg);
+            color: var(--label-purple-text);
         }
 
         /* ===== Hero ===== */
         .hero {
-            padding: 160px 48px 120px;
-            background: var(--color-white);
+            padding: 180px 48px 120px;
+            background: var(--bg-canvas);
             min-height: 100vh;
             display: flex;
             align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 900px;
+            height: 700px;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(56, 139, 253, 0.12) 0%,
+                rgba(188, 140, 255, 0.06) 40%,
+                transparent 70%
+            );
+            pointer-events: none;
+            z-index: 0;
         }
 
         .hero-inner {
             max-width: 1200px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 80px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin-bottom: 64px;
         }
 
         .hero-eyebrow {
             font-size: 14px;
             font-weight: 600;
             color: var(--color-primary);
-            letter-spacing: 0.02em;
-            margin-bottom: 20px;
-        }
-
-        .hero-content {
-            max-width: 520px;
+            letter-spacing: 0.06em;
+            margin-bottom: 24px;
         }
 
         .hero-title {
-            font-size: 52px;
-            font-weight: 800;
-            line-height: 1.15;
+            font-size: 56px;
+            font-weight: 900;
+            line-height: 1.2;
             letter-spacing: -0.03em;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
             color: var(--text-heading);
         }
 
         .hero-desc {
-            font-size: 17px;
-            color: var(--text-subtle);
-            margin-bottom: 40px;
-            line-height: 1.8;
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+            line-height: 1.9;
         }
 
         .hero-cta {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
             margin-bottom: 16px;
         }
 
         .hero-note {
             font-size: 13px;
-            color: var(--text-assist);
+            color: var(--text-muted);
         }
 
         .hero-visual {
             position: relative;
+            width: 100%;
+            max-width: 960px;
         }
 
         .hero-image-container {
-            background: var(--color-white);
+            background: var(--bg-overlay);
             border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-lg), var(--glow-blue);
             overflow: hidden;
-            border: 1px solid rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-default);
         }
 
         .hero-image-container img {
@@ -262,61 +345,125 @@
             display: block;
         }
 
-        /* ===== Pain Points ===== */
-        .pain {
+        /* ===== Before/After ===== */
+        .before-after {
             padding: 120px 48px;
-            background: var(--color-white);
+            background: var(--bg-canvas);
         }
 
-        .pain-inner {
-            max-width: 960px;
+        .before-after-inner {
+            max-width: 1100px;
             margin: 0 auto;
         }
 
-        .pain-header {
+        .before-after-header {
             text-align: center;
-            margin-bottom: 80px;
+            margin-bottom: 64px;
         }
 
-        .pain-header-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-assist);
-            letter-spacing: 0.04em;
-        }
-
-        .pain-cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-        }
-
-        .pain-card {
-            text-align: center;
-            padding: 0 8px;
-        }
-
-        .pain-card-quote {
-            font-size: 20px;
-            font-weight: 700;
+        .before-after-header h2 {
+            font-size: 40px;
+            font-weight: 900;
             color: var(--text-heading);
-            line-height: 1.5;
+            letter-spacing: -0.03em;
             margin-bottom: 16px;
+            line-height: 1.2;
         }
 
-        .pain-card-desc {
-            font-size: 14px;
-            color: var(--text-subtle);
-            line-height: 1.8;
+        .before-after-header p {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        .before-after-grid {
+            display: grid;
+            grid-template-columns: 1fr 60px 1fr;
+            gap: 0;
+            align-items: stretch;
+        }
+
+        .before-after-panel {
+            padding: 48px 40px;
+            border-radius: var(--radius-xl);
+        }
+
+        .before-after-panel.old {
+            background: var(--bg-canvas-subtle);
+            border: 1px solid var(--border-muted);
+        }
+
+        .before-after-panel.new {
+            background: linear-gradient(135deg, rgba(56, 139, 253, 0.08), rgba(188, 140, 255, 0.08));
+            border: 1px solid rgba(56, 139, 253, 0.2);
+            box-shadow: var(--glow-blue);
+        }
+
+        .before-after-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: var(--text-muted);
+        }
+
+        .before-after-panel-label {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            margin-bottom: 32px;
+        }
+
+        .before-after-panel.old .before-after-panel-label {
+            color: var(--text-primary);
+        }
+
+        .before-after-panel.new .before-after-panel-label {
+            color: var(--color-primary);
+        }
+
+        .before-after-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 24px;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .before-after-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .before-after-panel.old .before-after-item {
+            color: var(--text-primary);
+        }
+
+        .before-after-panel.new .before-after-item {
+            color: var(--text-primary);
+        }
+
+        .before-after-item-icon {
+            flex-shrink: 0;
+            margin-top: 3px;
+            font-size: 16px;
+        }
+
+        .before-after-panel.old .before-after-item-icon {
+            color: var(--diff-del-text);
+        }
+
+        .before-after-panel.new .before-after-item-icon {
+            color: var(--color-success);
         }
 
         /* ===== Feature Sections ===== */
         .feature-section {
             padding: 120px 48px;
+            background: var(--bg-canvas);
         }
 
-        .feature-section:nth-child(even) {
-            background: var(--bg-note);
+        .feature-section + .feature-section {
+            border-top: 1px solid var(--border-muted);
         }
 
         .feature-inner {
@@ -341,18 +488,18 @@
         }
 
         .feature-title {
-            font-size: 36px;
-            font-weight: 800;
-            line-height: 1.25;
-            letter-spacing: -0.02em;
+            font-size: 40px;
+            font-weight: 900;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
             margin-bottom: 20px;
             color: var(--text-heading);
         }
 
         .feature-desc {
             font-size: 16px;
-            color: var(--text-subtle);
-            line-height: 1.8;
+            color: var(--text-secondary);
+            line-height: 1.9;
             margin-bottom: 28px;
         }
 
@@ -366,14 +513,14 @@
             gap: 12px;
             margin-bottom: 14px;
             font-size: 15px;
-            color: var(--text-default);
+            color: var(--text-primary);
         }
 
         .feature-list-icon {
             width: 22px;
             height: 22px;
-            background: var(--color-secondary);
-            color: var(--color-white);
+            background: var(--color-success-emphasis);
+            color: #ffffff;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -388,11 +535,10 @@
         }
 
         .feature-image-container {
-            background: var(--color-white);
+            background: var(--bg-overlay);
             border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-lg);
             overflow: hidden;
-            border: 1px solid rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-default);
         }
 
         .feature-image-container img {
@@ -400,10 +546,117 @@
             display: block;
         }
 
-        /* ===== Seamless (一気通貫) ===== */
+        /* Per-feature glow */
+        .feature-ai .feature-image-container {
+            box-shadow: var(--shadow-lg), var(--glow-blue);
+        }
+
+        .feature-chat .feature-image-container {
+            box-shadow: var(--shadow-lg), var(--glow-coral);
+        }
+
+        .feature-version .feature-image-container,
+        .feature-version .diff-container {
+            box-shadow: var(--shadow-lg), var(--glow-purple);
+        }
+
+        /* ===== Diff Container (GitHub-like) ===== */
+        .diff-container {
+            background: var(--bg-canvas-subtle);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            border: 1px solid var(--border-default);
+            font-family: var(--font-mono);
+            font-size: 13px;
+        }
+
+        .diff-header {
+            background: var(--bg-overlay);
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border-default);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-family);
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .diff-header-icon {
+            width: 16px;
+            height: 16px;
+            background: var(--color-success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+        }
+
+        .diff-header-stat {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .diff-stat-add { color: var(--diff-add-text); }
+        .diff-stat-del { color: var(--diff-del-text); }
+
+        .diff-line {
+            display: flex;
+            line-height: 1.6;
+            border-bottom: 1px solid var(--border-muted);
+        }
+
+        .diff-line:last-child {
+            border-bottom: none;
+        }
+
+        .diff-line-num {
+            width: 48px;
+            padding: 2px 8px;
+            text-align: right;
+            color: var(--text-muted);
+            font-size: 12px;
+            flex-shrink: 0;
+            user-select: none;
+        }
+
+        .diff-line-content {
+            padding: 2px 16px;
+            flex: 1;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .diff-line.add {
+            background: var(--diff-add-bg);
+        }
+
+        .diff-line.add .diff-line-content {
+            color: var(--diff-add-text);
+        }
+
+        .diff-line.del {
+            background: var(--diff-del-bg);
+        }
+
+        .diff-line.del .diff-line-content {
+            color: var(--diff-del-text);
+        }
+
+        .diff-line.context .diff-line-content {
+            color: var(--text-secondary);
+        }
+
+        /* ===== Seamless ===== */
         .seamless {
             padding: 120px 48px;
-            background: var(--color-white);
+            background: var(--bg-canvas);
+            border-top: 1px solid var(--border-muted);
         }
 
         .seamless-inner {
@@ -417,23 +670,22 @@
         }
 
         .seamless-title {
-            font-size: 36px;
-            font-weight: 800;
-            line-height: 1.3;
-            letter-spacing: -0.02em;
+            font-size: 40px;
+            font-weight: 900;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
             color: var(--text-heading);
             margin-bottom: 20px;
         }
 
         .seamless-subtitle {
             font-size: 16px;
-            color: var(--text-subtle);
-            line-height: 1.8;
+            color: var(--text-secondary);
+            line-height: 1.9;
             max-width: 640px;
             margin: 0 auto;
         }
 
-        /* Flow */
         .seamless-flow {
             display: flex;
             align-items: center;
@@ -448,31 +700,34 @@
             flex-direction: column;
             align-items: center;
             gap: 8px;
-            padding: 16px 20px;
+            padding: 16px 24px;
         }
 
         .seamless-flow-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--color-primary-container);
+            width: 56px;
+            height: 56px;
+            background: var(--bg-overlay);
+            border: 2px solid var(--color-primary);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 22px;
+            box-shadow: 0 0 20px rgba(56, 139, 253, 0.2);
         }
 
         .seamless-flow-label {
             font-size: 13px;
             font-weight: 600;
-            color: var(--text-heading);
+            color: var(--text-primary);
             white-space: nowrap;
         }
 
         .seamless-flow-arrow {
             font-size: 20px;
-            color: var(--text-assist);
+            color: var(--color-primary);
             margin-top: -20px;
+            opacity: 0.5;
         }
 
         .seamless-flow-bar {
@@ -482,26 +737,32 @@
 
         .seamless-flow-bar-line {
             display: inline-block;
-            background: var(--color-primary);
-            color: var(--color-white);
+            background: linear-gradient(135deg, var(--color-primary-emphasis), var(--color-purple-emphasis));
+            color: #ffffff;
             padding: 8px 28px;
             border-radius: 100px;
             font-size: 13px;
             font-weight: 600;
         }
 
-        /* Points */
         .seamless-points {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
+            gap: 24px;
         }
 
         .seamless-point {
             text-align: center;
             padding: 32px 20px;
-            background: var(--bg-note);
+            background: var(--bg-canvas-subtle);
             border-radius: var(--radius-xl);
+            border: 1px solid var(--border-default);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .seamless-point:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 20px rgba(56, 139, 253, 0.1);
         }
 
         .seamless-point-title {
@@ -514,15 +775,27 @@
 
         .seamless-point-desc {
             font-size: 14px;
-            color: var(--text-subtle);
+            color: var(--text-secondary);
             line-height: 1.8;
         }
 
         /* ===== Antithesis ===== */
         .antithesis {
             padding: 120px 48px;
-            background: var(--text-heading);
-            color: var(--color-white);
+            background: var(--bg-canvas-inset);
+            color: var(--text-heading);
+            position: relative;
+        }
+
+        .antithesis::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--color-primary), var(--color-purple), transparent);
+            opacity: 0.4;
         }
 
         .antithesis-inner {
@@ -536,18 +809,54 @@
         }
 
         .antithesis-title {
-            font-size: 36px;
-            font-weight: 800;
-            line-height: 1.3;
+            font-size: 40px;
+            font-weight: 900;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
             margin-bottom: 24px;
         }
 
         .antithesis-desc {
             font-size: 16px;
-            color: rgba(255, 255, 255, 0.65);
+            color: var(--text-secondary);
             line-height: 1.9;
             max-width: 600px;
             margin: 0 auto;
+        }
+
+        /* Stats counter */
+        .antithesis-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-bottom: 64px;
+            padding: 48px 0;
+            border-top: 1px solid var(--border-muted);
+            border-bottom: 1px solid var(--border-muted);
+        }
+
+        .antithesis-stat {
+            text-align: center;
+        }
+
+        .antithesis-stat-number {
+            font-size: 56px;
+            font-weight: 900;
+            color: var(--color-primary);
+            letter-spacing: -0.04em;
+        }
+
+        .antithesis-stat-unit {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .antithesis-stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            line-height: 1.6;
         }
 
         .antithesis-table {
@@ -564,39 +873,47 @@
         }
 
         .antithesis-col.old {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .antithesis-col.new {
-            background: rgba(60, 120, 200, 0.15);
+            background: linear-gradient(135deg, rgba(56, 139, 253, 0.08), rgba(188, 140, 255, 0.06));
+            border-left: 2px solid rgba(56, 139, 253, 0.3);
         }
 
         .antithesis-col-label {
             font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.04em;
+            font-weight: 700;
+            letter-spacing: 0.06em;
             margin-bottom: 32px;
-            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .antithesis-col.old .antithesis-col-label {
+            color: var(--text-primary);
         }
 
         .antithesis-col.new .antithesis-col-label {
             color: var(--color-primary);
-            opacity: 1;
         }
 
         .antithesis-col-item {
             font-size: 16px;
             line-height: 1.6;
             margin-bottom: 24px;
-            color: rgba(255, 255, 255, 0.55);
         }
 
         .antithesis-col-item:last-child {
             margin-bottom: 0;
         }
 
+        .antithesis-col.old .antithesis-col-item {
+            color: var(--text-primary);
+            text-decoration: line-through;
+            text-decoration-color: rgba(248, 81, 73, 0.5);
+        }
+
         .antithesis-col.new .antithesis-col-item {
-            color: rgba(255, 255, 255, 0.95);
+            color: var(--text-primary);
             font-weight: 500;
         }
 
@@ -605,16 +922,17 @@
         }
 
         .antithesis-closing-text {
-            font-size: 24px;
-            font-weight: 700;
-            line-height: 1.5;
-            color: var(--color-white);
+            font-size: 28px;
+            font-weight: 900;
+            line-height: 1.4;
+            color: var(--text-heading);
+            letter-spacing: -0.02em;
         }
 
         /* ===== How It Works ===== */
         .how {
             padding: 120px 48px;
-            background: var(--bg-note);
+            background: var(--bg-canvas-subtle);
         }
 
         .how-inner {
@@ -628,41 +946,57 @@
         }
 
         .how-title {
-            font-size: 36px;
-            font-weight: 800;
+            font-size: 40px;
+            font-weight: 900;
             margin-bottom: 12px;
             color: var(--text-heading);
+            letter-spacing: -0.03em;
         }
 
         .how-desc {
             font-size: 16px;
-            color: var(--text-subtle);
+            color: var(--text-secondary);
         }
 
         .how-steps {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
+            gap: 24px;
         }
 
         .how-step {
             text-align: center;
             padding: 40px 28px;
-            background: var(--color-white);
+            background: var(--bg-canvas);
             border-radius: var(--radius-xl);
-            border: 1px solid rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border-default);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .how-step:hover {
+            border-color: var(--color-success);
+            box-shadow: 0 0 30px rgba(63, 185, 80, 0.1);
         }
 
         .how-step-number {
             font-size: 13px;
             font-weight: 700;
-            color: var(--text-assist);
+            color: var(--text-muted);
             margin-bottom: 16px;
         }
 
         .how-step-icon {
-            font-size: 40px;
+            font-size: 32px;
             margin-bottom: 20px;
+            width: 72px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+            background: var(--label-green-bg);
+            border-radius: 50%;
         }
 
         .how-step-title {
@@ -674,14 +1008,14 @@
 
         .how-step-desc {
             font-size: 14px;
-            color: var(--text-subtle);
+            color: var(--text-secondary);
             line-height: 1.7;
         }
 
         /* ===== Pricing ===== */
         .pricing {
             padding: 120px 48px;
-            background: var(--color-white);
+            background: var(--bg-canvas);
         }
 
         .pricing-inner {
@@ -695,15 +1029,16 @@
         }
 
         .pricing-title {
-            font-size: 36px;
-            font-weight: 800;
+            font-size: 40px;
+            font-weight: 900;
             margin-bottom: 12px;
             color: var(--text-heading);
+            letter-spacing: -0.03em;
         }
 
         .pricing-subtitle {
             font-size: 16px;
-            color: var(--text-subtle);
+            color: var(--text-secondary);
         }
 
         .pricing-cards {
@@ -713,7 +1048,7 @@
         }
 
         .pricing-card {
-            background: var(--color-white);
+            background: var(--bg-canvas-subtle);
             border: 1px solid var(--border-default);
             border-radius: var(--radius-xl);
             padding: 40px 32px;
@@ -723,9 +1058,10 @@
         }
 
         .pricing-card.featured {
-            border-color: var(--color-primary);
+            border-color: var(--color-success);
             border-width: 2px;
             position: relative;
+            box-shadow: var(--glow-green);
         }
 
         .pricing-card-badge {
@@ -733,8 +1069,8 @@
             top: -13px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--color-primary);
-            color: var(--color-white);
+            background: var(--color-success-emphasis);
+            color: #ffffff;
             font-size: 12px;
             font-weight: 700;
             padding: 4px 16px;
@@ -745,7 +1081,7 @@
         .pricing-card-for {
             font-size: 13px;
             font-weight: 600;
-            color: var(--text-assist);
+            color: var(--text-muted);
             letter-spacing: 0.03em;
             margin-bottom: 4px;
         }
@@ -759,7 +1095,7 @@
 
         .pricing-plan-desc {
             font-size: 14px;
-            color: var(--text-subtle);
+            color: var(--text-secondary);
             margin-bottom: 20px;
             line-height: 1.6;
         }
@@ -774,7 +1110,7 @@
         .pricing-price span {
             font-size: 15px;
             font-weight: 500;
-            color: var(--text-subtle);
+            color: var(--text-secondary);
         }
 
         .pricing-features {
@@ -790,8 +1126,8 @@
             gap: 10px;
             padding: 8px 0;
             font-size: 14px;
-            color: var(--text-default);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-muted);
         }
 
         .pricing-features li:last-child {
@@ -814,26 +1150,27 @@
 
         .btn-outline-dark {
             background: transparent;
-            color: var(--text-heading);
+            color: var(--text-primary);
             border: 1.5px solid var(--border-default);
         }
 
         .btn-outline-dark:hover {
-            background: var(--text-heading);
-            color: var(--color-white);
+            background: var(--bg-overlay);
+            border-color: var(--text-secondary);
         }
 
         .pricing-note {
             font-size: 12px;
-            color: var(--text-assist);
+            color: var(--text-muted);
         }
 
         .pricing-referral {
             margin-top: 48px;
-            background: var(--bg-note);
+            background: var(--bg-canvas-subtle);
             border-radius: var(--radius-xl);
             padding: 32px 36px;
             text-align: center;
+            border: 1px solid var(--border-default);
         }
 
         .pricing-referral-title {
@@ -845,7 +1182,7 @@
 
         .pricing-referral-desc {
             font-size: 14px;
-            color: var(--text-subtle);
+            color: var(--text-secondary);
             line-height: 1.8;
         }
 
@@ -865,9 +1202,21 @@
 
         /* ===== Final CTA ===== */
         .final-cta {
-            padding: 120px 48px;
-            background: var(--bg-note);
+            padding: 140px 48px;
+            background: linear-gradient(180deg, var(--bg-canvas) 0%, rgba(56, 139, 253, 0.06) 50%, var(--bg-canvas) 100%);
             text-align: center;
+            position: relative;
+        }
+
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 20%;
+            right: 20%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+            opacity: 0.3;
         }
 
         .final-cta-inner {
@@ -876,30 +1225,42 @@
         }
 
         .final-cta-title {
-            font-size: 36px;
-            font-weight: 800;
+            font-size: 44px;
+            font-weight: 900;
             margin-bottom: 20px;
             color: var(--text-heading);
-            line-height: 1.3;
+            line-height: 1.25;
+            letter-spacing: -0.03em;
         }
 
         .final-cta-desc {
-            font-size: 16px;
-            color: var(--text-subtle);
-            margin-bottom: 40px;
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+        }
+
+        .final-cta .btn-primary {
+            box-shadow: var(--glow-green);
+            padding: 18px 48px;
+            font-size: 17px;
+        }
+
+        .final-cta .btn-primary:hover {
+            box-shadow: 0 0 60px rgba(63, 185, 80, 0.4);
         }
 
         .final-cta-note {
             font-size: 13px;
-            color: var(--text-assist);
+            color: var(--text-muted);
             margin-top: 16px;
         }
 
         /* ===== Footer ===== */
         .footer {
-            background: var(--text-heading);
-            color: rgba(255, 255, 255, 0.6);
+            background: var(--bg-canvas-inset);
+            color: var(--text-secondary);
             padding: 64px 48px 32px;
+            border-top: 1px solid var(--border-muted);
         }
 
         .footer-inner {
@@ -913,7 +1274,7 @@
             align-items: flex-start;
             margin-bottom: 48px;
             padding-bottom: 48px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--border-muted);
         }
 
         .footer-brand {
@@ -929,6 +1290,7 @@
         .footer-tagline {
             font-size: 13px;
             line-height: 1.7;
+            color: var(--text-secondary);
         }
 
         .footer-links {
@@ -937,7 +1299,7 @@
         }
 
         .footer-column h4 {
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--text-primary);
             font-size: 13px;
             font-weight: 700;
             margin-bottom: 16px;
@@ -952,14 +1314,14 @@
         }
 
         .footer-column a {
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--text-muted);
             text-decoration: none;
             font-size: 13px;
             transition: color var(--transition-normal);
         }
 
         .footer-column a:hover {
-            color: var(--color-white);
+            color: var(--text-heading);
         }
 
         .footer-bottom {
@@ -967,7 +1329,7 @@
             justify-content: space-between;
             align-items: center;
             font-size: 12px;
-            color: rgba(255, 255, 255, 0.35);
+            color: var(--text-muted);
         }
 
         .footer-legal {
@@ -976,12 +1338,12 @@
         }
 
         .footer-legal a {
-            color: rgba(255, 255, 255, 0.35);
+            color: var(--text-muted);
             text-decoration: none;
         }
 
         .footer-legal a:hover {
-            color: rgba(255, 255, 255, 0.7);
+            color: var(--text-secondary);
         }
 
         /* ===== Demo Float Button ===== */
@@ -989,29 +1351,33 @@
             position: fixed;
             bottom: 28px;
             right: 28px;
-            background: var(--color-secondary);
-            color: var(--color-white);
+            background: var(--color-success-emphasis);
+            color: #ffffff;
             padding: 14px 24px;
             border-radius: 100px;
             text-decoration: none;
             font-weight: 600;
             font-size: 13px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(63, 185, 80, 0.2);
             transition: all 0.2s;
             z-index: 1000;
             display: flex;
             align-items: center;
             gap: 6px;
+            border: 1px solid rgba(63, 185, 80, 0.3);
         }
 
         .demo-float-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(63, 185, 80, 0.3);
         }
 
         /* ===== Responsive ===== */
         @media (max-width: 1024px) {
-            .hero-inner,
+            .hero-inner {
+                padding: 0 20px;
+            }
+
             .feature-inner {
                 grid-template-columns: 1fr;
                 gap: 48px;
@@ -1022,19 +1388,29 @@
             }
 
             .hero-title { font-size: 40px; }
-            .feature-title { font-size: 30px; }
+            .feature-title { font-size: 32px; }
 
-            .pain-cards {
+            .before-after-grid {
                 grid-template-columns: 1fr;
-                gap: 32px;
-                max-width: 480px;
-                margin: 0 auto;
+                gap: 24px;
+            }
+
+            .before-after-divider {
+                transform: rotate(90deg);
+                padding: 8px 0;
             }
 
             .seamless-points { grid-template-columns: 1fr; }
             .seamless-flow { flex-wrap: wrap; }
 
             .antithesis-table { grid-template-columns: 1fr; }
+            .antithesis-stats { grid-template-columns: 1fr; gap: 24px; }
+
+            .antithesis-col.new {
+                border-left: none;
+                border-top: 2px solid rgba(56, 139, 253, 0.3);
+            }
+
             .how-steps { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
             .pricing-cards { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
         }
@@ -1047,7 +1423,7 @@
             .header-nav { display: none; }
 
             .hero,
-            .pain,
+            .before-after,
             .feature-section,
             .seamless,
             .antithesis,
@@ -1059,10 +1435,12 @@
             }
 
             .hero { padding-top: 120px; padding-bottom: 80px; min-height: auto; }
-            .hero-title { font-size: 32px; }
+            .hero-title { font-size: 30px; }
             .hero-desc { font-size: 15px; }
+            .hero-cta { flex-direction: column; align-items: center; }
 
-            .pain-card-quote { font-size: 18px; }
+            .before-after-header h2 { font-size: 28px; }
+            .before-after-panel { padding: 32px 24px; }
 
             .feature-title,
             .seamless-title,
@@ -1074,7 +1452,8 @@
             }
 
             .antithesis-col { padding: 32px 24px; }
-            .antithesis-closing-text { font-size: 20px; }
+            .antithesis-closing-text { font-size: 22px; }
+            .antithesis-stat-number { font-size: 40px; }
 
             .footer-top {
                 flex-direction: column;
@@ -1095,11 +1474,12 @@
             .footer { padding-left: 20px; padding-right: 20px; }
         }
 
-        /* ===== Fade-in animation ===== */
+        /* ===== Fade-in Animation ===== */
         .fade-in {
             opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateY(32px);
+            transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .fade-in.visible {
@@ -1127,21 +1507,21 @@
 
     <!-- ========================================
          Section 1: Hero
-         感情: ドキッ → 「読めてない...かも」
+         契約書の内容がよくわかる交渉プラットフォーム
     ========================================= -->
     <section class="hero">
         <div class="hero-inner">
             <div class="hero-content">
-                <p class="hero-eyebrow">契約交渉を、メールから解放するプラットフォーム</p>
-                <h1 class="hero-title">契約書、<br>読めてますか。</h1>
+                <h1 class="hero-title">契約書の内容がよくわかる<br>交渉プラットフォーム</h1>
                 <p class="hero-desc">
                     AIが契約書をあなたの言葉に翻訳。<br>
-                    交渉から締結まで、ひとつの場所で。
+                    交渉・合意・署名まで、すべてが1つの場所で完結します。
                 </p>
                 <div class="hero-cta">
                     <a href="#" class="btn btn-primary btn-large">無料で始める</a>
+                    <a href="index.html" class="btn btn-outline btn-large">デモを見る</a>
                 </div>
-                <p class="hero-note">クレジットカード不要</p>
+                <p class="hero-note">クレジットカード不要 &middot; 3分で開始</p>
             </div>
             <div class="hero-visual">
                 <div class="hero-image-container">
@@ -1152,58 +1532,88 @@
     </section>
 
     <!-- ========================================
-         Section 2: Pain Points（痛みの共感）
-         感情: あるある... → 共感
+         Section 2: Before / After
+         20年間の当たり前を、疑え。
     ========================================= -->
-    <section class="pain fade-in">
-        <div class="pain-inner">
-            <div class="pain-header">
-                <p class="pain-header-title">こんな経験、ありませんか</p>
+    <section class="before-after fade-in">
+        <div class="before-after-inner">
+            <div class="before-after-header">
+                <h2>契約交渉の「当たり前」を、疑え。</h2>
+                <p>20年以上変わらなかった契約交渉のやり方を、ゼロから再設計した。</p>
             </div>
-            <div class="pain-cards">
-                <div class="pain-card">
-                    <p class="pain-card-quote">「法務に聞くほどじゃないけど、不安」</p>
-                    <p class="pain-card-desc">契約書の専門用語、<br>なんとなくで進めていませんか。</p>
+            <div class="before-after-grid">
+                <div class="before-after-panel old">
+                    <p class="before-after-panel-label">LAST 20 YEARS</p>
+                    <div class="before-after-item">
+                        <span class="before-after-item-icon">&#10005;</span>
+                        <span>Wordの修正履歴を見ても、何が変わったか分からない</span>
+                    </div>
+                    <div class="before-after-item">
+                        <span class="before-after-item-icon">&#10005;</span>
+                        <span>メールで3往復、1週間。案件が冷める</span>
+                    </div>
+                    <div class="before-after-item">
+                        <span class="before-after-item-icon">&#10005;</span>
+                        <span>「あの交渉、どこにいった？」半年後、誰も覚えていない</span>
+                    </div>
+                    <div class="before-after-item">
+                        <span class="before-after-item-icon">&#10005;</span>
+                        <span>読めないまま署名して、あとから問題になる</span>
+                    </div>
                 </div>
-                <div class="pain-card">
-                    <p class="pain-card-quote">「メールで3往復、1週間。」</p>
-                    <p class="pain-card-desc">条項の確認だけで交渉が止まる。<br>その間に、案件が冷める。</p>
+                <div class="before-after-divider">
+                    <span>→</span>
                 </div>
-                <div class="pain-card">
-                    <p class="pain-card-quote">「更新日、覚えてますか？」</p>
-                    <p class="pain-card-desc">気づいたら自動更新。<br>静かにコストが積み上がる。</p>
+                <div class="before-after-panel new">
+                    <p class="before-after-panel-label">WITH NEGO</p>
+                    <div class="before-after-item">
+                        <span class="before-after-item-icon">&#10003;</span>
+                        <span>変更箇所を差分で可視化。1行の修正も見逃さない</span>
+                    </div>
+                    <div class="before-after-item">
+                        <span class="before-after-item-icon">&#10003;</span>
+                        <span>契約書の上で直接交渉。その場で合意</span>
+                    </div>
+                    <div class="before-after-item">
+                        <span class="before-after-item-icon">&#10003;</span>
+                        <span>交渉の文脈から署名まで、すべてが1つの場所に残る</span>
+                    </div>
+                    <div class="before-after-item">
+                        <span class="before-after-item-icon">&#10003;</span>
+                        <span>AIが専門用語を翻訳。納得して署名できる</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ========================================
-         Section 3: Solutions（解決策 x3）
-         感情: なるほど → 体験の変化が見える
+         Section 3: Solutions — River Layout
     ========================================= -->
 
     <!-- Feature 1: AI Translation -->
-    <section class="feature-section fade-in" id="features">
+    <section class="feature-section feature-ai fade-in" id="features">
         <div class="feature-inner">
             <div class="feature-content">
-                <span class="section-label blue">AI翻訳</span>
+                <span class="section-label blue">AI TRANSLATION</span>
                 <h2 class="feature-title">契約書が、<br>読めるようになる</h2>
                 <p class="feature-desc">
-                    AIが専門用語を平易な日本語に翻訳。<br>
-                    重要な条項を自動でハイライト。3行で要約。
+                    わからないまま署名する不安を、なくす。<br>
+                    AIが専門用語をあなたの言葉に翻訳します。<br>
+                    「これ、つまりどういうこと？」にすぐ答えが出る。
                 </p>
                 <ul class="feature-list">
                     <li>
-                        <span class="feature-list-icon">✓</span>
+                        <span class="feature-list-icon">&#10003;</span>
                         <span>難解な条文を、あなたの言葉に自動変換</span>
                     </li>
                     <li>
-                        <span class="feature-list-icon">✓</span>
+                        <span class="feature-list-icon">&#10003;</span>
                         <span>金額・期間・責任範囲を自動ハイライト</span>
                     </li>
                     <li>
-                        <span class="feature-list-icon">✓</span>
-                        <span>契約の要点を3行でサマリー</span>
+                        <span class="feature-list-icon">&#10003;</span>
+                        <span>気になる条項をAIにその場で質問</span>
                     </li>
                 </ul>
             </div>
@@ -1216,26 +1626,27 @@
     </section>
 
     <!-- Feature 2: Real-time Negotiation -->
-    <section class="feature-section fade-in">
+    <section class="feature-section feature-chat fade-in">
         <div class="feature-inner reverse">
             <div class="feature-content">
-                <span class="section-label coral">リアルタイム交渉</span>
+                <span class="section-label coral">REAL-TIME NEGOTIATION</span>
                 <h2 class="feature-title">交渉が、<br>その場で終わる</h2>
                 <p class="feature-desc">
-                    契約書の上で直接コメント。チャットで即確認。<br>
-                    メールの往復は、もういらない。
+                    メールで3往復、1週間。<br>
+                    その間に案件が冷める、なんてことはもうない。<br>
+                    契約書の上で直接コメント。チャットで即確認。
                 </p>
                 <ul class="feature-list">
                     <li>
-                        <span class="feature-list-icon">✓</span>
+                        <span class="feature-list-icon">&#10003;</span>
                         <span>条項ごとのコメントスレッドで議論</span>
                     </li>
                     <li>
-                        <span class="feature-list-icon">✓</span>
+                        <span class="feature-list-icon">&#10003;</span>
                         <span>チャットで認識のズレをその場で解消</span>
                     </li>
                     <li>
-                        <span class="feature-list-icon">✓</span>
+                        <span class="feature-list-icon">&#10003;</span>
                         <span>すべてのやりとりが自動で記録</span>
                     </li>
                 </ul>
@@ -1248,86 +1659,113 @@
         </div>
     </section>
 
-    <!-- Feature 3: Timeline -->
-    <section class="feature-section fade-in">
+    <!-- Feature 3: Version Control + Signing -->
+    <section class="feature-section feature-version fade-in">
         <div class="feature-inner">
             <div class="feature-content">
-                <span class="section-label mint">期日管理</span>
-                <h2 class="feature-title">大事な日を、<br>忘れない</h2>
+                <span class="section-label purple">VERSION CONTROL &amp; SIGNING</span>
+                <h2 class="feature-title">1行の修正も、<br>見逃さない</h2>
                 <p class="feature-desc">
-                    契約開始から満了まで、タイムラインで一覧。<br>
-                    更新期限が近づけば、自動で通知。
+                    何が変わったのか。誰が変えたのか。なぜ変えたのか。<br>
+                    すべてのバージョンと経緯が残るから、<br>
+                    安心して署名できる。締結も、この場で。
                 </p>
                 <ul class="feature-list">
                     <li>
-                        <span class="feature-list-icon">✓</span>
-                        <span>重要日付をタイムラインで可視化</span>
+                        <span class="feature-list-icon">&#10003;</span>
+                        <span>変更箇所を差分で可視化（追加/削除）</span>
                     </li>
                     <li>
-                        <span class="feature-list-icon">✓</span>
-                        <span>期限が近づくと自動でリマインド</span>
+                        <span class="feature-list-icon">&#10003;</span>
+                        <span>全バージョンの履歴と経緯が残る</span>
                     </li>
                     <li>
-                        <span class="feature-list-icon">✓</span>
-                        <span>「次に何をすべきか」が常にわかる</span>
+                        <span class="feature-list-icon">&#10003;</span>
+                        <span>合意したらそのまま電子署名で締結</span>
                     </li>
                 </ul>
             </div>
             <div class="feature-visual">
-                <div class="feature-image-container">
-                    <img src="feature-timeline.png" alt="タイムライン機能">
+                <!-- GitHub-like diff visualization -->
+                <div class="diff-container">
+                    <div class="diff-header">
+                        <span class="diff-header-icon">&#10003;</span>
+                        業務委託契約書.docx &mdash; Ver.7 → Ver.8
+                        <div class="diff-header-stat">
+                            <span class="diff-stat-add">+2</span>
+                            <span class="diff-stat-del">-1</span>
+                        </div>
+                    </div>
+                    <div class="diff-line context">
+                        <span class="diff-line-num">4</span>
+                        <span class="diff-line-content">第4条（契約期間）</span>
+                    </div>
+                    <div class="diff-line del">
+                        <span class="diff-line-num">5</span>
+                        <span class="diff-line-content">- 契約期間は1年間とする。</span>
+                    </div>
+                    <div class="diff-line add">
+                        <span class="diff-line-num">5</span>
+                        <span class="diff-line-content">+ 契約期間は6ヶ月間とする。</span>
+                    </div>
+                    <div class="diff-line context">
+                        <span class="diff-line-num">6</span>
+                        <span class="diff-line-content"></span>
+                    </div>
+                    <div class="diff-line context">
+                        <span class="diff-line-num">12</span>
+                        <span class="diff-line-content">第8条（秘密保持）</span>
+                    </div>
+                    <div class="diff-line add">
+                        <span class="diff-line-num">13</span>
+                        <span class="diff-line-content">+ 秘密保持期間は契約終了後3年間とする。</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ========================================
-         Section 4: Seamless（一気通貫）
-         感情: 締結で終わりじゃない → 約束を守る先まで
+         Section 4: Seamless
     ========================================= -->
     <section class="seamless fade-in">
         <div class="seamless-inner">
             <div class="seamless-header">
-                <h2 class="seamless-title">交渉して、締結して、その先へ。<br>ぜんぶ、ここで。</h2>
+                <h2 class="seamless-title">交渉して、合意して、署名する。<br>ぜんぶ、ここで。</h2>
                 <p class="seamless-subtitle">
-                    契約は締結がゴールじゃない。そこから取引が始まる。<br>
-                    交渉の経緯も、守るべき約束も、すべてが1つの場所に残ります。
+                    メール、チャット、口頭。契約の経緯はいつも散らばる。<br>
+                    Negoなら、交渉の文脈から署名まで、すべてが1つの場所に残ります。
                 </p>
             </div>
 
             <div class="seamless-flow">
                 <div class="seamless-flow-step">
-                    <div class="seamless-flow-icon">📄</div>
+                    <div class="seamless-flow-icon">&#128196;</div>
                     <span class="seamless-flow-label">アップロード</span>
                 </div>
                 <span class="seamless-flow-arrow">→</span>
                 <div class="seamless-flow-step">
-                    <div class="seamless-flow-icon">🤖</div>
+                    <div class="seamless-flow-icon">&#129302;</div>
                     <span class="seamless-flow-label">AI翻訳・確認</span>
                 </div>
                 <span class="seamless-flow-arrow">→</span>
                 <div class="seamless-flow-step">
-                    <div class="seamless-flow-icon">💬</div>
+                    <div class="seamless-flow-icon">&#128172;</div>
                     <span class="seamless-flow-label">交渉</span>
                 </div>
                 <span class="seamless-flow-arrow">→</span>
                 <div class="seamless-flow-step">
-                    <div class="seamless-flow-icon">✍️</div>
+                    <div class="seamless-flow-icon">&#9997;&#65039;</div>
                     <span class="seamless-flow-label">合意・署名</span>
                 </div>
                 <span class="seamless-flow-arrow">→</span>
                 <div class="seamless-flow-step">
-                    <div class="seamless-flow-icon">✅</div>
+                    <div class="seamless-flow-icon">&#127881;</div>
                     <span class="seamless-flow-label">締結</span>
-                </div>
-                <span class="seamless-flow-arrow">→</span>
-                <div class="seamless-flow-step">
-                    <div class="seamless-flow-icon">📅</div>
-                    <span class="seamless-flow-label">履行・管理</span>
                 </div>
             </div>
             <div class="seamless-flow-bar">
-                <span class="seamless-flow-bar-line">交渉の過程も、その先の約束も、すべて記録される</span>
+                <span class="seamless-flow-bar-line">交渉の過程も、合意の瞬間も、すべて記録される</span>
             </div>
 
             <div class="seamless-points">
@@ -1336,20 +1774,19 @@
                     <p class="seamless-point-desc">「なぜこの条件にしたのか」がコメントとチャットで記録される。半年後に見返しても、わかる。</p>
                 </div>
                 <div class="seamless-point">
-                    <h3 class="seamless-point-title">締結したら、<br>取引が始まる</h3>
-                    <p class="seamless-point-desc">支払期日、納品日、更新判断。締結後に守るべき約束を、タイムラインが教えてくれる。</p>
+                    <h3 class="seamless-point-title">散らばらないから、<br>安心できる</h3>
+                    <p class="seamless-point-desc">メールの添付、チャットの断片、口頭の約束。もう探し回らなくていい。すべてがここにある。</p>
                 </div>
                 <div class="seamless-point">
-                    <h3 class="seamless-point-title">約束を守る人が、<br>信頼される</h3>
-                    <p class="seamless-point-desc">期日を忘れない。条件を見落とさない。それが次の取引につながる。</p>
+                    <h3 class="seamless-point-title">納得して署名するから、<br>信頼が生まれる</h3>
+                    <p class="seamless-point-desc">内容を理解し、経緯を共有し、合意の上で署名する。その透明さが、取引先との信頼になる。</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ========================================
-         Section 5: Antithesis（アンチテーゼ）
-         感情: 確かに署名だけだった → 気づき
+         Section 5: Antithesis
     ========================================= -->
     <section class="antithesis fade-in">
         <div class="antithesis-inner">
@@ -1357,23 +1794,39 @@
                 <h2 class="antithesis-title">署名は、契約のゴールじゃない。</h2>
                 <p class="antithesis-desc">
                     電子契約サービスが普及して、ハンコを押す手間はなくなりました。<br>
-                    でも、契約で本当に大事なのは「署名する前」の時間です。<br><br>
-                    相手と条件をすり合わせ、互いに納得して、はじめて署名に意味が生まれる。
+                    でも、契約で本当に大事なのは「署名する前」の時間です。
                 </p>
+            </div>
+
+            <div class="antithesis-stats">
+                <div class="antithesis-stat">
+                    <span class="antithesis-stat-number" data-target="35">0</span><span class="antithesis-stat-unit">%</span>
+                    <p class="antithesis-stat-label">の契約で交渉履歴が<br>行方不明に</p>
+                </div>
+                <div class="antithesis-stat">
+                    <span class="antithesis-stat-number" data-target="72">0</span><span class="antithesis-stat-unit">時間</span>
+                    <p class="antithesis-stat-label">/ 年の契約交渉を<br>メールに費やしている</p>
+                </div>
+                <div class="antithesis-stat">
+                    <span class="antithesis-stat-number" data-target="89">0</span><span class="antithesis-stat-unit">%</span>
+                    <p class="antithesis-stat-label">が「十分に理解せず<br>署名した経験あり」</p>
+                </div>
             </div>
 
             <div class="antithesis-table">
                 <div class="antithesis-col old">
-                    <p class="antithesis-col-label">これまでの電子契約</p>
+                    <p class="antithesis-col-label">TRADITIONAL E-SIGN</p>
                     <p class="antithesis-col-item">署名して、終わり。</p>
                     <p class="antithesis-col-item">契約書を「処理」する。</p>
                     <p class="antithesis-col-item">結果だけが残る。</p>
+                    <p class="antithesis-col-item">経緯は、散らばる。</p>
                 </div>
                 <div class="antithesis-col new">
-                    <p class="antithesis-col-label">Nego</p>
+                    <p class="antithesis-col-label">NEGO</p>
                     <p class="antithesis-col-item">交渉して、合意して、署名する。</p>
                     <p class="antithesis-col-item">契約を「理解」する。</p>
                     <p class="antithesis-col-item">過程と結果が残る。</p>
+                    <p class="antithesis-col-item">すべてが、ひとつの場所に。</p>
                 </div>
             </div>
 
@@ -1384,8 +1837,7 @@
     </section>
 
     <!-- ========================================
-         Section 6: How It Works（使い方）
-         感情: 簡単そう → 安心
+         Section 6: How It Works
     ========================================= -->
     <section class="how fade-in" id="how">
         <div class="how-inner">
@@ -1396,29 +1848,28 @@
             <div class="how-steps">
                 <div class="how-step">
                     <p class="how-step-number">Step 1</p>
-                    <div class="how-step-icon">📄</div>
+                    <div class="how-step-icon">&#128196;</div>
                     <h3 class="how-step-title">アップロード</h3>
                     <p class="how-step-desc">契約書をドラッグ&ドロップ。<br>Word・PDFに対応。</p>
                 </div>
                 <div class="how-step">
                     <p class="how-step-number">Step 2</p>
-                    <div class="how-step-icon">📨</div>
+                    <div class="how-step-icon">&#128232;</div>
                     <h3 class="how-step-title">招待</h3>
                     <p class="how-step-desc">メールアドレスを入力、<br>またはリンクを共有。</p>
                 </div>
                 <div class="how-step">
                     <p class="how-step-number">Step 3</p>
-                    <div class="how-step-icon">🤝</div>
-                    <h3 class="how-step-title">交渉</h3>
-                    <p class="how-step-desc">AIとチャットで、<br>契約をまとめる。</p>
+                    <div class="how-step-icon">&#129309;</div>
+                    <h3 class="how-step-title">交渉・署名</h3>
+                    <p class="how-step-desc">AIの力を借りて交渉し、<br>合意したらその場で署名。</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ========================================
-         Section 7: Pricing（料金）
-         感情: タダなら → ハードル消滅
+         Section 7: Pricing
     ========================================= -->
     <section class="pricing fade-in" id="pricing">
         <div class="pricing-inner">
@@ -1435,12 +1886,11 @@
                     <p class="pricing-plan-desc">相手との交渉から締結まで。<br>個人でもすぐに始められます。</p>
                     <p class="pricing-price">¥0 <span>/ 月</span></p>
                     <ul class="pricing-features">
-                        <li><span class="pricing-check">✓</span> 月10件の交渉</li>
-                        <li><span class="pricing-check">✓</span> AI翻訳・要約</li>
-                        <li><span class="pricing-check">✓</span> チャット・コメント</li>
-                        <li><span class="pricing-check">✓</span> タイムライン管理</li>
-                        <li><span class="pricing-check">✓</span> 電子署名</li>
-                        <li><span class="pricing-check">✓</span> バージョン管理</li>
+                        <li><span class="pricing-check">&#10003;</span> 月10件の交渉</li>
+                        <li><span class="pricing-check">&#10003;</span> AI翻訳・要約</li>
+                        <li><span class="pricing-check">&#10003;</span> チャット・コメント</li>
+                        <li><span class="pricing-check">&#10003;</span> バージョン管理・差分比較</li>
+                        <li><span class="pricing-check">&#10003;</span> 電子署名</li>
                     </ul>
                     <div class="pricing-cta-wrapper">
                         <a href="#" class="btn btn-primary btn-large">無料で始める</a>
@@ -1454,12 +1904,12 @@
                     <p class="pricing-plan-desc">契約書の管理・検索・ナレッジ化。<br>チームの契約業務を一元管理。</p>
                     <p class="pricing-price"><span>お問い合わせ</span></p>
                     <ul class="pricing-features">
-                        <li><span class="pricing-check">✓</span> Negoの全機能</li>
-                        <li><span class="pricing-check">✓</span> 契約書の一元管理・検索</li>
-                        <li><span class="pricing-check">✓</span> AIによる自動台帳作成</li>
-                        <li><span class="pricing-check">✓</span> 更新期限の自動通知</li>
-                        <li><span class="pricing-check">✓</span> チーム・権限管理</li>
-                        <li><span class="pricing-check">✓</span> 専任サポート・SLA</li>
+                        <li><span class="pricing-check">&#10003;</span> Negoの全機能</li>
+                        <li><span class="pricing-check">&#10003;</span> 契約書の一元管理・検索</li>
+                        <li><span class="pricing-check">&#10003;</span> AIによる自動台帳作成</li>
+                        <li><span class="pricing-check">&#10003;</span> 更新期限の自動通知</li>
+                        <li><span class="pricing-check">&#10003;</span> チーム・権限管理</li>
+                        <li><span class="pricing-check">&#10003;</span> 専任サポート・SLA</li>
                     </ul>
                     <div class="pricing-cta-wrapper">
                         <a href="https://hubble-docs.com/" target="_blank" rel="noopener" class="btn btn-outline-dark btn-large">Hubbleについて →</a>
@@ -1477,14 +1927,13 @@
 
     <!-- ========================================
          Section 8: Final CTA
-         感情: やってみるか → 行動
     ========================================= -->
     <section class="final-cta fade-in">
         <div class="final-cta-inner">
             <h2 class="final-cta-title">契約書が読める自分に、<br>今日からなる。</h2>
-            <p class="final-cta-desc">まずは無料で、契約交渉の新しい体験を。</p>
+            <p class="final-cta-desc">もう、わからないまま署名しなくていい。</p>
             <a href="#" class="btn btn-primary btn-large">無料で始める</a>
-            <p class="final-cta-note">クレジットカード不要 · 3分で開始</p>
+            <p class="final-cta-note">クレジットカード不要 &middot; 3分で開始</p>
         </div>
     </section>
 
@@ -1528,9 +1977,10 @@
         デモを体験 →
     </a>
 
-    <!-- Scroll Animation -->
+    <!-- Scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Fade-in animation
             var targets = document.querySelectorAll('.fade-in');
             if ('IntersectionObserver' in window) {
                 var observer = new IntersectionObserver(function (entries) {
@@ -1539,11 +1989,36 @@
                             entry.target.classList.add('visible');
                         }
                     });
-                }, { threshold: 0.15 });
+                }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
                 targets.forEach(function (el) { observer.observe(el); });
             } else {
                 targets.forEach(function (el) { el.classList.add('visible'); });
             }
+
+            // Counter animation for antithesis stats
+            var counters = document.querySelectorAll('.antithesis-stat-number');
+            counters.forEach(function (counter) {
+                var target = parseInt(counter.getAttribute('data-target'));
+                var duration = 2000;
+                var counted = false;
+
+                var cObserver = new IntersectionObserver(function (entries) {
+                    if (entries[0].isIntersecting && !counted) {
+                        counted = true;
+                        var startTime = null;
+                        function step(timestamp) {
+                            if (!startTime) startTime = timestamp;
+                            var progress = Math.min((timestamp - startTime) / duration, 1);
+                            var eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+                            counter.textContent = Math.floor(eased * target);
+                            if (progress < 1) requestAnimationFrame(step);
+                        }
+                        requestAnimationFrame(step);
+                        cObserver.unobserve(counter);
+                    }
+                }, { threshold: 0.5 });
+                cObserver.observe(counter);
+            });
         });
     </script>
 </body>

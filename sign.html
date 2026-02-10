@@ -205,6 +205,37 @@
             transform: rotate(180deg);
         }
 
+        .sign-contract-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .sign-contract-toolbar .sign-contract-toggle {
+            margin-bottom: 0;
+        }
+
+        .sign-download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 14px;
+            background: none;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .sign-download-btn:hover {
+            background: #f9fafb;
+            color: #374151;
+            border-color: #9ca3af;
+        }
+
         /* PDF埋め込み風コンテナ */
         .sign-pdf-container {
             background: #525659;
@@ -710,12 +741,17 @@
                         </ul>
                     </div>
 
-                    <!-- 契約書全文（折りたたみ） -->
-                    <button class="sign-contract-toggle expanded" id="contractToggle" onclick="toggleContract()">
-                        <span class="material-symbols-outlined" style="font-size:18px;">description</span>
-                        契約書全文
-                        <span class="material-symbols-outlined" style="font-size:18px;">expand_more</span>
-                    </button>
+                    <!-- 契約書全文（折りたたみ）+ ダウンロード -->
+                    <div class="sign-contract-toolbar">
+                        <button class="sign-contract-toggle expanded" id="contractToggle" onclick="toggleContract()">
+                            <span class="material-symbols-outlined" style="font-size:18px;">description</span>
+                            契約書全文
+                            <span class="material-symbols-outlined" style="font-size:18px;">expand_more</span>
+                        </button>
+                        <button class="sign-download-btn" onclick="alert('契約書をダウンロードします（デモ）\n\nPDF形式でダウンロードされます。')">
+                            <span class="material-symbols-outlined" style="font-size:16px;">download</span> PDFダウンロード
+                        </button>
+                    </div>
 
                     <div class="sign-pdf-container" id="contractContent">
                         <div class="sign-pdf-page">

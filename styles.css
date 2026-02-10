@@ -233,21 +233,20 @@ body {
     white-space: nowrap;
 }
 
-/* 編集者ロールノート */
-.add-member-role-note {
+/* 招待説明文 */
+.add-member-capability-note {
     display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 16px;
-    background: var(--bg-note);
-    border-radius: var(--radius-md);
-    font-size: var(--font-size-sm);
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: var(--space-4);
+    font-size: var(--font-size-xs);
     color: var(--text-assist);
+    line-height: 1.5;
 }
 
-.add-member-role-note .material-symbols-outlined {
-    font-size: 18px;
-    color: var(--text-assist);
+.add-member-capability-note .material-symbols-outlined {
+    flex-shrink: 0;
+    margin-top: 1px;
 }
 
 .header-actions {
@@ -4256,6 +4255,32 @@ body {
     color: var(--text-default);
 }
 
+.invite-contract-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.invite-download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    background: none;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.invite-download-btn:hover {
+    background: var(--bg-hover);
+    color: var(--text-default);
+    border-color: var(--text-assist);
+}
+
 .invite-contract-scroll-hint {
     font-size: var(--font-size-xs);
     color: var(--text-assist);
@@ -4662,7 +4687,7 @@ body {
    =================================== */
 .demo-hubble-toggle {
     position: fixed;
-    bottom: 56px;
+    bottom: 80px;
     left: 16px;
     z-index: 10000;
     padding: 6px 14px;

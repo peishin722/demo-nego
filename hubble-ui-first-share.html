@@ -885,15 +885,19 @@
         }
 
         /* ===== 招待モーダル用スタイル ===== */
-        .invite-role-note {
+        .invite-capability-note {
             display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 16px;
-            background: var(--bg-note);
-            border-radius: var(--radius-md);
-            font-size: var(--font-size-sm);
+            align-items: flex-start;
+            gap: 6px;
+            margin-bottom: var(--space-5);
+            font-size: var(--font-size-xs);
             color: var(--text-assist);
+            line-height: 1.5;
+        }
+
+        .invite-capability-note .material-symbols-outlined {
+            flex-shrink: 0;
+            margin-top: 1px;
         }
 
         .invite-emails-list {
@@ -1388,13 +1392,10 @@
                     </div>
                 </div>
 
-                <!-- 権限表示 -->
-                <div style="margin-bottom: var(--space-5);">
-                    <div class="share-version-label">この相手の権限</div>
-                    <div class="invite-role-note">
-                        <span class="material-symbols-outlined" style="font-size: 18px; color: var(--text-assist);">edit</span>
-                        <span>編集者（閲覧・編集・コメントが可能）</span>
-                    </div>
+                <!-- 招待される方ができること -->
+                <div class="invite-capability-note">
+                    <span class="material-symbols-outlined icon-sm">info</span>
+                    招待された方は、契約書の閲覧・編集・コメントができます。署名者は署名手続き・設定で別途指定します。
                 </div>
 
                 <!-- メールアドレスで招待 -->
